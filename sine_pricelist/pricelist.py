@@ -139,8 +139,7 @@ class product_pricelist(orm.Model):
                 else:
                     categ_where = '(categ_id IS NULL)'
 
-                product_brand_id = products_dict[product_id].product_brand_id and products_dict[
-                    product_id].product_brand_id.id or False
+                product_brand_ids = products_dict[product_id].product_brand_id.id or False
 
                 cr.execute(
                     'SELECT i.*, pl.currency_id '
@@ -152,11 +151,9 @@ class product_pricelist(orm.Model):
                                             'AND price_version_id = %s '
                                             'AND (min_quantity IS NULL OR min_quantity <= %s) '
                                             'AND i.price_version_id = v.id AND v.pricelist_id = pl.id '
-                                            'AND i.brand_id IS NULL OR i.brand_id =%s', (product_brand_id, ),
+                                            'AND (i.brand_id IS NULL OR i.brand_id = %s)  '
                                             'ORDER BY sequence ',
-                    (tmpl_id, product_id, categ_where, plversion_ids[0], qty,
-                        product_brand_id,))
-
+                    (tmpl_id, product_id, plversion_ids[0], qty, product_brand_ids))
 
                 res1 = cr.dictfetchall()
                 uom_price_already_computed = False
