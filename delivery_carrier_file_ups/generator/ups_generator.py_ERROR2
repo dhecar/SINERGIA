@@ -1,0 +1,238 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    Author: Guewen Baconnier
+#    Copyright 2012 Camptocamp SA
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+import csv
+from openerp.addons.base_delivery_carrier_files.generator import CarrierFileGenerator
+from openerp.addons.base_delivery_carrier_files.generator import BaseLine
+from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
+
+from openerp.osv import fields, osv
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import SubElement
+
+# Find the best implementation available on this platform
+try:
+    from cStringIO import StringIO
+except:
+    from StringIO import StringIO
+
+
+class UPSLine(BaseLine):
+    fields = (('reference', 15),
+              ('name', 30),
+              ('street', 30),
+              ('city', 30),
+              ('zip', 9),
+              ('state', 30),
+              ('country', 2),
+              ('country_name', 30),
+              ('phone', 16),
+              ('fax', 16),
+              ('contact', 22),
+              ('ups_account', 9),
+              ('vat', 20),
+              ('mail', 50),)
+
+
+class UpsFileGenerator(CarrierFileGenerator):
+
+    @classmethod
+    def carrier_for(cls, carrier_name):
+        return carrier_name == 'Ups'
+
+    def _get_filename_single(self, picking, configuration, extension='csv'):
+        return super(UpsFileGenerator, self)._get_filename_single(picking, configuration, extension='csv')
+
+    def _get_filename_grouped(self, configuration, extension='csv'):
+        return super(UpsFileGenerator, self)._get_filename_grouped(configuration, extension='csv')
+
+    def _get_rows(self, picking, configuration):
+        """
+        Returns the rows to create in the file for a picking
+
+        :param browse_record picking: the picking for which we generate a row in the file
+        :param browse_record configuration: configuration of the file to generate
+        :return: list of rows
+        """
+        line = UPSLine()
+	line.reference = picking.name
+        address = picking.partner_id
+        if address:
+            line.lastname = address.name or (address.partner_id and address.partner_id.name)
+            # if a company, put company name
+            #if address.street.partner_id.title:
+            #    line.company_name = address.partner_id.name
+            line.street = address.street
+            line.zip = address.zip
+            line.city = address.city
+	    line.state = address.state_id.name
+            line.country = address.country_id.code
+            line.phone = address.phone or address.mobile
+            line.mail = address.email
+        line.weight = "%.2f" % (picking.weight,)
+        return [line.get_fields()]
+
+    def _write_rows(self, file_handle, rows, configuration):
+        """
+        Write the rows in the file (file_handle)
+
+        :param StringIO file_handle: file to write in
+        :param rows: rows to write in the file
+        :param browse_record configuration: configuration of the file to
+               generate
+        :return: the file_handle as StringIO with the rows written in it
+        """
+        writer = UnicodeWriter(file_handle, delimiter=';', quotechar='"',
+                               lineterminator='\n', quoting=csv.QUOTE_ALL)
+        writer.writerows(rows)
+
+
+	return file_handle
+
+
+class worldship(osv.osv):
+
+    _name="worl_ship"
+
+
+    def _get_file(self, rows, configuration):
+        """
+        Create a file in a StringIO, call the method which generates
+        the content of the file
+        and returns the content of the file
+
+        :param list rows: rows to write in the file, the way they are
+                          written to the file is defined in _write_rows
+        :param browse_record configuration: configuration of
+                                            the file to generate
+        :return: content of the file
+        """
+        file_handle = StringIO.StringIO()
+        try:
+            file_handle = self._write_rows(file_handle,
+                                           rows, configuration)
+            file_content = file_handle.getvalue()
+        finally:
+            file_handle.close()
+        return file_content
+
+
+			
+	###WorldShip##
+	csv.register_dialect('custom',
+                     delimiter=';',
+                     doublequote=True,
+                     escapechar=None,
+                     quotechar='"',
+                     quoting=csv.QUOTE_NONE,
+                     skipinitialspace=False)
+
+	
+
+
+
+	with ('file_content') as ifile:
+            data = csv.reader(ifile, dialect='custom')
+            for record in data:
+                #<Openshipments/>
+                OpenShipments = Element( 'OpenShipments',xmlns='x-schema:OpenShipments.xdr')
+                #<Openshipments><Openshipment/>
+                OpenShipment = SubElement (OpenShipments, 'OpenShipment', ProcessStatus='' )
+                #<Openshipments><OpenShipment/><Receiver/>
+                Receiver  = SubElement (OpenShipment , 'Receiver' )
+                #
+                CompanyName = SubElement ( Receiver, 'CompanyName')
+                CompanyName.text = '%(line.company_name)s'
+                ContactPerson = SubElement ( Receiver, 'ContactPerson')
+                ContactPerson.text = '%(line.company_name)s'
+                AddresLine1 = SubElement ( Receiver, 'AddressLine1')
+                AddressLine1.text = '%(line.street)s'
+                City = SubElement ( Receiver, 'City')
+                City.text='%(line.city)s'
+                CountryCode = SubElement ( Receiver, 'CountryCode')
+                CountryCode.text='%(line.country)s'
+                PostalCode = SubElement ( Receiver, 'PostalCode')
+                PostalCode.text='%(line.zip)s'
+                Phone = SubElement ( Receiver, 'Phone')
+                Phone.text='%(line.phone)s'
+                EmailAddress1 = SubElement ( Receiver, 'EmailAddress1')
+                EmailAddress1.text='%(line.email)s'
+                EmailContact = SubElement ( Receiver, 'EmailContact1')
+                EmailContact.text= '%(line.email)s'
+                #<Openshipments><Openshipment/><Shipper />
+                Shipper = SubElement (OpenShipment, 'Shipper' )
+                #
+                UpsAccountNumber= SubElement ( Shipper, 'UpsAccountNumber')
+                UpsAccountNumber.text ='%(line.accountnumber)s'
+                #Openshipments><Openshipment/><Shipment />
+                Shipment = SubElement (OpenShipment, 'Shipment' )
+                #
+                ServiceLevel = SubElement ( Shipment, 'ServiceLevel')
+                ServiceLevel.text='%(line.servicelevel)s'
+                PackageType = SubElement ( Shipment, 'PackageType')
+                PackageType.text='%(line.packagetype)s'
+                NumberOfPackages = SubElement ( Shipment, 'NumberOfPackages')
+                NumberOfPackages.text='%(line.numberofpackages)s'
+                ShipmentActualWeight = SubElement ( Shipment, 'ShipmentActualWeight')
+                ShipmentActualWeight.text='%(line.weight)s'
+                DescriptionOfGoods = SubElement ( Shipment, 'DescriptionOfGoods')
+                DescriptionOfGoods.text='%(line.descriptionofgoods)s'
+                Reference1 = SubElement ( Shipment, 'Reference1')
+                Reference1.text='%(line.reference1)s'
+                Reference2 = SubElement ( Shipment, 'Reference2')
+                Reference2.text='%(line.reference2)s'
+                BillingOption = SubElement ( Shipment, 'BillingOption')
+                #
+                #Openshipments><Openshipment/><Shipment/><COD/>
+                COD = SubElement ( BillingOption , 'COD' )
+                # 
+                CashOnly = SubElement ( COD, 'CashOnly')
+                CashOnly.text='%(line.cashonly)s'
+                Amount = SubElement ( COD, 'Amount')
+                Amount.text= '%(line.amount)s'
+                Currency = SubElement ( COD, 'Currency')
+                Currency.text='%(line.currency)s'
+        
+	        indent(OpenShipments)
+        
+                output_file = open( '/opt/envios/ups/test.xml', 'w' )
+                output_file.write( '<?xml version="1.0" encoding="windows-1252"?>' )
+                output_file.write( ElementTree.tostring( OpenShipments ) )
+                output_file.close()
+
+
+
+
+
+    def indent(elem, level=0):
+        i = "\n" + level*"  "
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "  "
+    	    if not elem.tail or not elem.tail.strip():
+      	        elem.tail = i
+    	    for elem in elem:
+      	        indent(elem, level+1)
+    	    if not elem.tail or not elem.tail.strip():
+      	        elem.tail = i
+	else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = i

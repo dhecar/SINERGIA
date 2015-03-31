@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+<!--Asociaciones Form View-->
+    <record model="ir.ui.view" id="scooter_asociaciones_form_view">
+	<field name="name">asociaciones.form</field>
+	<field name="model">scooter.asociaciones</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Asociaciones">
+		<field name="type" colspan="4" select="1" />
+		<field name="brand_id"  colspan="4" select="1"/>
+		<field name="model_id" colspan="4" select="1"/>
+    		<field name="compatible_with_ids" select="1" colspan="4" />
+            </form>
+	</field>
+   </record>
+
+
+
+<!--Asociaciones Tree  View-->
+
+    <record model="ir.ui.view" id="scooter_asociaciones_tree_view">
+        <field name="name">asociaciones.tree</field>
+        <field name="model">scooter.asociaciones</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+             <tree string="Listado asociaciones">
+       		<field name="type" select="1" />
+        	<field name="brand_id"  select="1" />
+        	<field name="model_id" select="1" />
+             </tree>
+        </field>
+   </record>
+
+
+<!-- Asociaciones Views for models Search View -->
+
+    <record model="ir.ui.view" id="view_scooter_asociaciones_filter">
+        <field name="name">scooter.asociaciones.search</field>
+        <field name="model">scooter.asociaciones</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Asociaciones">
+		<group col="10" colspan="4">
+			
+                <field name="model_id" string="Modelo" />
+		<field name="brand_id" string="Marca" />
+		<field name="type" string="Tipo" />
+		</group>
+		<newline />
+		    <group expand="0" string="Agrupar por...">
+			<filter string="Tipo" domain="[]" context="{'group_by':'type'}" />
+			<filter string="Modelo"  domain="[]" context="{'group_by':'model_id'}" />
+			<filter string="Marca" domain="[]" context="{'group_by':'brand_id'}" />
+		    </group> 
+            </search>
+        </field>
+    </record>
+
+<!--ACCIONES-->
+<record model="ir.actions.act_window" id="action_scooter_asociaciones_form">
+        <field name="name">Nueva Asociacion</field>
+	<field name="res_model">scooter.asociaciones</field>
+	<field name="view_type">form</field>
+	<field name="view_mode">tree,form</field>
+	<field name="search_view_id" ref="view_scooter_asociaciones_filter" />
+</record>
+
+
+<!--MENUS-->
+<menuitem name="Menu Asociaciones" id="asociaciones_scooter" parent="scooter_menu"  sequence="3"/>
+<menuitem name="Nueva Asociacion" id="asociaciones" parent="asociaciones_scooter" action="action_scooter_asociaciones_form" sequence="3"/>
+
+
+ </data>
+</openerp>
+

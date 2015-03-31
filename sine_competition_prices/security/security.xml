@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+<record id="group_competition_asoc_user" model="res.groups">
+    <field name="name">Competitors User</field>
+</record>
+
+
+<record id="group_competition_asoc_admin" model="res.groups">
+    <field name="name">Competitors Manager</field>
+</record>
+
+
+</data>
+</openerp>

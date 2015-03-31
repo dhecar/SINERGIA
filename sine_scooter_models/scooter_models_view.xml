@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+    <record model="ir.ui.view" id="scooter_model_form_view">
+	<field name="name">scooter.form</field>
+	<field name="model">scooter.model</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+		<field name="model" string="Modelo"/>
+	</field>
+   </record>
+
+<!-- Views for models Search View -->
+
+    <record model="ir.ui.view" id="view_scooter_model_filter">
+        <field name="name">scooter.models.search</field>
+        <field name="model">scooter.model</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Modelos">
+                <field name="model" string="Modelo"/>
+            </search>
+        </field>
+    </record>
+
+<!--Acciones models-->
+<record model="ir.actions.act_window" id="action_scooter_model_form">
+        <field name="name">Nuevo modelo</field>
+	<field name="res_model">scooter.model</field>
+	<field name="view_type">form</field>
+	<field name="view_mode">tree,form</field>
+</record>
+
+
+
+ </data>
+</openerp>
+

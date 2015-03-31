@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+<record id="group_price_user" model="res.groups">
+    <field name="name">Price Viewer</field>
+</record>
+
+<record id="group_price_manager" model="res.groups">
+    <field name="name">Price Admin</field>
+</record>
+</data>
+</openerp>

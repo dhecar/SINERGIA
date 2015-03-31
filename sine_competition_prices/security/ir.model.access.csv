@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+competitors_asoc_user,competition_asoc.user,model_competition_asoc,group_competition_asoc_user,1,0,0,0
+competitors_asoc_admin,competition_asoc.admin,model_competition_asoc,group_competition_asoc_admin,1,1,1,1

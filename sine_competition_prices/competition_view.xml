@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+    <record model="ir.ui.view" id="competition_product_url_form_view">
+            <field name="name">competition_product_url_normal_form</field>
+            <field name="model">competition.asoc</field>
+            <field name="arch" type="xml">
+		<form string="Values to fill">
+			<field name="web_product"/>
+			<field name="linked_to"/>
+			<field name="online_price"/>
+		</form>	         
+		
+	    </field>
+    </record>
+
+
+
+    <record model="ir.ui.view" id="competition_product_url_tree_view">
+            <field name="name">competition_product_url_tree_form</field>
+            <field name="model">competition.asoc</field>
+            <field name="arch" type="xml">
+                <tree string="Competitors">
+			<field name="linked_to"/>
+                        <field name="online_price"/>
+                </tree>                
+                
+            </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="competition_asoc_form_view">
+            <field name="name">product.normal.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+		<notebook>
+		    <page string="Competitors">
+			<field name="asoc_id" />
+			<button name="get_prices" string="Get Prices" icon="gtk-apply" type="object" />			
+		    </page>
+		</notebook>
+
+	   </field>
+    </record>
+		    
+
+
+
+
+
+ </data>
+</openerp>

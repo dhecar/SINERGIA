@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+<record id="group_asociaciones_scooter_user" model="res.groups">
+    <field name="name">Asociaciones User</field>
+</record>
+
+<record id="group_marcas_scooter_user" model="res.groups">
+    <field name="name">Marcas User</field>
+</record>
+
+<record id="group_scooter_model_user" model="res.groups">
+    <field name="name">Modelos User</field>
+</record>
+
+
+
+
+<record id="group_asociaciones_scooter_admin" model="res.groups">
+    <field name="name">Asociaciones Manager</field>
+</record>
+
+<record id="group_marcas_scooter_admin" model="res.groups">
+    <field name="name">Marcas Manager</field>
+</record>
+
+<record id="group_scooter_model_admin" model="res.groups">
+    <field name="name">Scooter Manager</field>
+</record>
+
+
+</data>
+</openerp>

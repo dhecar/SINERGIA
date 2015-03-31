@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+    <record model="ir.ui.view" id="product_url_competition_form_view">
+            <field name="name">product.url.competition.form</field>
+            <field name="model">competition.url</field>
+            <field name="type">form</field>
+	    <field name="arch" type="xml">
+		<form string="Url Competition" version="7.0">
+			<group cols="2">
+			<field name="url_competition"/>
+			<field name="regex" />
+			</group>
+<!--			<field  name="calc_price" icon="gtk-add"  string="Find Best price"/>-->
+	        </form>
+	    </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="product_url_competition_tree_view">
+        <field name="name">product.url.competition.tree</field>
+        <field name="model">competition.url</field>
+        <field name="arch" type="xml">
+                <tree string="Competition URL">
+                        <field name="url_competition" />
+			<field name="regex" />
+                </tree>
+        </field>
+    </record>
+
+
+      <record model="ir.ui.view" id="product_url_competition_filter">
+        <field name="name">product.url.competition.search</field>
+        <field name="model">competition.url</field>
+        <field name="arch" type="xml">
+            <search string="Search Competitors">
+                <field name="url_competition" string="URL of the web"/>
+            </search>
+        </field>
+    </record>
+
+
+
+
+<!--ACTION-->
+
+
+    <!--Acciones models-->
+    <record model="ir.actions.act_window" id="action_product_url_tree">
+        <field name="name">New URL</field>
+        <field name="res_model">competition.url</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form,tree</field>
+        <field name="view_id" ref="product_url_competition_tree_view" />
+    </record>
+
+
+
+<!--MENUS-->
+<!--<menuitem name="Add URL competition" id="url_list" parent="base.menu_product" action="action_product_url_tree" sequence="24"/>-->
+
+
+
+ </data>
+</openerp>

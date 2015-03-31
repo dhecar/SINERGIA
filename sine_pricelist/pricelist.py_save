@@ -1,0 +1,94 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#        David Hernández. 2014
+#	 http://sinergiainformatica.net
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+
+import time
+from openerp import tools
+from openerp.osv import fields, orm
+from openerp.tools.translate import _
+
+import openerp.addons.decimal_precision as dp
+
+	
+
+
+class product_pricelist_item(orm.Model):
+
+	_name = "product.pricelist.item"
+	_inherit = "product.pricelist.item"
+	_columns = {
+
+	    'brand_id': fields.many2one('res.partner', 'Manufacturer', ondelete='cascade', help="Especifica fabricante"),
+
+	}
+product_pricelist_item()
+
+class product_pricelist(orm.Model):
+
+        _name = "product.pricelist"
+        _inherit = "product.pricelist"
+        _columns = {}
+
+
+
+
+	def _get_manufacturers (self,cr,uid,pricelist_ids, products_by_manufacturer,context=None):
+
+        	manufacturer_obj = self.pool.get('product.manufacturer')
+
+		# product.pricelist.version:
+	        if not pricelist_ids:
+        		pricelist_ids = self.pool.get('product.pricelist').search(cr, uid, [], context=context)
+
+        	pricelist_version_ids = self.pool.get('product.pricelist.version').search(cr, uid, [
+                                                        ('pricelist_id', 'in', pricelist_ids),
+                                                        '|',
+                                                        ('date_start', '=', False),
+                                                        ('date_start', '<=', date),
+                                                        '|',
+                                                        ('date_end', '=', False),
+                                                        ('date_end', '>=', date),
+                                                    ])
+        	if len(pricelist_ids) != len(pricelist_version_ids):
+            		raise osv.except_osv(_('Warning!'), _("At least one pricelist has no active version !\nPlease create or activate one."))
+
+
+
+        	# product.manufacturer:
+		product_manufacturer_ids = [i[0] for i in products_by_manufacturer]
+        	product_manufacturers = manufacturer_obj.browse(cr, uid, product_manufacturer_ids, context=context)
+		product_manufacturers_dict = dict([(item.id, item) for item in product_manufacturers])
+		results = {}
+
+
+product_pricelist()
+
+
+
+
+
+
+
+
+
+
+
+

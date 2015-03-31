@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+   <record model="ir.ui.view" id="scooter_marcas_form_view">
+        <field name="name">marcas.form</field>
+        <field name="model">marcas.scooter</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+                <field name="brand" />
+        </field>
+   </record>
+
+
+ 
+<record model="ir.ui.view" id="scooter_marcas_tree_view">
+	<field name="name">marcas.form</field>
+	<field name="model">marcas.scooter</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+                <tree string="Listado de Marcas">
+			<field name="brand" />
+                </tree>
+        </field>
+        </record>
+
+<!-- Buscardor de marcas -->
+
+    <record model="ir.ui.view" id="scooter_marcas__model_filter">
+        <field name="name">marcas.scooter.search</field>
+        <field name="model">marcas.scooter</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Marcas">
+                <field name="brand" string="Marca"/>
+            </search>
+        </field>
+    </record>
+<!--Acciones Marcas-->
+
+<record model="ir.actions.act_window" id="action_scooter_marcas_form">
+        <field name="name">Nueva Marca</field>
+        <field name="res_model">marcas.scooter</field>
+        <field name="view_type">form</field>
+</record>
+
+
+<!--MENUS-->
+
+        <menuitem name="Scooter" icon="terp-project" id="scooter_menu"/>
+
+        <menuitem name="Menu Creacion" parent="scooter_menu" id="scooter_menu_mainform"/>
+
+	<menuitem name="Nueva Marca" id="marcas_form" parent="scooter_menu_mainform" action="action_scooter_marcas_form" sequence="3"/>
+
+	<menuitem name="Nuevo modelo" id="form_scooter" parent="scooter_menu_mainform" action="action_scooter_model_form" sequence="3"/>	
+
+
+ </data>
+</openerp>
+

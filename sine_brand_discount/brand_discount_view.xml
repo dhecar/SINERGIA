@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+     <data>
+	  <record model="ir.ui.view" id="view_product_brand_form_inh">
+            <field name="name">product.brand.form.inherit</field>
+            <field name="model">product.brand</field>
+	    <field name="inherit_id" ref="product_brand.view_product_brand_form"/>
+            <field name="arch" type="xml">
+                  <field name="description" position="before">  
+		  <field name="brand_discount" colspan="4"/>
+		  </field>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+
+
+<!--Vehicle Fits_conf Form View-->
+    <record model="ir.ui.view" id="vehicle_fits_config_form_view">
+	<field name="name">vf_config.form</field>
+	<field name="model">vehicle.config</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Configuration">
+		<field name="name" colspan="4" />
+		<field name="vf_url"  colspan="4" />
+	 	<field name="db_host" colspan="4" />
+		<field name="db_name" colspan="4" />
+	   	<field name="db_user" colspan="4" />
+		<field name="db_password" colspan="4" password="True"/>
+            </form>
+	</field>
+   </record>
+
+
+
+<!--Vehicle Fits_export Form View-->
+    <record model="ir.ui.view" id="vehicle_fits_export_form_view">
+        <field name="name">vf_export.form</field>
+        <field name="model">vehicle.export</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Export">
+                <field name="date" colspan="4" />
+<!--                <field name="user"  colspan="4" />-->
+            </form>
+        </field>
+   </record>
+
+
+
+
+<!--Vehicle_Fits Tree  View-->
+
+    <record model="ir.ui.view" id="vehicle_fits_config_tree_view">
+        <field name="name">vf_config.tree</field>
+        <field name="model">vehicle.config</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+             <tree string="Configuration">
+       		<field name="name" />
+        	<field name="vf_url" />
+             </tree>
+        </field>
+   </record>
+
+<!-- Vehicle_fits_conf form action -->
+<record model="ir.actions.act_window" id="vehicle_fits_config_form">
+        <field name="name">New Config</field>
+	<field name="res_model">vehicle.config</field>
+	<field name="view_type">form</field>
+	<field name="view_mode">tree,form</field>
+</record>
+
+
+<!-- Vehicle_fits_export form action -->
+<record model="ir.actions.act_window" id="vehicle_fits_export_form">
+        <field name="name">Export Models</field>
+        <field name="res_model">vehicle.export</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+</record>
+
+
+
+
+
+
+<!--MENUS-->
+<menuitem name="Vehicle_Export" id="vf_conf" parent="sine_scooter_models.scooter_menu"  sequence="4" />
+<menuitem name="VF Conf" id="vf_conf_mag" parent="vf_conf" action="vehicle_fits_config_form" sequence="3"/>
+<menuitem name="VF Export" id="vf_export" parent="vf_conf"  action="vehicle_fits_export_form" sequence="3"/>
+
+ </data>
+</openerp>
+

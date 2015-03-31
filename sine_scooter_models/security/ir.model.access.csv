@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+MOTOSCOOT_asoc_user,scooter_asociaciones.user,model_scooter_asociaciones,group_asociaciones_scooter_user,1,0,0,0
+MOTOSCOOT_marc_user,scooter_marcas.user,model_marcas_scooter,group_marcas_scooter_user,1,0,0,0
+MOTOSCOOT_model_user,scooter_modelos.user,model_scooter_model,group_scooter_model_user,1,0,0,0
+MOTOSCOOT_asoc_admin,scooter_asociaciones.admin,model_scooter_asociaciones,group_asociaciones_scooter_admin,1,1,1,1
+MOTOSCOOT_marc_admin,scooter_marcas.admin,model_marcas_scooter,group_marcas_scooter_admin,1,1,1,1
+MOTOSCOOT_model_admin,scooter_modelos.admin,model_scooter_model,group_scooter_model_admin,1,1,1,1
+
