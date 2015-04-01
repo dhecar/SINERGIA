@@ -11,7 +11,7 @@ class report_webkit_html(report_sxw.rml_parse):
             'uid': uid,
         })
         
-report_sxw.report_sxw('report.sale.order.webkit',
+report_sxw.report_sxw('report.sale.order.motoscoot.webkit',
                        'sale.order',
-                       'addons/sale_order_webkit_chricar/report/sale_order.mako',
+                       '/opt/odoo/custom/addons/SINERGIA/motoscoot_reports/report/sale_order.mako',
                        parser=report_webkit_html)

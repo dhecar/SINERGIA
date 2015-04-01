@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+# Author: Guewen Baconnier
 #    Copyright 2012 Camptocamp SA
+#
+# Adaptation to Nacex Camaleon
+# Author: David Hernandez
+#    http://sinergiainformatica.net
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,31 +28,31 @@ from openerp.addons.base_delivery_carrier_files.generator import CarrierFileGene
 from openerp.addons.base_delivery_carrier_files.generator import BaseLine
 from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
 
+
 class NacexLine(BaseLine):
-    fields = (('nacex_account',5),
-	      ('reference', 20),
-	      ('nacex_typo',1),
-	      ('weight',6),
+    fields = (('nacex_account', 5),
+              ('reference', 20),
+              ('nacex_typo', 1),
+              ('weight', 6),
               ('name', 35),
-	      ('name', 35),
+              ('name', 35),
               ('street', 45),
-	      ('country', 2),
-	      ('zip', 15),
+              ('country', 2),
+              ('zip', 15),
               ('city', 30),
-	      ('state',30),
+              ('state', 30),
               ('phone', 16),
               ('mail', 50),
-	      ('nacex_cod_price', 3),
-	      ('reembolso',1),
-	      ('mail', 50),
-	      ('ealerta',1),
-	      ('mail', 50),
-	      ('prealerta',1),
-	      ('mail', 50))
+              ('nacex_cod_price', 3),
+              ('reembolso', 1),
+              ('mail', 50),
+              ('ealerta', 1),
+              ('mail', 50),
+              ('prealerta', 1),
+              ('mail', 50))
 
 
 class NacexFileGenerator(CarrierFileGenerator):
-
     @classmethod
     def carrier_for(cls, carrier_name):
         return carrier_name == 'Nacex'
@@ -68,33 +72,32 @@ class NacexFileGenerator(CarrierFileGenerator):
         :return: list of rows
         """
         line = NacexLine()
-	line.empty = ""
-	line.nacex_account = configuration.nacex_account
-	line.reference = picking.name
-	line.nacex_typo = configuration.nacex_typo
-	line.weight = "%.2f" % (picking.weight,)
+        line.empty = ""
+        line.nacex_account = configuration.nacex_account
+        line.reference = picking.name
+        line.nacex_typo = configuration.nacex_typo
+        line.weight = "%.2f" % (picking.weight,)
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
             line.name = address.name or (address.partner_id and address.partner_id.name)
-	    # if a company, put company name
-            #if address.street.partner_id.title:
-            #    line.company_name = address.partner_id.name
+            # if a company, put company name
+            # if address.street.partner_id.title:
+            # line.company_name = address.partner_id.name
             line.street = address.street
-	    line.country = address.country_id.code
+            line.country = address.country_id.code
             line.zip = address.zip
-            line.city = address.city 
-	    line.state = address.state_id.name
+            line.city = address.city
+            line.state = address.state_id.name
             line.phone = address.phone or address.mobile
-	    line.reembolso = configuration.nacex_reembolso
-	    line.nacex_cod_price = configuration.nacex_cod_price
+            line.reembolso = configuration.nacex_reembolso
+            line.nacex_cod_price = configuration.nacex_cod_price
             line.mail = address.email
-	    line.ealerta = configuration.nacex_ealerta
-	    line.mail = address.email
-	    line.prealerta = configuration.nacex_prealerta
-	    line.mail = address.email
+            line.ealerta = configuration.nacex_ealerta
+            line.mail = address.email
+            line.prealerta = configuration.nacex_prealerta
+            line.mail = address.email
         return [line.get_fields()]
-
 
 
     def _write_rows(self, file_handle, rows, configuration):
@@ -108,7 +111,7 @@ class NacexFileGenerator(CarrierFileGenerator):
         :return: the file_handle as StringIO with the rows written in it
         """
 
-	writer = UnicodeWriter(file_handle, delimiter=';', quotechar='"',
+        writer = UnicodeWriter(file_handle, delimiter=';', quotechar='"',
                                lineterminator='\n', quoting=csv.QUOTE_NONE)
         writer.writerows(rows)
         return file_handle

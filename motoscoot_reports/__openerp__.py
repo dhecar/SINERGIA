@@ -39,7 +39,7 @@ Depends on base_header_webkit community addon available here:
  'depends': ['base', 'report_webkit', 'base_headers_webkit', 'sale'],
  'data': ['security/ir.model.access.csv',
           'sale_report.xml',
-          'view/sale_view.xml'],
+          ],
  'demo_xml': [],
  'test': [],
  'installable': True,

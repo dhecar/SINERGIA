@@ -5,31 +5,29 @@
         ${css}
 
 .list_main_table {
-    border:thin solid #E3E4EA;
+
     text-align:center;
-    border-collapse: collapse;
+
     margin-top: 15px;
 }
 .list_main_table th {
-    background-color: #EEEEEE;
-    border: thin solid #000000;
     text-align:center;
-    font-size:12;
-    font-weight:bold;
+    font-size:11;
     padding-right:3px;
     padding-left:3px;
+    border-bottom:1px solid;
 }
 .list_main_table td {
-    border-bottom : thin solid #EEEEEE;
-    text-align:left;
-    font-size:12;
+
+    text-align:center;
+    font-size:11;
     padding-right:3px;
     padding-left:3px;
     padding-top:3px;
     padding-bottom:3px;
 }
 .list_main_table thead {
-    display:table-header-group;
+
 }
 
 div.formatted_note {
@@ -39,146 +37,64 @@ div.formatted_note {
 }
 
 
-.list_bank_table {
-    text-align:center;
-    border-collapse: collapse;
-    page-break-inside: avoid;
-    display:table;
+
+.cabecera {
+z-index:-1;
+
+margin-bottom:10px;
+text-align:right;
+
 }
 
-.act_as_row {
-   display:table-row;
-}
-.list_bank_table .act_as_thead {
-    background-color: #EEEEEE;
-    text-align:left;
-    font-size:12;
-    font-weight:bold;
-    padding-right:3px;
-    padding-left:3px;
-    white-space:nowrap;
-    background-clip:border-box;
-    display:table-cell;
-}
-.list_bank_table .act_as_cell {
-    text-align:left;
-    font-size:12;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
-    white-space:nowrap;
-    display:table-cell;
+.datos_empresa {
+font-size:12px;
+text-align:right;
+float:right;
+margin-top:55px;
+
 }
 
+.datos_cliente {
+font-size:12px;
+float:left;
+top:10px;
+z-index:2;
+width:300px;
+text-align:left;
 
-.list_tax_table {
-}
-.list_tax_table td {
-    text-align:left;
-    font-size:12;
-}
-.list_tax_table th {
-}
-.list_tax_table thead {
-    display:table-header-group;
 }
 
+.datos_pedido{
+float:left;
+margin-bottom:30px;
+width:600px;
+}
 
-.list_total_table {
-    border:thin solid #E3E4EA;
-    text-align:center;
-    border-collapse: collapse;
+.datos_pedido td {
+font-size:11px;
+color:#424242;
 }
-.list_total_table td {
-    border-top : thin solid #EEEEEE;
-    text-align:left;
-    font-size:12;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
+
+.datos_pedido td b {
+text-transform: uppercase;
+font-size:12px;
 }
-.list_total_table th {
-    background-color: #EEEEEE;
-    border: thin solid #000000;
-    text-align:center;
-    font-size:12;
-    font-weight:bold;
-    padding-right:3px
-    padding-left:3px
-}
-.list_total_table thead {
-    display:table-header-group;
+
+.ref {
+font-size:9px;
+text-align:center;
+
 }
 
 
-.no_bloc {
-    border-top: thin solid  #ffffff ;
-}
+</style>
 
-.right_table {
-    right: 4cm;
-    width:"100%";
-}
 
-.std_text {
-    font-size:12;
-}
-
-tfoot.totals tr:first-child td{
-    padding-top: 15px;
-}
-
-tfoot.totals td {
-    border: thin solid  #ffffff;
-}
-
-th.date {
-    width: 90px;
-}
-
-td.amount, th.amount {
-    text-align: right;
-    white-space: nowrap;
-}
-.header_table {
-    text-align: center;
-    border: 1px solid lightGrey;
-    border-collapse: collapse;
-}
-.header_table th {
-    font-size: 12px;
-    border: 1px solid lightGrey;
-}
-.header_table td {
-    font-size: 12px;
-    border: 1px solid lightGrey;
-}
-
-td.date {
-    white-space: nowrap;
-    width: 90px;
-}
-
-td.vat {
-    white-space: nowrap;
-}
-.address .recipient {
-    font-size: 12px;
-}
-
-.nobreak {
-     page-break-inside: avoid;
- }
-
-.align_top {
-     vertical-align:text-top;
- }
-
-    </style>
 </head>
 <body>
+
+
+
     <%page expression_filter="entity"/>
     <%
     def carriage_returns(text):
@@ -192,10 +108,12 @@ td.vat {
         %if partner.parent_id:
             <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
             <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+	    <tr><td>${partner.parent_id.website}</td></tr>
             <% address_lines = partner.contact_address.split("\n")[1:] %>
         %else:
-            <tr><td class="name">${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
             <% address_lines = partner.contact_address.split("\n") %>
+	    ${partner.state_id.name}
         %endif
         %for part in address_lines:
             % if part:
@@ -209,77 +127,144 @@ td.vat {
     <%
       quotation = order.state in ['draft', 'sent']
     %>
-    <div class="address">
-        <table class="recipient">
-          ${address(partner=order.partner_id)}
-        </table>
 
-        <table class="shipping">
-          <tr><td class="address_title">${_("Shipping address:")}</td></tr>
-          ${address(partner=order.partner_shipping_id)}
-        </table>
+    <%def name="address(partner)">
+        <%doc>
+            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+        </%doc>
+        %if partner.parent_id:
+            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+	    <tr><td>${partner.parent_id.website}</td></tr>
+            <% address_lines = partner.contact_address.split("\n")[1:] %>
+        %else:
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+            <% address_lines = partner.contact_address.split("\n") %>
+	    ${partner.state_id.name}
+        %endif
+        %for part in address_lines:
+            % if part:
+                <tr><td>${part}</td></tr>
+            % endif
+        %endfor
+    </%def>
 
-        <table class="invoice">
-          <tr><td class="address_title">${_("Invoice address:")}</td></tr>
-          ${address(partner=order.partner_invoice_id)}
-        </table>
+
+
+<div class="cabecera">${helper.embed_logo_by_name('Motoscoot')|n}
+
+<div class="datos_cliente">
+
+    <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+	 <tr><td>${order.partner_invoice_id.name}</td></tr>
+	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+	 <tr><td>${order.partner_invoice_id.street}</td></tr>
+	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+     </table>
+     </br>
+     <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+	 <tr><td>${order.partner_id.name}</td></tr>
+	 <tr><td>${order.partner_id.street}</td></tr>
+	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_id.country_id.name}</td></tr>
+     </table>
+
     </div>
 
-    <h1 style="clear:both;">${quotation and _(u'Quotation N°') or _(u'Order N°') } ${order.name}</h1>
+    <div class="datos_empresa">
+	<table>
 
-    <table class="basic_table" width="100%">
-        <tr>
-            <th class="date">${quotation and _("Date Ordered") or _("Quotation Date")}</td>
-            <th>${_("Your Reference")}</td>
-            <th>${_("Salesman")}</td>
-            <th>${_('Payment Term')}</td>
-        </tr>
-        <tr>
-            <td class="date">${formatLang(order.date_order, date=True)}</td>
-            <td>${order.client_order_ref or ''}</td>
-            <td>${order.user_id and order.user_id.name or ''}</td>
-            <td>${order.payment_term and order.payment_term.note or ''}</td>
-        </tr>
-    </table>
+         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Motoscoot</b></td>
+       </tr>
+	   <tr>
+                <td >
+                    ${company.partner_id.street or ''|entity}</br>
+		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
 
-    <div>
+		         </td>
+        </tr>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+		<tr>
+		        <td>
+		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
+		            mail: ${company.partner_id.email or ''|entity}
+		        </td>
+
+       </tr>
+
+
+     </table>
+
+    </div>
+
+</div>
+<div class="datos_pedido">
+<table>
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:${order.date_order} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+     <tr>
+     <tr>
+        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+        </tr>
+</table>
+</div>
+
+
+<div style="z-index:-3;position:fixed;top:390px;">${helper.embed_logo_by_name('Motoscoot_estrella')|n}</div>
+
+   <div>
+
     %if order.note1:
         <p class="std_text"> ${order.note1 | n} </p>
     %endif
     </div>
 
+    <div class="orden">
     <table class="list_main_table" width="100%">
       <thead>
           <tr>
-            <th class="main_col1">${_("Description")}</th>
-            <th class="amount main_col2">${_("Quantity")}</th>
-            <th class="amount main_col3">${_("UoM")}</th>
-            <th class="amount main_col4">${_("Unit Price")}</th>
-            <th class="main_col5">${_("VAT")}</th>
-            %if show_discount(user.id):
-            <th class="amount main_col6">${_("Disc.(%)")}</th>
-            %endif
-            <th class="amount main_col7">${_("Price")}</th>
+            <th >${_("Ref. Art")}</th>
+	        <th class="main_col1">${_("Description")}</th>
+	        <th class="amount main_col2">${_("Quantity")}</th>
+            <th class="amount main_col4">${_("Precio")}</th>
+            <th class="amount main_col6">${_("Dto%")}</th>
+	        <th class="amount main_col7">${_("Importe")}</th>
           </tr>
       </thead>
       <tbody>
         %for line in order.order_line:
-          <tr>
-            <td class="align_top"><div class="nobreak">${line.name.replace('\n','<br/>') or '' | n}
+	   <tr>
+	    <td class="ref">${line.product_id.default_code}</td>
+	    <td class="ref align_top"><div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
                  %if line.formatted_note:
                  <br />
                  <div class="formatted_note">${line.formatted_note| n}</div>
                  %endif
                  </div>
             </td>
-            <td class="amount main_col2 align_top">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
-            <td class="amount main_col3 align_top">${ line.product_uos and line.product_uos.name or line.product_uom.name }</td>
-            <td class="amount main_col4 align_top">${formatLang(line.price_unit)}</td>
-            <td class="main_col5 align_top">${ ', '.join([tax.description or tax.name for tax in line.tax_id]) }</td>
-            %if show_discount(user.id):
-            <td class="amount main_col6 align_top">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or ''} ${line.discount and '%' or ''}</td>
-            %endif
-            <td class="amount main_col7 align_top">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
+	    <td class="ref">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
+
+
+	   <td class="ref">${formatLang(line.price_unit)}</td>
+       <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
+       <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
           </tr>
         %endfor
       </tbody>

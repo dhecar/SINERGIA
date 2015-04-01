@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <report id="motoscoot.report_sale_order"
-            name="sale.order"
+    <report id="sale.report_sale_order"
+            name="motoscoot.sale.order"
             auto="False"
             model="sale.order"
             file="motoscoot_reports/report/sale_order.mako"
