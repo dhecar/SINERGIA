@@ -91,9 +91,9 @@ text-align:center;
 
 
 </head>
+
+
 <body>
-
-
 
     <%page expression_filter="entity"/>
     <%
@@ -227,7 +227,7 @@ text-align:center;
 </div>
 
 
-<div style="z-index:-3;position:fixed;top:390px;">${helper.embed_logo_by_name('Motoscoot_estrella')|n}</div>
+ <div style="z-index:-3;position:fixed;top:390px;">${helper.embed_logo_by_name('Motoscoot_estrella')|n}</div>
 
    <div>
 
@@ -305,7 +305,9 @@ text-align:center;
     %if order.note2:
         <p class="std_text">${order.note2 | n}</p>
     %endif
+
     <p style="page-break-after:always"/>
     %endfor
-</body>
+    </div>
+    </body>
 </html>
