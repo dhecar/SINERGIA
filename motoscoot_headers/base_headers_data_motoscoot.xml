@@ -120,8 +120,6 @@ padding-bottom:5px;
 
 
 <div class="footer">
-<div class="pie"> ${helper.embed_logo_by_name('Motoscoot_footer')|n}</div>
-<div>
 <table style="font-size:12px;width:100%;text-align:center">
 <tr>
   <td>
