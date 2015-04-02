@@ -140,9 +140,9 @@
     <%
       quotation = order.state in ['draft', 'sent']
     %>
-<div style="border:1px solid blue;height:980px">
+<div>
 
-<span class="datos_cliente" style="border:1px solid red;">
+<span class="datos_cliente">
 
     <table>
 
@@ -163,14 +163,14 @@
 	 <tr><td>${order.partner_id.country_id.name}</td></tr>
      </table>
 </span><!--Fin datos cliente-->
-<span class="datos_empresa" style="border:1px solid yellow;">
+<span class="datos_empresa">
 	<table>
 
          <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
 		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
          <tr>&nbsp;</tr><tr>&nbsp;<tr>
        <tr>
-                <td><b>Motoscoot</b></td>
+                <td><b>Toptaller</b></td>
        </tr>
 	   <tr>
                 <td >
