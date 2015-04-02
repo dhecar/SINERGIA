@@ -97,7 +97,7 @@ padding-bottom:5px;
 
    <!-- ...................................BASE TOPTALLER._Footer......................................... -->
   
-        <record id="base_reports_motoscoot" model="ir.header_webkit">
+        <record id="base_reports_toptaller" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
 
 <html>
