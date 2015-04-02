@@ -68,15 +68,14 @@
     <body  onload="subst()">
 
 
-        ${_debug or ''|n}
+        ${_debug or ''|n} </body>
 </html>]]>
             </field>
             <field eval="10.0" name="margin_top"/>
             <field eval="40.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
 
-
-                    body {
+body {
 font-family:helvetica;
 font-size:10;
 }
