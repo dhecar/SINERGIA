@@ -4,90 +4,91 @@
     <style type="text/css">
         ${css}
 
-.list_main_table {
+        .list_main_table {
 
-    text-align:center;
+        text-align:center;
+        margin-top: 15px;
+        }
+        .list_main_table th {
+        text-align:center;
+        font-size:11;
+        padding-right:3px;
+        padding-left:3px;
 
-    margin-top: 15px;
-}
-.list_main_table th {
-    text-align:center;
-    font-size:11;
-    padding-right:3px;
-    padding-left:3px;
-    border-bottom:1px solid;
-}
-.list_main_table td {
+        }
+        .list_main_table td {
 
-    text-align:center;
-    font-size:11;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
-}
-.list_main_table thead {
+        text-align:center;
+        font-size:11;
+        padding-right:3px;
+        padding-left:3px;
+        padding-top:3px;
+        padding-bottom:3px;
+        }
+        .list_main_table thead {
+        border-bottom:1px solid;
 
-}
+        }
 
-div.formatted_note {
-    text-align:left;
-    padding-left:10px;
-    font-size:11;
-}
-
-
-
-.cabecera {
-z-index:-1;
-
-margin-bottom:10px;
-text-align:right;
-
-}
-
-.datos_empresa {
-font-size:12px;
-text-align:right;
-float:right;
-margin-top:55px;
-
-}
-
-.datos_cliente {
-font-size:12px;
-float:left;
-top:10px;
-z-index:2;
-width:300px;
-text-align:left;
-
-}
-
-.datos_pedido{
-float:left;
-margin-bottom:30px;
-width:600px;
-}
-
-.datos_pedido td {
-font-size:11px;
-color:#424242;
-}
-
-.datos_pedido td b {
-text-transform: uppercase;
-font-size:12px;
-}
-
-.ref {
-font-size:9px;
-text-align:center;
-
-}
+        div.formatted_note {
+        text-align:left;
+        padding-left:10px;
+        font-size:11;
+        }
 
 
-</style>
+        .cabecera {
+        z-index:-1;
+
+        margin-bottom:10px;
+        text-align:right;
+
+        }
+
+        .datos_empresa {
+        font-size:12px;
+        text-align:right;
+        float:right;
+        margin-top:55px;
+
+        }
+
+        .datos_cliente {
+        font-size:12px;
+        float:left;
+        top:10px;
+        z-index:2;
+        width:300px;
+        text-align:left;
+
+        }
+
+        .datos_pedido{
+        float:left;
+        margin-bottom:30px;
+        width:600px;
+        }
+
+        .datos_pedido td {
+        font-size:11px;
+        color:#424242;
+        }
+
+        .datos_pedido td b {
+        text-transform: uppercase;
+        font-size:12px;
+        }
+
+        .ref {
+        font-size:9px;
+        text-align:center;
+
+        }
+        .totals {
+        font-size:12px;
+        }
+    </style>
+
 
 
 </head>
@@ -127,29 +128,6 @@ text-align:center;
     <%
       quotation = order.state in ['draft', 'sent']
     %>
-
-    <%def name="address(partner)">
-        <%doc>
-            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
-        </%doc>
-        %if partner.parent_id:
-            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-	    <tr><td>${partner.parent_id.website}</td></tr>
-            <% address_lines = partner.contact_address.split("\n")[1:] %>
-        %else:
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-            <% address_lines = partner.contact_address.split("\n") %>
-	    ${partner.state_id.name}
-        %endif
-        %for part in address_lines:
-            % if part:
-                <tr><td>${part}</td></tr>
-            % endif
-        %endfor
-    </%def>
-
-
 
 <div class="cabecera">${helper.embed_logo_by_name('Motoscoot')|n}
 
@@ -212,7 +190,7 @@ text-align:center;
 <div class="datos_pedido">
 <table>
     <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:${order.date_order} </td>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
      </tr>
      <tr>
         <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
@@ -268,10 +246,10 @@ text-align:center;
           </tr>
         %endfor
       </tbody>
-      <tfoot class="totals">
+      <tfoot>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td>
             ${_("Net Total:")}
           </td>
           <td class="amount total_sum_cell">
@@ -280,7 +258,7 @@ text-align:center;
         </tr>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td >
             ${_("Taxes:")}
           </td>
           <td class="amount total_sum_cell">
@@ -289,7 +267,7 @@ text-align:center;
         </tr>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td >
             ${_("Total:")}
           </td>
           <td class="amount total_sum_cell">

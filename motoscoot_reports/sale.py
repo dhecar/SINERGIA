@@ -27,6 +27,7 @@ from openerp.tools.translate import _
 class SaleOrder(orm.Model):
 
     _inherit = "sale.order"
-
     _columns = {
     }
+
+SaleOrder()

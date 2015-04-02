@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data noupdate="1">
+<!-- ...................................BASE MOTOSCOOT._Footer......................................... -->
+
+        <record id="base_reports_motoscoot" model="ir.header_webkit">
+            <field name="footer_html"><![CDATA[
+
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+    </head>
+<body style="border:0; margin: 0;" onload="subst()">
+<div class="footer">
+<div class="pie"> ${helper.embed_logo_by_name('Motoscoot_footer')|n}</div>
+<div>
+<table style="font-size:12px;width:100%;text-align:center">
+<tr>
+  <td>
+      <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
+
+</td>
+</tr>
+</table>
+<table style="border-top: 1px solid black; width: 100%">
+            <tr >
+                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
+            </tr>
+        </table>
+
+</div>
+</div>
+</div>
+</body>]]></field>
+            <field name="orientation">Portrait</field>
+            <field name="format">A4</field>
+            <field name="html"><![CDATA[
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+        <style type="text/css">
+            ${css}
+        </style>
+    </head>
+    <body  onload="subst()">
+
+
+        ${_debug or ''|n}
+</html>]]>
+            </field>
+            <field eval="10.0" name="margin_top"/>
+            <field eval="40.0" name="margin_bottom"/>
+            <field name="css"><![CDATA[
+
+
+                    body {
+font-family:helvetica;
+font-size:10;
+}
+
+.footer {
+width:100%;
+}
+
+.pie {
+border-top:1px  solid #adadad;
+border-bottom:1px  solid #adadad;
+padding-top:5px;
+padding-bottom:5px;
+}
+]]>
+            </field>
+            <field name="name">Base Reports Motoscoot</field>
+        </record>
+
+   <!-- ...................................BASE TOPTALLER._Footer......................................... -->
+  
+        <record id="base_reports_motoscoot" model="ir.header_webkit">
+            <field name="footer_html"><![CDATA[
+
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+    </head>
+<body style="border:0; margin: 0;" onload="subst()">
+
+
+<div class="footer">
+<div class="pie"> ${helper.embed_logo_by_name('Motoscoot_footer')|n}</div>
+<div>
+<table style="font-size:12px;width:100%;text-align:center">
+<tr>
+  <td>
+      <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
+
+</td>
+</tr>
+</table>
+<table style="border-top: 1px solid black; width: 100%">
+            <tr >
+                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
+            </tr>
+        </table>
+
+</div>
+</div>
+</body>]]></field>
+            <field name="orientation">Portrait</field>
+            <field name="format">A4</field>
+            <field name="html"><![CDATA[
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+        <style type="text/css">
+            ${css}
+        </style>
+    </head>
+    <body  onload="subst()">
+
+
+        ${_debug or ''|n}
+</html>]]>
+            </field>
+            <field eval="10.0" name="margin_top"/>
+            <field eval="40.0" name="margin_bottom"/>
+            <field name="css"><![CDATA[
+
+            body {
+font-family:helvetica;
+font-size:10;
+}
+
+.footer {
+width:100%;
+}
+
+.pie {
+border-top:1px  solid #adadad;
+border-bottom:1px  solid #adadad;
+padding-top:5px;
+padding-bottom:5px;
+}
+]]>
+            </field>
+            <field name="name">Base Reports Toptaller</field>
+        </record>
+
+        </data>
+</openerp>
+
