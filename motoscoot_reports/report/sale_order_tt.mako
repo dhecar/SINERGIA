@@ -4,182 +4,110 @@
     <style type="text/css">
         ${css}
 
-.list_main_table {
-    border:thin solid #E3E4EA;
-    text-align:center;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-.list_main_table th {
-    background-color: #EEEEEE;
-    border: thin solid #000000;
-    text-align:center;
-    font-size:12;
-    font-weight:bold;
-    padding-right:3px;
-    padding-left:3px;
-}
-.list_main_table td {
-    border-bottom : thin solid #EEEEEE;
-    text-align:left;
-    font-size:12;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
-}
-.list_main_table thead {
-    display:table-header-group;
-}
+        .list_main_table {
 
-div.formatted_note {
-    text-align:left;
-    padding-left:10px;
-    font-size:11;
-}
+        text-align:center;
+        margin-top: 15px;
+        }
+        .list_main_table th {
+        text-align:center;
+        font-size:11;
+        padding-right:3px;
+        padding-left:3px;
+
+        }
+        .list_main_table td {
+
+        text-align:center;
+        font-size:11;
+        padding-right:3px;
+        padding-left:3px;
+        padding-top:3px;
+        padding-bottom:3px;
+        }
+        .list_main_table thead {
+        border-bottom:1px solid;
+
+        }
+
+        div.formatted_note {
+        text-align:left;
+        padding-left:10px;
+        font-size:11;
+        }
 
 
-.list_bank_table {
-    text-align:center;
-    border-collapse: collapse;
-    page-break-inside: avoid;
-    display:table;
-}
-
-.act_as_row {
-   display:table-row;
-}
-.list_bank_table .act_as_thead {
-    background-color: #EEEEEE;
-    text-align:left;
-    font-size:12;
-    font-weight:bold;
-    padding-right:3px;
-    padding-left:3px;
-    white-space:nowrap;
-    background-clip:border-box;
-    display:table-cell;
-}
-.list_bank_table .act_as_cell {
-    text-align:left;
-    font-size:12;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
-    white-space:nowrap;
-    display:table-cell;
-}
+        .cabecera {
+        z-index:-1;
+        margin-bottom:10px;
+        text-align:right;
 
 
-.list_tax_table {
-}
-.list_tax_table td {
-    text-align:left;
-    font-size:12;
-}
-.list_tax_table th {
-}
-.list_tax_table thead {
-    display:table-header-group;
-}
+        }
+
+        .datos_empresa {
+        font-size:12px;
+        text-align:right;
+        float:right;
+        margin-top:85px;
+
+        }
+
+        .datos_cliente {
+        font-size:12px;
+        float:left;
+        top:10px;
+        z-index:2;
+        width:300px;
+        text-align:left;
+                }
+
+        .datos_pedido{
+        float:left;
+        margin-top:30px;
+        margin-bottom:30px;
+        width:400px;
+        text-align:left;
+        }
+
+        .datos_pedido td {
+        font-size:11px;
+        color:#424242;
+        }
+
+        .datos_pedido td b {
+        text-transform: uppercase;
+        font-size:12px;
+        }
+
+        .ref {
+        font-size:9px;
+        text-align:center;
+
+        }
+        .totals {
+        font-size:12px;
+        }
 
 
-.list_total_table {
-    border:thin solid #E3E4EA;
-    text-align:center;
-    border-collapse: collapse;
-}
-.list_total_table td {
-    border-top : thin solid #EEEEEE;
-    text-align:left;
-    font-size:12;
-    padding-right:3px;
-    padding-left:3px;
-    padding-top:3px;
-    padding-bottom:3px;
-}
-.list_total_table th {
-    background-color: #EEEEEE;
-    border: thin solid #000000;
-    text-align:center;
-    font-size:12;
-    font-weight:bold;
-    padding-right:3px
-    padding-left:3px
-}
-.list_total_table thead {
-    display:table-header-group;
-}
+        body {
+
+        background-image:url("/opt/odoo/custom/addons/SINERGIA/motoscoot_reports/static/images/Plantilla_Facturas_TT_3_test_96.png");
+        background-repeat:no-repeat;
 
 
-.no_bloc {
-    border-top: thin solid  #ffffff ;
-}
+        }
 
-.right_table {
-    right: 4cm;
-    width:"100%";
-}
-
-.std_text {
-    font-size:12;
-}
-
-tfoot.totals tr:first-child td{
-    padding-top: 15px;
-}
-
-tfoot.totals td {
-    border: thin solid  #ffffff;
-}
-
-th.date {
-    width: 90px;
-}
-
-td.amount, th.amount {
-    text-align: right;
-    white-space: nowrap;
-}
-.header_table {
-    text-align: center;
-    border: 1px solid lightGrey;
-    border-collapse: collapse;
-}
-.header_table th {
-    font-size: 12px;
-    border: 1px solid lightGrey;
-}
-.header_table td {
-    font-size: 12px;
-    border: 1px solid lightGrey;
-}
-
-td.date {
-    white-space: nowrap;
-    width: 90px;
-}
-
-td.vat {
-    white-space: nowrap;
-}
-.address .recipient {
-    font-size: 12px;
-    border: 1px solid blue;
-}
-
-.nobreak {
-     page-break-inside: avoid;
- }
-
-.align_top {
-     vertical-align:text-top;
- }
 
     </style>
+
+
+
 </head>
+
+
 <body>
+
     <%page expression_filter="entity"/>
     <%
     def carriage_returns(text):
@@ -212,80 +140,117 @@ td.vat {
     <%
       quotation = order.state in ['draft', 'sent']
     %>
+<div style="border:1px solid blue;height:980px">
 
-    <div style="border:1px solid;margin:12px;width:300px;float:left">
+<span class="datos_cliente" style="border:1px solid red;">
 
-        <table class="recipient">
-	 
-	 <tr><td><b>${order.partner_id.ref}</b></td></tr>
+    <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+	 <tr><td>${order.partner_invoice_id.name}</td></tr>
+	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+	 <tr><td>${order.partner_invoice_id.street}</td></tr>
+	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+     </table>
+     </br>
+     <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
 	 <tr><td>${order.partner_id.name}</td></tr>
 	 <tr><td>${order.partner_id.street}</td></tr>
 	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
 	 <tr><td>${order.partner_id.country_id.name}</td></tr>
-        </table>
+     </table>
+</span><!--Fin datos cliente-->
+<span class="datos_empresa" style="border:1px solid yellow;">
+	<table>
 
-    </div>
-    
+         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Motoscoot</b></td>
+       </tr>
+	   <tr>
+                <td >
+                    ${company.partner_id.street or ''|entity}</br>
+		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
 
-    <h1 style="clear:both;">${quotation and _(u'Quotation N°') or _(u'Order N°') } ${order.name}</h1>
-
-
-    <div>   
-    <table class="basic_table" width="100%">
-        <tr>
-            <th class="date">${quotation and _("Date Ordered") or _("Quotation Date")}</td>
-            <th>${_("Your Reference")}</td>
-            <th>${_("Vendedor")}</td>
-            <th>${_('Payment Term')}</td>
+		         </td>
         </tr>
-        <tr>
-            <td class="date">${formatLang(order.date_order, date=True)}</td>
-            <td>${order.client_order_ref or ''}</td>
-            <td>${order.user_id and order.user_id.name or ''}</td>
-            <td>${order.payment_term and order.payment_term.note or ''}</td>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+		<tr>
+		        <td>
+		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
+		            mail: ${company.partner_id.email or ''|entity}
+		        </td>
+
+       </tr>
+
+
+     </table>
+</span><!--Fin datos empresa-->
+<span class="datos_pedido">
+<table>
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+     <tr>
+     <tr>
+        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
         </tr>
-    </table>
+</table>
+</span><!--Fin Datos Pedido-->
+<span>
 
     %if order.note1:
         <p class="std_text"> ${order.note1 | n} </p>
     %endif
-    </div>    
-
+</span><!--Fin  Notas-->
+    <span class="orden">
     <table class="list_main_table" width="100%">
       <thead>
           <tr>
-            <th class="amount main_col2">${_("Quantity")}</th>
-	    <th class="main_col1">${_("Description")}</th>
-            <th class="amount main_col4">${_("Pr.Unid. €")}</th>
-            <th class="main_col5">${_("I.V.A.")}</th>
-            <th class="amount main_col6">${_("Disc.(%)")}</th>
-   
-	    <th class="amount main_col7">${_("Price")}</th>
+            <th >${_("Ref. Art")}</th>
+	        <th class="main_col1">${_("Description")}</th>
+	        <th class="amount main_col2">${_("Quantity")}</th>
+            <th class="amount main_col4">${_("Precio")}</th>
+            <th class="amount main_col6">${_("Dto%")}</th>
+	        <th class="amount main_col7">${_("Importe")}</th>
           </tr>
       </thead>
       <tbody>
         %for line in order.order_line:
 	   <tr>
-	    <td class="amount main_col2 align_top">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
-            <td class="align_top"><div class="nobreak">${line.name.replace('\n','<br/>') or '' | n}
+	    <td class="ref">${line.product_id.default_code}</td>
+	    <td class="ref align_top"><div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
                  %if line.formatted_note:
                  <br />
                  <div class="formatted_note">${line.formatted_note| n}</div>
                  %endif
                  </div>
             </td>
+	    <td class="ref">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
 
-	   <td class="amount main_col4 align_top">${formatLang(line.price_unit)}</td>
-            <td class="main_col5 align_top">${ ', '.join([tax.description or tax.name for tax in line.tax_id]) }</td>
-              <td class="amount main_col6 align_top">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
-            <td class="amount main_col7 align_top">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
+
+	   <td class="ref">${formatLang(line.price_unit)}</td>
+       <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
+       <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
           </tr>
         %endfor
       </tbody>
-      <tfoot class="totals">
+      <tfoot>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td>
             ${_("Net Total:")}
           </td>
           <td class="amount total_sum_cell">
@@ -294,7 +259,7 @@ td.vat {
         </tr>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td >
             ${_("Taxes:")}
           </td>
           <td class="amount total_sum_cell">
@@ -303,7 +268,7 @@ td.vat {
         </tr>
         <tr>
           <td colspan="4" class="total_empty_cell"/>
-          <td style="font-weight:bold">
+          <td >
             ${_("Total:")}
           </td>
           <td class="amount total_sum_cell">
@@ -312,14 +277,17 @@ td.vat {
         </tr>
       </tfoot>
     </table>
-
+</span>
     %if order.note :
         <p class="std_text">${order.note | carriage_returns}</p>
     %endif
     %if order.note2:
         <p class="std_text">${order.note2 | n}</p>
     %endif
-    <p style="page-break-after:always"/>
+
     %endfor
-</body>
+    <p style="page-break-after:default"/>
+</div>
+
+    </body>
 </html>
