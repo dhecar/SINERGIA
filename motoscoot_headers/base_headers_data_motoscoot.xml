@@ -117,9 +117,8 @@ padding-bottom:5px;
         </script>
     </head>
 <body style="border:0; margin: 0;" onload="subst()">
-
-
 <div class="footer">
+<div>
 <table style="font-size:12px;width:100%;text-align:center">
 <tr>
   <td>
@@ -128,9 +127,17 @@ padding-bottom:5px;
 </td>
 </tr>
 </table>
+<table style="border-top: 1px solid black; width: 100%">
+            <tr >
+                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
+            </tr>
+        </table>
+
 </div>
 </div>
+${_debug or ''|n}
 </body>]]></field>
+
             <field name="orientation">Portrait</field>
             <field name="format">A4</field>
             <field name="html"><![CDATA[
@@ -153,31 +160,174 @@ padding-bottom:5px;
             ${css}
         </style>
     </head>
-    <body  onload="subst()">
+
+<body  onload="subst()">
+     <%def name="address(partner)">
+        <%doc>
+            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+        </%doc>
+        %if partner.parent_id:
+            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+	    <tr><td>${partner.parent_id.website}</td></tr>
+            <% address_lines = partner.contact_address.split("\n")[1:] %>
+        %else:
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+            <% address_lines = partner.contact_address.split("\n") %>
+	    ${partner.state_id.name}
+        %endif
+        %for part in address_lines:
+            % if part:
+                <tr><td>${part}</td></tr>
+            % endif
+        %endfor
+    </%def>
 
 
-        ${_debug or ''|n}
+    %for order in objects:
+    <% setLang(order.partner_id.lang) %>
+    <%
+      quotation = order.state in ['draft', 'sent']
+    %>
+    %endfor
+
+<div class="cabecera">
+    <span class="datos_cliente">
+
+    <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+	 <tr><td>${order.partner_invoice_id.name}</td></tr>
+	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+	 <tr><td>${order.partner_invoice_id.street}</td></tr>
+	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+     </table>
+     </br>
+     <table>
+
+	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+	 <tr><td>${order.partner_id.name}</td></tr>
+	 <tr><td>${order.partner_id.street}</td></tr>
+	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_id.country_id.name}</td></tr>
+     </table>
+    </span><!--Fin datos cliente-->
+    <span class="datos_empresa">
+	<table>
+
+         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Toptaller</b></td>
+       </tr>
+	   <tr>
+                <td >
+                    ${company.partner_id.street or ''|entity}</br>
+		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
+
+		         </td>
+        </tr>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+		<tr>
+		        <td>
+		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
+		            mail: ${company.partner_id.email or ''|entity}
+		        </td>
+
+       </tr>
+
+
+     </table>
+</span><!--Fin datos empresa-->
+
+<span class="datos_pedido">
+<table>
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+     <tr>
+     <tr>
+        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+        </tr>
+</table>
+</span><!--Fin Datos Pedido-->
+</div>
+</body>${_debug or ''|n}
 </html>]]>
             </field>
             <field eval="10.0" name="margin_top"/>
-            <field eval="40.0" name="margin_bottom"/>
+            <field eval="0.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
+        .footer {
+        width:100%;
+        }
 
-            body {
-font-family:helvetica;
-font-size:10;
-}
+        .pie {
+        border-top:1px  solid #adadad;
+        border-bottom:1px  solid #adadad;
+        }
 
-.footer {
-width:100%;
-}
+        .cabecera {
 
-.pie {
-border-top:1px  solid #adadad;
-border-bottom:1px  solid #adadad;
-padding-top:5px;
-padding-bottom:5px;
-}
+        margin-bottom:10px;
+        text-align:right;
+        float:none;
+        position:fixed;
+
+
+        }
+
+        .datos_empresa {
+        font-size:12px;
+        text-align:right;
+        float:right;
+        margin-top:85px;
+
+        }
+
+        .datos_cliente {
+        font-size:12px;
+        float:left;
+        top:10px;
+        z-index:2;
+        width:300px;
+        text-align:left;
+                }
+
+        .datos_pedido{
+        float:left;
+        margin-top:30px;
+        margin-bottom:30px;
+        width:400px;
+        text-align:left;
+        }
+
+        .datos_pedido td {
+        font-size:11px;
+        color:#424242;
+        }
+
+        .datos_pedido td b {
+        text-transform: uppercase;
+        font-size:12px;
+        }
+
+        .ref {
+        font-size:9px;
+        text-align:center;
+        }
+
+
+
 ]]>
             </field>
             <field name="name">Base Reports Toptaller</field>

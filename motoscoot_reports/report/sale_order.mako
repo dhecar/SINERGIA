@@ -109,19 +109,21 @@
         %if partner.parent_id:
             <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
             <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-	    <tr><td>${partner.parent_id.website}</td></tr>
+	        <tr><td>${partner.parent_id.website}</td></tr>
             <% address_lines = partner.contact_address.split("\n")[1:] %>
         %else:
             <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
             <% address_lines = partner.contact_address.split("\n") %>
-	    ${partner.state_id.name}
+	        ${partner.state_id.name}
         %endif
+    </%def>
+
         %for part in address_lines:
             % if part:
                 <tr><td>${part}</td></tr>
             % endif
         %endfor
-    </%def>
+
 
     %for order in objects:
     <% setLang(order.partner_id.lang) %>
@@ -187,6 +189,7 @@
     </div>
 
 </div>
+
 <div class="datos_pedido">
 <table>
     <tr>

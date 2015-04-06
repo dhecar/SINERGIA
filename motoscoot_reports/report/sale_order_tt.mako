@@ -36,6 +36,10 @@
         font-size:11;
         }
 
+        .totals {
+        font-size:12px;
+        }
+
 
         .cabecera {
         z-index:-1;
@@ -83,26 +87,8 @@
         .ref {
         font-size:9px;
         text-align:center;
-
         }
-        .totals {
-        font-size:12px;
-        }
-
-
-        body {
-
-        background-image:url("/opt/odoo/custom/addons/SINERGIA/motoscoot_reports/static/images/Plantilla_Facturas_TT_3_test_96.png");
-        background-repeat:no-repeat;
-
-
-        }
-
-
     </style>
-
-
-
 </head>
 
 
@@ -135,87 +121,13 @@
         %endfor
     </%def>
 
-    %for order in objects:
+     %for order in objects:
     <% setLang(order.partner_id.lang) %>
     <%
       quotation = order.state in ['draft', 'sent']
     %>
-<div>
 
-<span class="datos_cliente">
-
-    <table>
-
-	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
-	 <tr><td>${order.partner_invoice_id.name}</td></tr>
-	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
-	 <tr><td>${order.partner_invoice_id.street}</td></tr>
-	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
-	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
-     </table>
-     </br>
-     <table>
-
-	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-	 <tr><td>${order.partner_id.name}</td></tr>
-	 <tr><td>${order.partner_id.street}</td></tr>
-	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-	 <tr><td>${order.partner_id.country_id.name}</td></tr>
-     </table>
-</span><!--Fin datos cliente-->
-<span class="datos_empresa">
-	<table>
-
-         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
-		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
-         <tr>&nbsp;</tr><tr>&nbsp;<tr>
-       <tr>
-                <td><b>Toptaller</b></td>
-       </tr>
-	   <tr>
-                <td >
-                    ${company.partner_id.street or ''|entity}</br>
-		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
-
-		         </td>
-        </tr>
-      <tr>&nbsp;<tr><tr>&nbsp;<tr>
-
-		<tr>
-		        <td>
-		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
-		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
-		            mail: ${company.partner_id.email or ''|entity}
-		        </td>
-
-       </tr>
-
-
-     </table>
-</span><!--Fin datos empresa-->
-<span class="datos_pedido">
-<table>
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-        </tr>
-</table>
-</span><!--Fin Datos Pedido-->
-<span>
-
-    %if order.note1:
-        <p class="std_text"> ${order.note1 | n} </p>
-    %endif
-</span><!--Fin  Notas-->
-    <span class="orden">
+<div class="orden">
     <table class="list_main_table" width="100%">
       <thead>
           <tr>
@@ -277,7 +189,7 @@
         </tr>
       </tfoot>
     </table>
-</span>
+
     %if order.note :
         <p class="std_text">${order.note | carriage_returns}</p>
     %endif
@@ -285,9 +197,8 @@
         <p class="std_text">${order.note2 | n}</p>
     %endif
 
-    %endfor
-    <p style="page-break-after:default"/>
-</div>
-
-    </body>
+ %endfor
+    </div>
+</body>
 </html>
+
