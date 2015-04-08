@@ -1,9 +1,26 @@
 ## -*- coding: utf-8 -*-
 <html>
 <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+     <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
     <style type="text/css">
         ${css}
 
+        .orden {
+        margin-top:330px;
+
+        }
         .list_main_table {
 
         text-align:center;
@@ -40,95 +57,27 @@
         font-size:12px;
         }
 
-
-        .cabecera {
-        z-index:-1;
-        margin-bottom:10px;
-        text-align:right;
-
-
-        }
-
-        .datos_empresa {
-        font-size:12px;
-        text-align:right;
-        float:right;
-        margin-top:85px;
-
-        }
-
-        .datos_cliente {
-        font-size:12px;
-        float:left;
-        top:10px;
-        z-index:2;
-        width:300px;
-        text-align:left;
-                }
-
-        .datos_pedido{
-        float:left;
-        margin-top:30px;
-        margin-bottom:30px;
-        width:400px;
-        text-align:left;
-        }
-
-        .datos_pedido td {
-        font-size:11px;
-        color:#424242;
-        }
-
-        .datos_pedido td b {
-        text-transform: uppercase;
-        font-size:12px;
-        }
-
         .ref {
         font-size:9px;
         text-align:center;
         }
     </style>
 </head>
-
-
-<body>
-
+<body onload="subst()">
     <%page expression_filter="entity"/>
     <%
     def carriage_returns(text):
         return text.replace('\n', '<br />')
     %>
 
-    <%def name="address(partner)">
-        <%doc>
-            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
-        </%doc>
-        %if partner.parent_id:
-            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-	    <tr><td>${partner.parent_id.website}</td></tr>
-            <% address_lines = partner.contact_address.split("\n")[1:] %>
-        %else:
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-            <% address_lines = partner.contact_address.split("\n") %>
-	    ${partner.state_id.name}
-        %endif
-        %for part in address_lines:
-            % if part:
-                <tr><td>${part}</td></tr>
-            % endif
-        %endfor
-    </%def>
-
-     %for order in objects:
+    %for order in objects:
     <% setLang(order.partner_id.lang) %>
     <%
       quotation = order.state in ['draft', 'sent']
     %>
 
 <div class="orden">
-    <table class="list_main_table" width="100%">
+    <table>
       <thead>
           <tr>
             <th >${_("Ref. Art")}</th>
@@ -143,7 +92,8 @@
         %for line in order.order_line:
 	   <tr>
 	    <td class="ref">${line.product_id.default_code}</td>
-	    <td class="ref align_top"><div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
+	    <td class="ref align_top">
+                <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
                  %if line.formatted_note:
                  <br />
                  <div class="formatted_note">${line.formatted_note| n}</div>
@@ -197,8 +147,9 @@
         <p class="std_text">${order.note2 | n}</p>
     %endif
 
+</div>
  %endfor
-    </div>
+
 </body>
 </html>
 
