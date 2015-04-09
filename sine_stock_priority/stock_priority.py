@@ -24,7 +24,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class stock_picking(osv.osv):
+class StockPicking(osv.osv):
     _inherit = "stock.picking"
 
     def action_assign_wkf(self, cr, uid, ids, context=None):
@@ -40,10 +40,10 @@ class stock_picking(osv.osv):
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                             if i.qty == 1:
                                 raise osv.except_osv('Ultimo producto en almacen !',
-                                                     'El producto  %.2f tiene un stock de %.2f! y no puede enviarse',
-                                                     'contacta con el administrador ' % (move.product_id, i.qty))
+                                                     'El producto  %s tiene un stock de %d! y no puede enviarse,'
+                                                     'contacta con el administrador ' % (move.product_id.name, i.qty))
 
         return True
 
 
-stock_picking()
+StockPicking()
