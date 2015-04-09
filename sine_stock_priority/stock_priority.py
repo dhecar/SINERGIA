@@ -43,7 +43,7 @@ class StockPicking(osv.osv):
                                                      'El producto  %s tiene un stock de %d! y estas intentando '
                                                      'enviar %d !!, contacta con el administrador '
                                                      % (move.product_id.name, i.qty, move.product_qty))
-                            elif i.qty > 0 and (move.product_qty - i.qty < 1):
+                            elif move.product_qty - i.qty < 1:
                                 raise osv.except_osv('El envio dejara sin existencias el almacen !',
                                                      'El producto  %s tiene un stock de %d! y estas intentando '
                                                      'enviar %d !!,contacta con el administrador '
