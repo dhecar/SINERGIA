@@ -28,20 +28,31 @@ class StockPicking(osv.osv):
     _inherit = "stock.picking"
 
     def action_assign_wkf(self, cr, uid, ids, context=None):
-
+        to_update = []
         for picking in self.browse(cr, uid, ids):
             if picking.type == 'internal':
                 for move in picking.move_lines:
-
                     stock_prod_obj = self.pool.get('stock.report.prodlots')
                     stock_prod_ids = stock_prod_obj.search(cr, uid,
-                                                           [('product_id', '=', move.product_id.id)])
+                                                           [('product_id', '=', move.product_id.id),
+                                                            ('location_id', '=', 12)])
                     if stock_prod_ids:
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                            if i.qty == 1:
-                                raise osv.except_osv('Ultimo producto en almacen !',
-                                                     'El producto  %s tiene un stock de %d! y no puede enviarse,'
-                                                     'contacta con el administrador ' % (move.product_id.name, i.qty))
+                            if i.qty < 0:
+                                raise osv.except_osv('No hay stock de este producto!',
+                                                     'El producto  %s tiene un stock de %d! y estas intentando '
+                                                     'enviar %d !!, contacta con el administrador '
+                                                     % (move.product_id.name, i.qty, move.product_qty))
+                            if i.qty > 0 and (move.product_qty - i.qty < 1):
+                                raise osv.except_osv('El envio dejara sin existencias el almacen !',
+                                                     'El producto  %s tiene un stock de %d! y estas intentando '
+                                                     'enviar %d !!,contacta con el administrador '
+                                                     % (move.product_id.name, i.qty, move.product_qty))
+                            else:
+                                if picking.state != 'assigned':
+                                    to_update.append(picking.id)
+                            if to_update:
+                                self.write(cr, uid, to_update, {'state': 'assigned'})
 
         return True
 
