@@ -43,18 +43,22 @@ class StockPicking(osv.osv):
                                                      'El producto  %s tiene un stock de %d! y estas intentando '
                                                      'enviar %d !!, contacta con el administrador '
                                                      % (move.product_id.name, i.qty, move.product_qty))
-                            elif move.product_qty - i.qty < 1:
+
+
+                            elif i.qty - move.product_qty < 1:
+                                diferencia = i.qty - move.product_qty
+
                                 raise osv.except_osv('El envio dejara sin existencias el almacen !',
                                                      'El producto  %s tiene un stock de %d! y estas intentando '
-                                                     'enviar %d !!,contacta con el administrador '
-                                                     % (move.product_id.name, i.qty, move.product_qty))
+                                                     'enviar %d. El stock bajara a %d !!,contacta con el administrador '
+                                                     % (move.product_id.name, i.qty, move.product_qty, diferencia))
                             else:
                                 if picking.state != 'assigned':
                                     to_update.append(picking.id)
                                 if to_update:
                                     self.write(cr, uid, to_update, {'state': 'assigned'})
 
-        return True
+                        return True
 
 
 StockPicking()
