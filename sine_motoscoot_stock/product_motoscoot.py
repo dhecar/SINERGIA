@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
+# OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
 
 
 class product_product(osv.osv):
@@ -41,57 +41,62 @@ class product_product(osv.osv):
     ##STOCK IN EACH LOCATION
 
 
-    def stock_Pt (self, cr, uid, ids, field_names=None, arg=None, context=None):
-	result = {}
-	stock = {}
+    def stock_Pt(self, cr, uid, ids, field_names=None, arg=None, context=None):
+        result = {}
+        stock = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            stock_prod_ids = stock_prod_obj.search(cr,uid,[('product_id','=',prod_id),('location_id','=',15)],context= context)
-	    if stock_prod_ids:
-                for i in stock_prod_obj.browse(cr, uid, stock_prod_ids,context =context):
-                    result[prod_id] = i.qty     
-                
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 15)],
+                                                   context=context)
+            if stock_prod_ids:
+                for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                    result[prod_id] = i.qty
+
             else:
                 result[prod_id] = 0.000
-        return result	
+        return result
 
-    def stock_Bcn (self, cr, uid, ids, field_names=None, arg=None, context=None):
-	result = {}
-	stock = {}
+    def stock_Bcn(self, cr, uid, ids, field_names=None, arg=None, context=None):
+        result = {}
+        stock = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            stock_prod_ids = stock_prod_obj.search(cr,uid,[('product_id','=',prod_id),('location_id','=',19)],context= context)
-	    if stock_prod_ids:
-                for i in stock_prod_obj.browse(cr, uid, stock_prod_ids,context =context):
-                    result[prod_id] = i.qty     
-                
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 19)],
+                                                   context=context)
+            if stock_prod_ids:
+                for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                    result[prod_id] = i.qty
+
             else:
                 result[prod_id] = 0.000
         return result
 
 
-    def stock_Grn (self, cr, uid, ids, field_names=None, arg=None, context=None):
-	stock ={}
-	result = {}
-	stock_prod_obj = self.pool.get('stock.report.prodlots')
-	for prod_id in ids:
-	    stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id','=',prod_id),('location_id','=',12)], context=context)
-	    if stock_prod_ids:
-	        for i in stock_prod_obj.browse(cr, uid, stock_prod_ids,context =context):
-	            result[prod_id] = i.qty	
-		
-	    else:
-		result[prod_id] = 0.000
-	return result
+    def stock_Grn(self, cr, uid, ids, field_names=None, arg=None, context=None):
+        stock = {}
+        result = {}
+        stock_prod_obj = self.pool.get('stock.report.prodlots')
+        for prod_id in ids:
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 12)],
+                                                   context=context)
+            if stock_prod_ids:
+                for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                    result[prod_id] = i.qty
+
+            else:
+                result[prod_id] = 0.000
+        return result
 
     _columns = {
         'locations': fields.function(test, type='one2many', relation='stock.location', string='Stock by Location'),
-	'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id', 'scooter_id', 'scooter models'),
-    	'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
-	'stock_bcn' : fields.function(stock_Bcn, type='float',  string='BCN: '),
-	'stock_pt' : fields.function(stock_Pt, type='float',  string='PT: '),
-	
+        'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
+                                         'scooter_id', 'scooter models'),
+        'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
+        'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
+        'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
+
     }
+
 
 product_product()
 

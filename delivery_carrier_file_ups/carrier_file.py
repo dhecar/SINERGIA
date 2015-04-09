@@ -3,8 +3,9 @@
 #
 #    Author: Guewen Baconnier
 #    Copyright 2012 Camptocamp SA
-#	Adaptation to UPS by David Hernández
-#	http://sinergiainformatica.net
+#
+#    Adaptation to UPS by David Hernández
+#	 http://sinergiainformatica.net
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -24,6 +25,7 @@
 from osv import osv, fields
 import openerp.addons.decimal_precision as dp
 
+
 class carrier_file(osv.osv):
     _inherit = 'delivery.carrier.file'
 
@@ -32,26 +34,25 @@ class carrier_file(osv.osv):
         if 'Ups' not in result:
             result.append(('Ups', 'Envíos UPS'))
         return result
-    
 
-    def _get_package(self,cursor, user_id, context=None):
-	return (
-	    ('01','UPS Letter'),
-	    ('02', 'Customer Supplied Package'))
+    def _get_package(self, cursor, user_id, context=None):
+        return (
+            ('01', 'UPS Letter'),
+            ('02', 'Customer Supplied Package'))
 
-    def _get_service(self,cursor, user_id,context=None):
-	return (
-	    ('01', 'Next Day Air'),
-            ('02', '2nd Day Air'),
-            ('03', 'Ground'),
-            ('07', 'Express'),
-            ('08', 'Expedited'),
-            ('11', 'UPS Standard'),
-            ('12', '3 Day Select'),
-            ('13', 'Next Day Air Saver'),
-            ('14', 'Next Day Air Early AM'),
+    def _get_service(self, cursor, user_id, context=None):
+        return (
+            ('1DA', 'Next Day Air'),
+            ('2DA', '2nd Day Air'),
+            ('GND', 'Ground'),
+            ('ES', 'Express'),
+            ('EX', 'Expedited'),
+            ('ST', 'UPS Standard'),
+            ('3DS', '3 Day Select'),
+            ('1DP', 'Next Day Air Saver'),
+            ('1DM', 'Next Day Air Early AM'),
             ('54', 'Express Plus'),
-            ('59', '2nd Day Air A.M.'),
+            ('2DM', '2nd Day Air A.M.'),
             ('65', 'UPS Saver'),
             ('82', 'UPS Today Standard'),
             ('83', 'UPS Today Dedicated Courier'),
@@ -60,20 +61,16 @@ class carrier_file(osv.osv):
             ('86', 'UPS Today Express Saver'))
 
 
-
-
-
-
-
     _columns = {
         'type': fields.selection(get_type_selection, 'Type', required=True),
-	'xml_export':fields.boolean('Exportar a Xml?',help="Si esta marcado se exportara a XML, si no a csv"),
-	'ups_account':fields.char('Ups Account', size=10),
-	'ups_package_type':fields.selection(_get_package,'Tipo de paquete', help="Escoge el tipo de paquete"),
-	'ups_service_level':fields.selection(_get_service, 'Tipo de servicio',help="Tipo de servicio"),
-	'ups_description_goods':fields.char('Descripcion mercancia', size=30),
-	'ups_cash':fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
-	'ups_cod_price':fields.float('Precio contrareembolso', digits_compute=dp.get_precision('Precio de reembolso')),	
+        'xml_export': fields.boolean('Exportar a Xml?', help="Si esta marcado se exportara a XML, si no a csv"),
+        'ups_account': fields.char('Ups Account', size=10),
+        'ups_package_type': fields.selection(_get_package, 'Tipo de paquete', help="Escoge el tipo de paquete"),
+        'ups_service_level': fields.selection(_get_service, 'Tipo de servicio', help="Tipo de servicio"),
+        'ups_description_goods': fields.char('Descripcion mercancia', size=30),
+        'ups_cash': fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
+        'ups_cod_price': fields.float('Precio contrareembolso', digits_compute=dp.get_precision('Precio de reembolso')),
     }
+
 
 carrier_file()

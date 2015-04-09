@@ -1,9 +1,9 @@
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
+# OpenERP, Open Source Management Solution
+# Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
-#    This program is free software: you can redistribute it and/or modify
+# This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
 #    License, or (at your option) any later version.
@@ -18,39 +18,34 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
+
 
 class scooter_model(osv.osv):
-
     def create(self, cr, uid, vals, context=None):
         model = vals.get('model')
-	if vals.get('model'):
-	    vals['model'] = vals['model'].upper()
+        if vals.get('model'):
+            vals['model'] = vals['model'].upper()
         return super(scooter_model, self).create(cr, uid, vals, context=context)
 
 
     _name = 'scooter.model'
     _descripcion = 'Listado de modelos de Scooter'
     _table = 'scooter_model'
-    _rec_name = 'model'    
+    _rec_name = 'model'
     _columns = {
-	'model': fields.char('Modelo', size=64, required =True, help='Modelo de la moto'),
-}
+        'model': fields.char('Modelo', size=64, required=True, help='Modelo de la moto'),
+    }
 
-
-    #_constraints = [(_check_unique_insesitive, 'Error: El modelo ya existe', ['model'])]
+    # constraints = [(_check_unique_insesitive, 'Error: El modelo ya existe', ['model'])]
 
     # Restriccion unica al campo 
     _sql_constraints = [
-        ('model_unique','unique(model)','El modelo ya existe'),
+        ('model_unique', 'unique(model)', 'El modelo ya existe'),
     ]
 
+
 scooter_model()
-
-
-
-
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
