@@ -35,7 +35,7 @@ class StockPicking(osv.osv):
                     stock_prod_obj = self.pool.get('stock.report.prodlots')
                     stock_prod_ids = stock_prod_obj.search(cr, uid,
                                                            [('product_id', '=', move.product_id.id),
-                                                            ('location_id', '=', 12)])
+                                                            ('location_id', '=', move.location_id.id)])
                     if stock_prod_ids:
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                             if i.qty < 0:
@@ -50,7 +50,8 @@ class StockPicking(osv.osv):
 
                                 raise osv.except_osv('El envio dejara sin existencias el almacen !',
                                                      'El producto  %s tiene un stock de %d! y estas intentando '
-                                                     'enviar %d. El stock bajara a %d !!,contacta con el administrador '
+                                                     'enviar %d. El stock bajara a %d !!,contacta con el administrador'
+                                                     'para que valide el envio'
                                                      % (move.product_id.name, i.qty, move.product_qty, diferencia))
                             else:
                                 if picking.state != 'assigned':
