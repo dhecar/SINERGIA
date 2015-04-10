@@ -277,8 +277,13 @@ padding-bottom:5px;
             <field eval="10.0" name="margin_top"/>
             <field eval="0.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
-       .cabecera {
 
+        body {
+        font-family:helvetica;
+        font-size:10;
+        }
+
+       .cabecera {
         margin-bottom:10px;
         text-align:right;
 
