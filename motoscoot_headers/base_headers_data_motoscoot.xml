@@ -100,7 +100,6 @@ padding-bottom:5px;
         <record id="base_reports_toptaller" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
 
-<html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <script>
@@ -118,6 +117,7 @@ padding-bottom:5px;
     </head>
 <body style="border:0; margin: 0;" onload="subst()">
 <div class="footer">
+<div class="pie"> ${helper.embed_logo_by_name('Motoscoot_footer')|n}</div>
 <div>
 <table style="font-size:12px;width:100%;text-align:center">
 <tr>
@@ -135,71 +135,12 @@ padding-bottom:5px;
 
 </div>
 </div>
-${_debug or ''|n}
-</body></html>]]></field>
-            <field eval="10.0" name="margin_top"/>
-            <field eval="0.0" name="margin_bottom"/>
-            <field name="css"><![CDATA[
-        .footer {
-        width:100%;
-        }
-
-        .pie {
-        border-top:1px  solid #adadad;
-        border-bottom:1px  solid #adadad;
-        padding-top:5px;
-        padding-bottom:5px;
-        }
-
-        .cabecera {
-        margin-bottom:10px;
-        text-align:right;
-        position:absolute;
-        height:320px;
-        border-bottom:1px solid blue;
-       }
-
-
-        .datos_empresa {
-        font-size:12px;
-        text-align:right;
-        float:right;
-        margin-top:85px;
-
-        }
-
-        .datos_cliente {
-        font-size:12px;
-        float:left;
-        top:10px;
-        width:300px;
-        text-align:left;
-                }
-
-        .datos_pedido{
-        float:left;
-        margin-top:30px;
-        margin-bottom:30px;
-        width:400px;
-        text-align:left;
-        }
-
-        .datos_pedido td {
-        font-size:11px;
-        color:#424242;
-        }
-
-        .datos_pedido td b {
-        text-transform: uppercase;
-        font-size:12px;
-        }
-
-
-]]></field>
-
+</div>
+</body>]]></field>
             <field name="orientation">Portrait</field>
             <field name="format">A4</field>
             <field name="html"><![CDATA[
+
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -219,27 +160,30 @@ ${_debug or ''|n}
             ${css}
         </style>
     </head>
+    <body  onload="subst()">
 
-<body onload="subst()" style="background-repeat:no-repeat;background-image:url(/opt/odoo/custom/addons/SINERGIA/motoscoot_reports/static/images/Plantilla_Facturas_TT_3_test_96.png)">
-     <%def name="address(partner)">
+
+
+    <%page expression_filter="entity"/>
+    <%
+    def carriage_returns(text):
+        return text.replace('\n', '<br />')
+    %>
+
+    <%def name="address(partner)">
         <%doc>
             XXX add a helper for address in report_webkit module as this won't be suported in v8.0
         </%doc>
         %if partner.parent_id:
             <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
             <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-	    <tr><td>${partner.parent_id.website}</td></tr>
+	        <tr><td>${partner.parent_id.website}</td></tr>
             <% address_lines = partner.contact_address.split("\n")[1:] %>
         %else:
             <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
             <% address_lines = partner.contact_address.split("\n") %>
-	    ${partner.state_id.name}
+	        ${partner.state_id.name}
         %endif
-        %for part in address_lines:
-            % if part:
-                <tr><td>${part}</td></tr>
-            % endif
-        %endfor
     </%def>
 
 
@@ -250,10 +194,10 @@ ${_debug or ''|n}
     %>
     %endfor
 
-<div class="cabecera">
-    <span class="datos_cliente">
+<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
+<div class="datos_cliente">
 
-    <table>
+    <table >
 
 	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
 	 <tr><td>${order.partner_invoice_id.name}</td></tr>
@@ -263,7 +207,7 @@ ${_debug or ''|n}
 	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
      </table>
      </br>
-     <table>
+     <table >
 
 	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
 	 <tr><td>${order.partner_id.name}</td></tr>
@@ -271,9 +215,11 @@ ${_debug or ''|n}
 	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
 	 <tr><td>${order.partner_id.country_id.name}</td></tr>
      </table>
-    </span><!--Fin datos cliente-->
-    <span class="datos_empresa">
-	<table>
+</div>
+
+
+<div  class="datos_empresa">
+     <table>
 
          <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
 		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
@@ -301,12 +247,12 @@ ${_debug or ''|n}
 
 
      </table>
-     </span><!--Fin datos empresa-->
+</div>
 
-<span class="datos_pedido">
-<table>
-    <tr
-        <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
+
+<table class="datos_pedido">
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
      </tr>
      <tr>
         <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
@@ -316,16 +262,77 @@ ${_debug or ''|n}
      </tr>
      <tr>
         <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-      </tr>
+        </tr>
 </table>
-</span><!--Fin Datos Pedido-->
-</div><!--Fin Cabecera-->
-</body>${_debug or ''|n}
+</div>
+
+
+    %if order.note1:
+        <p class="std_text"> ${order.note1 | n} </p>
+    %endif
+    </div>
+        ${_debug or ''|n} </body>
 </html>]]>
             </field>
+            <field eval="10.0" name="margin_top"/>
+            <field eval="0.0" name="margin_bottom"/>
+            <field name="css"><![CDATA[
+       .cabecera {
+
+        margin-bottom:10px;
+        text-align:right;
+
+        }
+
+        .datos_empresa {
+        font-size:12px;
+        text-align:right;
+        float:right;
+        margin-top:35px;
+
+        }
+
+        .datos_cliente {
+        font-size:12px;
+        float:left;
+        top:10px;
+        z-index:2;
+        width:300px;
+        text-align:left;
+
+        }
+
+
+        .datos_pedido{
+        float:left;
+        margin-bottom:30px;
+        width:600px;
+        }
+
+
+        .datos_pedido td {
+        font-size:11px;
+        color:#424242;
+        }
+
+        .datos_pedido td b {
+        text-transform: uppercase;
+        font-size:12px;
+        }
+
+        .ref {
+        font-size:9px;
+        text-align:center;
+
+        }
+        .totals {
+        font-size:12px;
+        }
+
+
+]]></field>
             <field name="name">Base Reports Toptaller</field>
         </record>
-
-        </data>
+    </data>
 </openerp>
 

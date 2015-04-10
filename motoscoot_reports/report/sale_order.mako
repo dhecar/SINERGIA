@@ -88,12 +88,7 @@
         font-size:12px;
         }
     </style>
-
-
-
 </head>
-
-
 <body>
 
     <%page expression_filter="entity"/>
@@ -118,11 +113,7 @@
         %endif
     </%def>
 
-        %for part in address_lines:
-            % if part:
-                <tr><td>${part}</td></tr>
-            % endif
-        %endfor
+
 
 
     %for order in objects:

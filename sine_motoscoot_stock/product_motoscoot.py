@@ -1,7 +1,7 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
+# Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -38,15 +38,16 @@ class product_product(osv.osv):
 
         return result
 
-    ##STOCK IN EACH LOCATION
-
+    # STOCK IN EACH LOCATION
 
     def stock_Pt(self, cr, uid, ids, field_names=None, arg=None, context=None):
         result = {}
-        stock = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 15)],
+            print prod_id.stock_location.id
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id),
+                                                             ('location_id', '=', 15)]
+                                                   ,
                                                    context=context)
             if stock_prod_ids:
                 for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
@@ -71,7 +72,6 @@ class product_product(osv.osv):
                 result[prod_id] = 0.000
         return result
 
-
     def stock_Grn(self, cr, uid, ids, field_names=None, arg=None, context=None):
         stock = {}
         result = {}
@@ -94,15 +94,8 @@ class product_product(osv.osv):
         'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
         'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
         'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
-
     }
 
 
 product_product()
-
-
-
-
-
-
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
