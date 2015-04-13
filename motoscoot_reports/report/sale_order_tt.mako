@@ -5,26 +5,25 @@
         ${css}
 
         .list_main_table {
-
         text-align:left;
-
         }
+
+
+
         .list_main_table th {
         text-align:left;
         font-size:11;
         padding-right:3px;
         padding-left:3px;
-
+        padding-top:10px;
         }
-        .list_main_table td {
 
+        .list_main_table td {
         text-align:left;
         font-size:11;
-        padding-right:3px;
-        padding-left:3px;
-        padding-top:3px;
-        padding-bottom:3px;
+
         }
+
         .list_main_table thead {
         border-bottom:1px solid;
 
@@ -38,32 +37,42 @@
 
 
         .ref {
-        font-size:9px;
+        font-size:11px;
         text-align:center;
+
+        }
+        .ref2 {
+        font-size:12px;
+        font-style:bold;
 
         }
         .totals {
         font-size:12px;
         }
+
+       .orden {
+        padding-left:50px;
+
+        }
     </style>
 </head>
-<body>
+<body style="height:100%">
 
  %for order in objects:
     <% setLang(order.partner_id.lang) %>
     <%
       quotation = order.state in ['draft', 'sent']
     %>
-
-    <table class="list_main_table" width="100%">
+    <table class="list_main_table orden"  width="100%">
+        <br style="clear:both">
       <thead>
           <tr>
-            <th >${_("Ref. Art")}</th>
-	        <th class="main_col1">${_("Description")}</th>
-	        <th class="amount main_col2">${_("Quantity")}</th>
-            <th class="amount main_col4">${_("Precio")}</th>
-            <th class="amount main_col6">${_("Dto%")}</th>
-	        <th class="amount main_col7">${_("Importe")}</th>
+            <th class="ref">${_("Ref. Art")}</th>
+	        <th class="ref ">${_("Description")}</th>
+	        <th class=" ref ">${_("Quantity")}</th>
+            <th class="ref ">${_("Precio")}</th>
+            <th class=" ref ">${_("Dto%")}</th>
+	        <th class=" ref ">${_("Importe")}</th>
           </tr>
       </thead>
       <tbody>
@@ -71,12 +80,12 @@
 	   <tr>
 	    <td class="ref">${line.product_id.default_code}</td>
 	    <td class="ref align_top">
-                <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
+               <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
                  %if line.formatted_note:
-                 <br />
+                 <br/>
                  <div class="formatted_note">${line.formatted_note| n}</div>
                  %endif
-                 </div>
+               </div>
         </td>
 	    <td class="ref">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
 
@@ -84,44 +93,42 @@
 	   <td class="ref">${formatLang(line.price_unit)}</td>
        <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
        <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
-          </tr>
+       </tr>
         %endfor
+
       </tbody>
       <tfoot>
-        <tr>
-          <td colspan="4" class="total_empty_cell"/>
-          <td>
+          <td colspan="4" class="ref2"/>
+          <td >
             ${_("Net Total:")}
           </td>
-          <td class="amount total_sum_cell">
+          <td class="ref2">
             ${formatLang(order.amount_untaxed, get_digits(dp='Sale Price'))} ${order.pricelist_id.currency_id.symbol}
           </td>
         </tr>
         <tr>
-          <td colspan="4" class="total_empty_cell"/>
+          <td colspan="4" class="ref2"/>
           <td >
             ${_("Taxes:")}
           </td>
-          <td class="amount total_sum_cell">
+          <td class="ref2">
             ${formatLang(order.amount_tax, get_digits(dp='Sale Price'))} ${order.pricelist_id.currency_id.symbol}
           </td>
         </tr>
-        <tr>
-          <td colspan="4" class="total_empty_cell"/>
-          <td >
+        <tr >
+          <td colspan="4" class="ref2" style="border-top:2px solid #000000;border-bottom:2px double #848484;"/>
+          <td style="border-top:2px solid #000000;border-bottom:2px double #848484;">
             ${_("Total:")}
           </td>
-          <td class="amount total_sum_cell">
+          <td class="ref2" style="border-top:2px solid #000000;border-bottom:2px double #848484;">
             <b>${formatLang(order.amount_total, get_digits(dp='Sale Price'))} ${order.pricelist_id.currency_id.symbol}</b>
           </td>
         </tr>
       </tfoot>
     </table>
 
-
-
-    <p style="page-break-after:default"/>
-    %endfor
+%endfor
 
     </body>
+
 </html>

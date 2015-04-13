@@ -99,8 +99,7 @@ padding-bottom:5px;
   
         <record id="base_reports_toptaller" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
-
-    <head>
+<html>    <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
         <script>
             function subst() {
@@ -114,12 +113,22 @@ padding-bottom:5px;
                 }
             }
         </script>
+         <style type="text/css">
+            ${css}
+
+        </style>
+
     </head>
-<body style="border:0; margin: 0;" onload="subst()">
-<div class="footer">
-<div class="pie"> ${helper.embed_logo_by_name('Motoscoot_footer')|n}</div>
+<body style="border:0; margin:0" onload="subst()">
+
+<div class="apunte"><p>Noticias cliente</p></div>
+<div  class="pie">
+<div class="logo">
+${helper.embed_logo_by_name('Motoscoot_footer')|n}
+</div>
 <div>
-<table style="font-size:12px;width:100%;text-align:center">
+
+<table style="font-size:11px;width:100%;text-align:center">
 <tr>
   <td>
       <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
@@ -127,7 +136,7 @@ padding-bottom:5px;
 </td>
 </tr>
 </table>
-<table style="border-top: 1px solid black; width: 100%">
+<table style="width:100%;text-align:right">
             <tr >
                 <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
             </tr>
@@ -136,10 +145,12 @@ padding-bottom:5px;
 </div>
 </div>
 </div>
-</body>]]></field>
+
+</body></html>]]></field>
             <field name="orientation">Portrait</field>
             <field name="format">A4</field>
             <field name="html"><![CDATA[
+
 
 <html>
     <head>
@@ -158,6 +169,7 @@ padding-bottom:5px;
         </script>
         <style type="text/css">
             ${css}
+
         </style>
     </head>
     <body  onload="subst()">
@@ -194,7 +206,13 @@ padding-bottom:5px;
     %>
     %endfor
 
+
+
 <div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
+<div class="vertical"><p>Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755</p></div>
+<div class="cabecera">
+
+
 <div class="datos_cliente">
 
     <table >
@@ -215,10 +233,28 @@ padding-bottom:5px;
 	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
 	 <tr><td>${order.partner_id.country_id.name}</td></tr>
      </table>
+
+<!--Datos Pedidos-->
+<br><br>
+     <table class="datos_pedido">
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;       <b>Fecha</b>:&nbsp;${order.date_order} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+     <tr>
+     <tr>
+        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+     </tr>
+</table>
+
 </div>
 
 
-<div  class="datos_empresa">
+<div class="datos_empresa">
      <table>
 
          <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
@@ -249,51 +285,44 @@ padding-bottom:5px;
      </table>
 </div>
 
-
-<table class="datos_pedido">
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;<b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-        </tr>
-</table>
 </div>
+<hr style="width:50%;align:center">
 
 
     %if order.note1:
         <p class="std_text"> ${order.note1 | n} </p>
     %endif
-    </div>
-        ${_debug or ''|n} </body>
+
+       ${_debug or ''|n}
+
+</body>
 </html>]]>
             </field>
             <field eval="10.0" name="margin_top"/>
             <field eval="0.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
 
-        body {
+         body {
         font-family:helvetica;
         font-size:10;
+
         }
 
        .cabecera {
-        margin-bottom:10px;
         text-align:right;
+        position:relative;
 
+        height:315px;
+        padding-bottom:10px;
+        padding-left:20px;
         }
 
         .datos_empresa {
         font-size:12px;
         text-align:right;
         float:right;
-        margin-top:35px;
+        margin-top:55px;
+
 
         }
 
@@ -308,10 +337,7 @@ padding-bottom:5px;
         }
 
 
-        .datos_pedido{
-        float:left;
-        margin-bottom:30px;
-        width:600px;
+        .datos_pedido {
         }
 
 
@@ -333,6 +359,46 @@ padding-bottom:5px;
         .totals {
         font-size:12px;
         }
+
+        .pie {
+
+         font-size:12px;
+         height:290px;
+
+        }
+        .logo {
+        border-top: 1px double #848484;
+        border-bottom: 1px solid #848484;
+        }
+
+        .apunte {
+        background:#E6E6E6;
+        height:25px;
+        margin-bottom:15px;
+
+        }
+
+        .vertical {
+        white-space:nowrap;
+        -webkit-transform:rotate(270deg);
+        display:block;
+        text-align:center;
+        float:left;
+        position:fixed;
+
+        top:450px;
+        font-size:9px;
+        color: #848484;
+        height:20px;
+        left:-305px;
+        padding-bottom:5px;
+        padding-top:1px;
+
+        }
+
+        .vertical p {
+        line-height:23px;
+       }
 
 
 ]]></field>
