@@ -44,7 +44,7 @@ class product_product(osv.osv):
         result = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            print prod_id.stock_location.id
+
             stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id),
                                                              ('location_id', '=', 15)]
                                                    ,
