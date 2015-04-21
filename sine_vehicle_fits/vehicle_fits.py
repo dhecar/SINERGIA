@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
+# OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
 import psycopg2
 import sys
 import csv
@@ -37,29 +37,29 @@ class vehicle_config(osv.osv):
     _descripcion = 'Configuration for Vehicle Fits link'
     _table = 'vehiclefits_config'
     _columns = {
-    
-	'name': fields.char('Name',size=20),
-	'vf_url':fields.char('Url',size=30,help="Url to Magento Web"),
-	'db_user':fields.char('DB user',size=20,required=True),
-	'db_password':fields.char('DB password', size=20,required=True),
-	'db_host' : fields.char ('IP DB host', size=15,required=True),
-	'db_name' : fields.char ('DB name', size=30,required=True),
-}
+
+        'name': fields.char('Name', size=20),
+        'vf_url': fields.char('Url', size=30, help="Url to Magento Web"),
+        'db_user': fields.char('DB user', size=20, required=True),
+        'db_password': fields.char('DB password', size=20, required=True),
+        'db_host': fields.char('IP DB host', size=15, required=True),
+        'db_name': fields.char('DB name', size=30, required=True),
+    }
+
 
 vehicle_config()
 
 
-
-
 class vehicle_export(osv.osv):
-    _name ='vehicle.export'
+    _name = 'vehicle.export'
     _description = 'Export Vehicle Fits to Magento'
     _table = 'vehiclefits_export'
 
     _columns = {
 
-	'date':fields.char('Last Export', size=20),
-}
+        'date': fields.char('Last Export', size=20),
+    }
+
 
 vehicle_export()
 
