@@ -8,32 +8,48 @@
             <field name="inherit_id" ref="product.product_normal_form_view" />
             <field name="type">form</field>
             <field name="arch" type="xml">
-		<notebook>
-		 <page string="Desglose Precios">
-		   <div id="main" style="height:550px">
-		     <div id="left" style="width:200px;float:left">
-			<group string="Precios Toptaller">
+            <xpath expr="//field[@name='description']" position="before">
+ 			<group col="2" colspan="2" string="Precios Toptaller">
 			  <field name="pvp_fabricante" help="Precio recomendado Fabricante" colspan="2" readonly='1' />
 			  <field name="pcoste"  help="Precio de coste" colspan="2" readonly='1'/>
 			  <field name="pvptt" help="Precio de venta TT" colspan="2" readonly='1'/>
 			  <field name="descuento" help="Descuento por defecto aplicado" readonly='1' />
 			  <field name="pvp_taller" help="Precio de venta a taller con el descuento por defecto de la marca" readonly='1'/>
-			 </group>
+
+            </group>
+                 <group>
+              <field name="partner_id" on_change="onchange_partner_id(partner_id,context)" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}'/>
+              <field name="pricelist_id"  on_change="amount(partner_calc_price,pricelist_id,partner_id)"  groups="product.group_sale_pricelist"/>
+			  <field name="partner_calc_price"/>
+              </group>
 			 <group string="Precios Motoscoot">
 			  <field name="list_price2" help="Precio Catalogo Motoscoot" colspan="2" readonly='1'/>
 			  <field name="p_online" help="Indicativo del Precio online con el descuento aplicado" readonly='1'/>
 			 </group>
-		
-			</div>
-<!--		      <div id="right" style="width:450px;float:right;background:#F79F81;padding:12px" groups="sine_prices_cal.group_price_manager">-->
-		      <div id="right" style="width:450px;float:right;background:#F79F81;padding:12px">
-			<group >
-                          <field name="basado_p_coste"/>
+
+
+
+            </xpath>
+            </field>
+<!--<div id="right" style="width:450px;float:right;background:#F79F81;padding:12px" groups="sine_prices_cal.group_price_manager">-->
+   </record>
+
+     <record model="ir.ui.view" id="product_motoscoot_form2_view">
+            <field name="name">product.normal.form2.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+
+         <notebook>
+		 <page string="Desglose Precios" groups="sine_price_cal.group_price_manager">
+            <div >
+			<group>
+              <field name="basado_p_coste"/>
 			  <field name="standard_price2"  attrs="{'invisible':[('basado_p_coste','=',False)]}" />
 			  <field name="incremento_p_coste" attrs="{'invisible':[('basado_p_coste','=',False)]}"  help="Incremento dado sobre el precio de coste"/>
-
-                        </group>
-			<group string="Calculos de precios Toptaller" >
+             </group>
+			<group string="Calculos de precios Toptaller">
 			  <field name="pvp"  on_change="pvp_basado_coste(basado_p_coste,incremento_p_coste,pvp,standard_price2)" colspan="2"/>
 			  <field name="descfabricante" help="Descuento proporcionado por el fabricante. Con este margen se calculará el precio para talleres" attrs="{'invisible':[('basado_p_coste','=',True)]}" on_change="desc_onchange(descfabricante)"  colspan="2"/>
 			  <field name="margen_beneficio" help="Margen minimo" colspan="2" visible="False"/>
@@ -43,7 +59,7 @@
 			  <field name ="beneficio" help="Beneficio de la venta al taller en tanto por ciento" colspan="2"/>
 			 </group>
 			<group string="Calculo de precios Motoscoot">
-			   
+
 			   <table>
 				<tr>
 				   <th width="50px" id="online">Online</th>
@@ -65,23 +81,16 @@
 			   </table>
 		      	 </group>
 			<group>
-			    <button name="update_values"   string="Actualizar precios (local/online)" type="object" icon="gtk-apply" /> 
+			    <button name="update_values"   string="Actualizar precios" type="object" icon="gtk-apply" />
 			</group>
-	 	     </div>
-			<div style="float:left">
-                         <group>
-                          <field name="partner_id" on_change="onchange_partner_id(partner_id,context)" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}'/>
-                          <field name="pricelist_id"  on_change="amount(partner_calc_price,pricelist_id,partner_id)"  groups="product.group_sale_pricelist"/>
-			  <field name="partner_calc_price"/>
-                         </group>
-                        </div>
 
-		  </div>	
+
+            </div>
 	        </page>
 		</notebook>
-            </field>
-   </record>
+         </field>
 
+     </record>
 <!--BOTON EN VISTA TREE -->
 
  

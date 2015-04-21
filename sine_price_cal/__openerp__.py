@@ -8,7 +8,7 @@
     "description": "Calculadora de precios. Adaptacion para Motoscoot.es",
     "depends" : ["product"],
     "update_xml" : ["motoscoot_prices_view.xml","supplier_view.xml"],
- #   "data": ['security/security.xml','security/ir.model.access.csv'],
+    "data": ['security/security.xml','security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }
