@@ -139,7 +139,7 @@ class product_pricelist(orm.Model):
                 else:
                     categ_where = '(categ_id IS NULL)'
 
-                product_brand_ids = products_dict[product_id].product_brand_id.id or False
+                product_brand_ids = products_dict[product_id].product_brand_id.id or 0
 
                 cr.execute(
                     'SELECT i.*, pl.currency_id '
