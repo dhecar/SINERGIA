@@ -43,7 +43,7 @@
 
          <notebook>
 		 <page string="Desglose Precios" groups="sine_price_cal.group_price_manager">
-            <div >
+            <div>
 			<group>
               <field name="basado_p_coste"/>
 			  <field name="standard_price2"  attrs="{'invisible':[('basado_p_coste','=',False)]}" />

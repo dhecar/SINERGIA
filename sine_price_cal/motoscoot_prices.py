@@ -5,6 +5,7 @@ import openerp.addons.decimal_precision as dp
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
+
 class product_product(osv.osv):
     def get_pvp(self, cr, uid, ids, val, arg, context=None):
         supl_obj = self.pool.get('product.supplierinfo')
@@ -80,7 +81,7 @@ class product_product(osv.osv):
             }
         return {'value': val}
 
-    #  CALCULO PRECIO SEGUN PARTNER ESCOGIDO
+    # CALCULO PRECIO SEGUN PARTNER ESCOGIDO
 
     def amount(self, cr, uid, ids, partner_calc_price, pricelist_id, partner_id, context=None):
         if not pricelist_id:
@@ -170,7 +171,6 @@ class product_product(osv.osv):
             }
             return {'value': val}
 
-
     def pvp_basado_coste(self, cr, uid, ids, basado_p_coste, incremento_p_coste, pvp, standard_price2, context=None):
 
         pvp_iva = pvp + (pvp * 0.21)
@@ -184,7 +184,7 @@ class product_product(osv.osv):
             }
             return {'value': val}
 
-        if basado_p_coste is True and standard_price2 <> 0:
+        if basado_p_coste is True and standard_price2 != 0:
             val = {
                 'incremento_p_coste': ((float(pvp) - float(standard_price2)) / float(standard_price2)) * 100.00,
                 'pvpms': pvp,
@@ -199,7 +199,6 @@ class product_product(osv.osv):
                 'message': _('Por favor introduce el precio de coste'),
             }
             return {'value': res.get('value', {}), 'warning': warning}
-
 
     def update_values(self, cr, uid, ids, context=None):
         for price in self.browse(cr, uid, ids, context=None):
