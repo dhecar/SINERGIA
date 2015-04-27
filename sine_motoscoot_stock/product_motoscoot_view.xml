@@ -4,7 +4,7 @@
 
 <!--ACCION DE VENTANA -->
 <act_window
-            context="{'product_id': active_id, 'only_with_stock': True}"
+        context="{'product_id': active_id, 'only_with_stock': True}"
 	    domain="[('usage', '=', 'internal')]"
 	    id="act_stock_product_location_open"
             name="Stock by Location"

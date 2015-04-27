@@ -27,7 +27,7 @@ class product_product(osv.osv):
 
     def test(self, cr, uid, ids, field_names=None, arg=None, context=None):
         result = {}
-        if not ids: return result
+        if not ids:return result
 
         context['only_with_stock'] = True
 
@@ -62,7 +62,8 @@ class product_product(osv.osv):
         stock = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 19)],
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id),
+                                                             ('location_id', '=', 19)],
                                                    context=context)
             if stock_prod_ids:
                 for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
@@ -77,7 +78,8 @@ class product_product(osv.osv):
         result = {}
         stock_prod_obj = self.pool.get('stock.report.prodlots')
         for prod_id in ids:
-            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id), ('location_id', '=', 12)],
+            stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', prod_id),
+                                                             ('location_id', '=', 12)],
                                                    context=context)
             if stock_prod_ids:
                 for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
