@@ -19,9 +19,13 @@
 #
 ##############################################################################
 import logging
-import xmlrpclib
-import openerp.addons.decimal_precision as dp
-from openerp.osv import fields, orm
+from openerp.addons.connector.unit.mapper import (mapping,
+                                                  ImportMapper
+                                                  )
+from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
+                                                     CashOnDeliveryLineBuilder,
+                                                     GiftOrderLineBuilder)
+_logger = logging.getLogger(__name__)
 
 
 class SaleOrderImportMapperExtension(ImportMapper):
