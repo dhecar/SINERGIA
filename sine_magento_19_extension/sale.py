@@ -27,10 +27,10 @@ from .backend import magento
 _logger = logging.getLogger(__name__)
 
 
-class SaleOrderImportMapperExtension(ImportMapper):
+class SaleOrderImportMapper(ImportMapper):
     _inherit = 'magento.sale.order'
 
-    def _add_cash_on_delivery_line_extension(self, map_record, values):
+    def _add_cash_on_delivery_line(self, map_record, values):
         record = map_record.source
         amount_excl = float(record.get('msp_base_cashondelivery') or 0.0)
         amount_incl = float(record.get('msp_base_cashondelivery_incl_tax') or 0.0)
