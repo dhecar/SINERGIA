@@ -19,12 +19,16 @@
 #
 ##############################################################################
 import logging
+
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper
                                                   )
-from openerp.addons.connector_ecommerce.sale import (ShippingLineBuilder,
-                                                     CashOnDeliveryLineBuilder,
-                                                     GiftOrderLineBuilder)
+
+from openerp.addons.connector_ecommerce.sale import (CashOnDeliveryLineBuilder)
+
+from .backend import magento
+
+
 _logger = logging.getLogger(__name__)
 
 
@@ -46,3 +50,6 @@ class SaleOrderImportMapperExtension(ImportMapper):
         return values
 
 
+@magento
+class MagentoCashOnDeliveryLineBuilder(CashOnDeliveryLineBuilder):
+    _model_name = 'magento.sale.order
