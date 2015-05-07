@@ -43,7 +43,7 @@ class LdapPartner(osv.osv):
         addr_obj = self.pool.get('res.partner')
         if not isinstance(ids, list):
             ids = [ids]
-        addr_ids = addr_obj.search(cursor, uid, [('partner_id', 'in', ids)])
+        addr_ids = addr_obj.search(cursor, uid, [('id', 'in', ids)])
         addr_obj.unlink(cursor, uid, addr_ids, context=context)
         return super(LdapPartner, self).unlink(cursor, uid, ids, context=context)
 

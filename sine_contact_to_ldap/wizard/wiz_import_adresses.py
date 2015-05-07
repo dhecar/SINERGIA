@@ -71,19 +71,17 @@ def _action_import_adresses(self, cr, uid, data, context):
     logger = netsvc.Logger()
     error_report = [u'Error report']
     add_obj = pooler.get_pool(cr.dbname).get('res.partner')
-    add_ids = add_obj.search(cr,uid,[])
+    add_ids = add_obj.search(cr, uid, [])
     addresses = add_obj.browse(cr, uid, add_ids)
-    phone_fields = ['phone','fax','mobile','private_phone']
-    for add in addresses :
+    phone_fields = ['phone', 'fax', 'mobile']
+    for add in addresses:
         vals = {}
         vals['partner_id'] = add.partner_id.id
         vals['email'] = add.email
         vals['phone'] = add.phone
         vals['fax'] = add.fax
         vals['mobile'] = add.mobile
-        vals['firstname'] = add.firstname
-        vals['lastname'] = add.lastname
-        vals['private_phone'] = add.private_phone
+        vals['name'] = add.firstname
         vals['street'] = add.street
         vals['street2'] = add.street2
         vals['city'] = add.city
@@ -93,7 +91,7 @@ def _action_import_adresses(self, cr, uid, data, context):
                     "^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", add.email) is None or\
                re.search(u"[éèàêöüäï&]", add.email) is not None:
                 msg=u'Addresse %s for partner  %s has email that is invalid %s'%(
-                    unicode(vals['firstname']) +' '+ unicode(vals['lastname']),
+                    unicode(vals['firstname']) + ' '+unicode(vals['lastname']),
                     add.partner_id.name,
                     unicode(add.email)
                     )
@@ -102,11 +100,11 @@ def _action_import_adresses(self, cr, uid, data, context):
                 vals['email'] = False
         # Validating the Phone
         for key in phone_fields :
-            if not unicode(vals[key]).startswith('+')  or unicode(vals[key]).find("\n") != -1\
+            if not unicode(vals[key]).startswith('+') or unicode(vals[key]).find("\n") != -1\
             or re.search(u"[éèàêöüä#&]", unicode(vals[key])) is not None:
                 vals[key] = False
                 msg = u'Addresse %s for partner  %s has %s that is invalid '%(
-                    unicode(vals['firstname']) +' '+ unicode(vals['lastname']),
+                    unicode(vals['firstname']) + ' '+unicode(vals['lastname']),
                     add.partner_id.name,
                     key
                     )

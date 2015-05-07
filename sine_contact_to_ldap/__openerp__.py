@@ -36,7 +36,7 @@
     "website": "http://sinergiainformatica.net",
     "description":"",
     "update_xml":['company_view.xml',
-                  "wizard.xml"],
+                  'wizard.xml'],
     "data": [],
     "demo_xml": [],
     "active": True,
