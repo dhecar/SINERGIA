@@ -10,34 +10,28 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Configuration">
-		<field name="name" colspan="4" />
-		<field name="vf_url"  colspan="4" />
-	 	<field name="db_host" colspan="4" />
-		<field name="db_name" colspan="4" />
-	   	<field name="db_user" colspan="4" />
-		<field name="db_password" colspan="4" password="True"/>
+        <group col="2" colspan="2" string="Ftp config">
+		<field name="name"/>
+		<field name="vf_url"/>
+	 	<field name="sftp_host"/>
+        <field name="sftp_port"/>
+		<field name="sftp_user"/>
+		<field name="sftp_password" password="True"/>
+        <field name="sftp_pem"/>
+        <field name="sftp_local_file" />
+        <field name="sftp_remote_file" />
+        <field name="sftp_remote_dir" />
+        <button name="test_sftp_connection" type="object" string="Test Connection" icon="gtk-network"/>
+
+        </group>
+        <group col="2" colspan="2" string="Erp config">
+            <field name="erp_user"/>
+            <field name="erp_db"/>
+            <field name="erp_password" password="True"/>
+        </group>
             </form>
 	</field>
    </record>
-
-
-
-<!--Vehicle Fits_export Form View-->
-    <record model="ir.ui.view" id="vehicle_fits_export_form_view">
-        <field name="name">vf_export.form</field>
-        <field name="model">vehicle.export</field>
-        <field name="type">form</field>
-        <field name="arch" type="xml">
-            <form string="Export">
-                <field name="date" colspan="4" />
-<!--                <field name="user"  colspan="4" />-->
-            </form>
-        </field>
-   </record>
-
-
-
-
 <!--Vehicle_Fits Tree  View-->
 
     <record model="ir.ui.view" id="vehicle_fits_config_tree_view">
@@ -61,24 +55,32 @@
 </record>
 
 
-<!-- Vehicle_fits_export form action -->
-<record model="ir.actions.act_window" id="vehicle_fits_export_form">
-        <field name="name">Export Models</field>
-        <field name="res_model">vehicle.export</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+
+     <!-- Vehicle fits export form -->
+     <record model="ir.ui.view" id="vehicle_fits_export_form_view">
+	    <field name="name">vf_export.form</field>
+	    <field name="model">vehicle.export</field>
+        <field name="arch" type="xml">
+                <field name="date_from" colspan="4" />
+		        <field name="date_to"  colspan="4" />
+        </field>
+     </record>
+
+<!-- Vehicle Fits wizard action -->
+     <record id="action_vehicle_fits_export" model="ir.actions.act_window">
+    <field name="name">Export to Magento</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">vehicle.export</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
 </record>
-
-
-
-
 
 
 <!--MENUS-->
 <menuitem name="Vehicle_Export" id="vf_conf" parent="sine_scooter_models.scooter_menu"  sequence="4" />
 <menuitem name="VF Conf" id="vf_conf_mag" parent="vf_conf" action="vehicle_fits_config_form" sequence="3"/>
-<menuitem name="VF Export" id="vf_export" parent="vf_conf"  action="vehicle_fits_export_form" sequence="3"/>
-
+<menuitem name="Export to Magento" id="vf_export_mag" parent="vf_conf" action="action_vehicle_fits_export" sequence="3"/>
  </data>
 </openerp>
 
