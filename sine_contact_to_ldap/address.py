@@ -196,11 +196,11 @@ class LDAPAddress(osv.osv):
         phones = (('phone', phone), ('fax', fax), ('mobile', mobile))
         for phone_tuple in phones:
             phone_number = phone_tuple[1]
-            if phone_number:
-                if not phone_number.startswith('+'):
-                    raise osv.except_osv(_('Warning !'),
-                                         _('Please enter a valid phone number in %s'
-                                           ' international format (i.e. leading +)') % phone_tuple[0])
+            #if phone_number:
+            #    if not phone_number.startswith('+'):
+            #        raise osv.except_osv(_('Warning !'),
+            #                             _('Please enter a valid phone number in %s'
+            #                               ' international format (i.e. leading +)') % phone_tuple[0])
 
     def getVals(self, att_name, key, vals, dico, uid, ids, cursor, context=None):
         """map to values to dict"""
