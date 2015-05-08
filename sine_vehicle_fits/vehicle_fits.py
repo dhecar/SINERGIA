@@ -125,7 +125,7 @@ class VehicleExport(osv.osv):
                        " LEFT JOIN scooter_compat_with_product_rel ON"
                        " scooter_asociaciones.id = scooter_compat_with_product_rel.scooter_id"
                        " LEFT JOIN product_product ON"
-                       " product_product.id = scooter_compat_with_product_rel.product_id7"
+                       " product_product.id = scooter_compat_with_product_rel.product_id"
                        " ORDER BY make ")
 
         records = ()
