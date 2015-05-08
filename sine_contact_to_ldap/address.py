@@ -138,7 +138,7 @@ class LDAPAddress(osv.osv):
             self.saveLdapContact(tmp_id, vals, cursor, uid, context)
         return tmp_id
 
-    def write(self, cursor, uid, ids, vals, context=None):
+    def write_ldap(self, cursor, uid, ids, vals, context=None):
         context = context or {}
         self.getconn(cursor, uid, {})
         if not isinstance(ids, list):
@@ -148,7 +148,7 @@ class LDAPAddress(osv.osv):
         if context.has_key('init_mode') and context['init_mode']:
             success = True
         else:
-            success = super(LDAPAddress, self).write(cursor, uid, ids,
+            success = super(LDAPAddress, self).write_ldap(cursor, uid, ids,
                                                      vals, context)
         if self.ldaplinkactive(cursor, uid, context):
             for address_id in ids:
