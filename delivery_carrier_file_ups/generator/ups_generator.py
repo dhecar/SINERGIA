@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+# Author: Guewen Baconnier
 #    Copyright 2012 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -29,28 +29,27 @@ class UPSLine(BaseLine):
               ('name', 30),
               ('street', 30),
               ('city', 30),
-	      ('country',2),
+              ('country', 2),
               ('zip', 9),
-	      ('phone',16),
-	      ('mail', 50),
-	      ('mail', 50),
-	      ('ups_account',9),
-	      ('service',2),
-	      ('package_type',2),
-	      ('numpack',2),
-	      ('weight',3),
-	      ('goods',15),
-	      ('reference1',20),
-	      ('reference2',20),
-	      ('cash',1),
-	      ('ups_cod_price',3),
-	      ('amount',4),
-	      ('currency',1),
-	      ('total'))
+              ('phone', 16),
+              ('mail', 50),
+              ('mail', 50),
+              ('ups_account', 9),
+              ('service', 2),
+              ('package_type', 2),
+              ('numpack', 2),
+              ('weight', 3),
+              ('goods', 15),
+              ('reference1', 20),
+              ('reference2', 20),
+              ('cash', 1),
+              ('ups_cod_price', 3),
+              ('amount', 4),
+              ('currency', 1),
+              ('total'))
 
 
 class UpsFileGenerator(CarrierFileGenerator):
-
     @classmethod
     def carrier_for(cls, carrier_name):
         return carrier_name == 'Ups'
@@ -70,7 +69,7 @@ class UpsFileGenerator(CarrierFileGenerator):
         :return: list of rows
         """
         line = UPSLine()
-	line.reference = picking.name
+        line.reference = picking.name
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
@@ -83,20 +82,20 @@ class UpsFileGenerator(CarrierFileGenerator):
             line.country = address.country_id.code
             line.phone = address.phone or address.mobile
             line.mail = address.email
-	line.ups_account = configuration.ups_account
-	line.service = configuration.ups_service_level
-	line.package_type = configuration.ups_package_type
-	line.numpack = picking.number_of_packages
+        line.ups_account = configuration.ups_account
+        line.service = configuration.ups_service_level
+        line.package_type = configuration.ups_package_type
+        line.numpack = picking.number_of_packages
         line.goods = configuration.ups_description_goods
-	line.reference1 = picking.name
-	line.reference2 = picking.name
-	#line.amount = picking.origin.amount
-	#line.currency = picking.origin.currency
-	line.weight = "%.2f" % (picking.weight)
-	line.cash = configuration.ups_cash
-	line.ups_cod_price = configuration.ups_cod_price
-	line.total = picking.sale_id.amount_total
-	line.currency = picking.company_id.currency_id.name
+        line.reference1 = picking.name
+        line.reference2 = picking.name
+        #line.amount = picking.origin.amount
+        #line.currency = picking.origin.currency
+        line.weight = "%.2f" % (picking.weight)
+        line.cash = configuration.ups_cash
+        line.ups_cod_price = configuration.ups_cod_price
+        line.total = picking.sale_id.amount_total
+        line.currency = picking.company_id.currency_id.name
         return [line.get_fields()]
 
     def _write_rows(self, file_handle, rows, configuration):
@@ -113,8 +112,7 @@ class UpsFileGenerator(CarrierFileGenerator):
                                lineterminator='\n', quoting=csv.QUOTE_NONE)
         writer.writerows(rows)
 
-
-	return file_handle
+        return file_handle
 
 
 
