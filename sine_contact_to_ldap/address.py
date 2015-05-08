@@ -8,6 +8,9 @@
 # Active directory Donor: M. Benadiba (Informatique Assistances.fr)
 # Contribution : Joel Grand-Guillaume
 #
+# Adapted to fill MyPBXu100 LDAP server by Sinergiainformatica.net
+# Author:David Hernandez. 2015
+#
 # WARNING: This program as such is intended to be used by professional
 # programmers who take the whole responsability of assessing all potential
 # consequences resulting from its eventual inadequacies and bugs
@@ -193,11 +196,11 @@ class LDAPAddress(osv.osv):
         phones = (('phone', phone), ('fax', fax), ('mobile', mobile))
         for phone_tuple in phones:
             phone_number = phone_tuple[1]
-            #if phone_number:
-            #    if not phone_number.startswith('+'):
-            #        raise osv.except_osv(_('Warning !'),
-            #                             _('Please enter a valid phone number in %s'
-            #                               ' international format (i.e. leading +)') % phone_tuple[0])
+            if phone_number:
+                if not phone_number.startswith('+'):
+                    raise osv.except_osv(_('Warning !'),
+                                         _('Please enter a valid phone number in %s'
+                                           ' international format (i.e. leading +)') % phone_tuple[0])
 
     def getVals(self, att_name, key, vals, dico, uid, ids, cursor, context=None):
         """map to values to dict"""
