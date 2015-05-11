@@ -124,10 +124,6 @@ class LDAPAddress(osv.osv):
             x[record.id] = a + " " + b
         return x
 
-    _columns = {
-
-    }
-
     def create(self, cursor, uid, vals, context={}):
         self.getconn(cursor, uid, {})
         ids = None
@@ -138,7 +134,7 @@ class LDAPAddress(osv.osv):
             self.saveLdapContact(tmp_id, vals, cursor, uid, context)
         return tmp_id
 
-    def write_ldap(self, cursor, uid, ids, vals, context=None):
+    def write(self, cursor, uid, ids, vals, context=None):
         context = context or {}
         self.getconn(cursor, uid, {})
         if not isinstance(ids, list):
@@ -148,7 +144,7 @@ class LDAPAddress(osv.osv):
         if context.has_key('init_mode') and context['init_mode']:
             success = True
         else:
-            success = super(LDAPAddress, self).write_ldap(cursor, uid, ids,
+            success = super(LDAPAddress, self).write(cursor, uid, ids,
                                                      vals, context)
         if self.ldaplinkactive(cursor, uid, context):
             for address_id in ids:
@@ -196,10 +192,10 @@ class LDAPAddress(osv.osv):
         phones = (('phone', phone), ('fax', fax), ('mobile', mobile))
         for phone_tuple in phones:
             phone_number = phone_tuple[1]
-            #if phone_number:
-            #    if not phone_number.startswith('+'):
-            #        raise osv.except_osv(_('Warning !'),
-            #                             _('Please enter a valid phone number in %s'
+            # if phone_number:
+            # if not phone_number.startswith('+'):
+            # raise osv.except_osv(_('Warning !'),
+            # _('Please enter a valid phone number in %s'
             #                               ' international format (i.e. leading +)') % phone_tuple[0])
 
     def getVals(self, att_name, key, vals, dico, uid, ids, cursor, context=None):
@@ -246,23 +242,20 @@ class LDAPAddress(osv.osv):
             if not vals.get(val):
                 vals[val] = previousvalue[val]
 
-
     def mappLdapObject(self, id, vals, cursor, uid, context):
         """Mapp ResPArtner adress to moddlist"""
         self.addNeededFields(id, vals, cursor, uid)
         conn = self.getconn(cursor, uid, {})
         keys = vals.keys()
         partner_obj = self.pool.get('res.partner')
-        name = partner_obj.browse(cursor, uid, vals['id']).name
-        vals['partner'] = name
-        if name:
-            cn = name
+        part_name = partner_obj.browse(cursor, uid, vals['id']).name
+        vals['partner'] = part_name
 
         contact_obj = {'objectclass': ['inetOrgPerson'],
                        'uid': [str(id)],
                        'ou': [conn.OU],
-                       'cn': [name],
-                       'sn': [name]
+                       'cn': partner_obj.browse(cursor, uid, vals['id']).name,
+                       'sn': partner_obj.browse(cursor, uid, vals['id']).name,
                        }
         if not vals.get('street'):
             vals['street'] = u''
@@ -275,7 +268,7 @@ class LDAPAddress(osv.osv):
             street_key = 'streetAddress'
         contact_obj[street_key] = vals['street'] + "\r\n" + vals['street2']
         # we modifiy the class
-
+        contact_obj['objectclass'] = ['top', 'person', 'organizationalPerson', 'inetOrgPerson']
 
         # we handle the state
         if vals.get('state_id'):
@@ -290,8 +283,12 @@ class LDAPAddress(osv.osv):
             self.getVals('st', 'state_id', vals, contact_obj, uid, id, cursor, context)
 
         # we compute the display name
-        vals['displayName'] = '%s %s' % (vals['partner'], contact_obj['cn'][0])
-        # we get the title
+        vals['displayName'] = '%s' % (contact_obj['cn'][0])
+        # we get the title and function. TODO category
+        if self.browse(cursor, uid, id).title:
+            contact_obj['title'] = self.browse(cursor, uid, id).title.name
+
+
         if self.browse(cursor, uid, id).function:
             contact_obj['description'] = self.browse(cursor, uid, id).function
         # we replace carriage return
@@ -311,7 +308,6 @@ class LDAPAddress(osv.osv):
         self.getVals('l', 'city', vals, contact_obj, uid, id, cursor, context)
         self.getVals('facsimileTelephoneNumber', 'fax', vals, contact_obj, uid, id, cursor, context)
         self.getVals('mobile', 'mobile', vals, contact_obj, uid, id, cursor, context)
-
         self.getVals('postalCode', 'zip', vals, contact_obj, uid, id, cursor, context)
         self.unUnicodize(contact_obj)
         return contact_obj
@@ -330,6 +326,7 @@ class LDAPAddress(osv.osv):
         except Exception, e:
             raise e
         conn.connexion.unbind_s()
+
 
     def updateLdapContact(self, id, vals, cursor, uid, context):
         """update an existing contact with the data of OpenERP"""
