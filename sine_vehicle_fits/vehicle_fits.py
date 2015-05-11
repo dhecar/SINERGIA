@@ -31,6 +31,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
 import openerp.tools as tools
+import base64
 
 from StringIO import StringIO
 
@@ -47,23 +48,23 @@ class vehicle_config(osv.osv):
             server = sftp_server.sftp_host
             port = sftp_server.sftp_port
 
-            try:
-                transport = paramiko.Transport((server, port))
-                private_key = StringIO(sftp_server.sftp_pem)
-                if private_key:
-                    mykey = paramiko.RSAKey.from_private_key(private_key)
-                    username = sftp_server.sftp_user
-                    transport.connect(username=username, pkey=mykey)
+        try:
+            transport = paramiko.Transport((server, port))
+            private_key = StringIO(base64.standard_b64decode(sftp_server.sftp_pem))
+            if private_key:
+                mykey = paramiko.RSAKey.from_private_key(private_key)
+                username = sftp_server.sftp_user
+                transport.connect(username=username, pkey=mykey)
 
-            except Exception, e:
-                raise osv.except_osv("Connection Test Failed!",
+        except Exception, e:
+            raise osv.except_osv("Connection Test Failed!",
                                      "Here is what we got instead:\n %s" % tools.ustr(e))
-            finally:
-                try:
-                    if transport: transport.close()
-                except Exception:
-                        # ignored, just a consequence of the previous exception
-                    pass
+        finally:
+            try:
+                if transport: transport.close()
+            except Exception:
+            # ignored, just a consequence of the previous exception
+                pass
         raise osv.except_osv("Connection Test Succeeded!", "Everything seems properly set up!")
 
 
@@ -76,7 +77,7 @@ class vehicle_config(osv.osv):
         'vf_url': fields.char('Url', size=30, help="Url to Magento Web"),
         'sftp_user': fields.char('Ftp user', size=20, required=True),
         'sftp_password': fields.char('Ftp password', size=20, required=False),
-        'sftp_pem': fields.binary('FTP PEM key'),
+        'sftp_pem': fields.binary('RSA Key', required=True),
         'sftp_host': fields.char('FTP IP host', size=15, required=True),
         'sftp_port': fields.integer('Ftp Port', help='Port of the connection'),
         'sftp_local_file': fields.char('Full path to local csv file'),
@@ -105,7 +106,7 @@ class VehicleExport(osv.osv):
         return connection_parameters
 
 
-    def export_to_magento(self):
+    def export_to_magento(self, cr, uid, ids, context=None):
         # Define our connection string
         conn_string = _get_conf_erp()
         # get a connection, if a connect cannot be made an exception will be raised here
@@ -150,7 +151,7 @@ class VehicleExport(osv.osv):
 
         # Create the transport with paramiko
         transport = paramiko.Transport((host, port))
-        mykey = paramiko.RSAKey.from_private_key_file(key)
+        mykey = paramiko.RSAKey.from_private_key(base64.b64decode(key))
         username = user
 
         transport.connect(username=username, pkey=mykey)

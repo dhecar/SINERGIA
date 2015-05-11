@@ -62,8 +62,10 @@
 	    <field name="name">vf_export.form</field>
 	    <field name="model">vehicle.export</field>
         <field name="arch" type="xml">
+                <button name="export_to_magento" type="object" string="Export fitments" icon="gtk-network"/>
                 <field name="date_from" colspan="4" />
 		        <field name="date_to"  colspan="4" />
+
         </field>
      </record>
 
