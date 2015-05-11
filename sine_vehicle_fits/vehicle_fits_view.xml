@@ -28,6 +28,7 @@
             <field name="erp_user"/>
             <field name="erp_db"/>
             <field name="erp_password" password="True"/>
+            <field name="erp_host" />
         </group>
             </form>
 	</field>

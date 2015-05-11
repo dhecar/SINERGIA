@@ -44,12 +44,14 @@ class vehicle_config(osv.osv):
     def test_sftp_connection(self, cr, uid, ids, context=None):
         for sftp_server in self.browse(cr, uid, ids, context=context):
             transport = False
+            server = sftp_server.sftp_host
+            port = sftp_server.sftp_port
 
             try:
-                transport = paramiko.Transport((sftp_server.sftp_host, sftp_server.sftp_port))
-                private_key = unicode(sftp_server.sftp_pem)
+                transport = paramiko.Transport((server, port))
+                private_key = StringIO(sftp_server.sftp_pem)
                 if private_key:
-                    mykey = paramiko.RSAKey.from_private_key(StringIO(private_key))
+                    mykey = paramiko.RSAKey.from_private_key(private_key)
                     username = sftp_server.sftp_user
                     transport.connect(username=username, pkey=mykey)
 
@@ -60,7 +62,7 @@ class vehicle_config(osv.osv):
                 try:
                     if transport: transport.close()
                 except Exception:
-                    # ignored, just a consequence of the previous exception
+                        # ignored, just a consequence of the previous exception
                     pass
         raise osv.except_osv("Connection Test Succeeded!", "Everything seems properly set up!")
 
