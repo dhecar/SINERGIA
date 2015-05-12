@@ -115,15 +115,6 @@ class LDAPAddress(osv.osv):
     _inherit = 'res.partner'
     ldapMapper = None
 
-    def _name_get_fnc(self, cr, uid, ids, field_name, arg, context):
-        x = {}
-        for record in self.browse(cr, uid, ids, context):
-            fullname = record.name
-            a = fullname.split(' ', 1)[0]
-            b = fullname.split()[-1]
-            x[record.id] = a + " " + b
-        return x
-
     def create(self, cursor, uid, vals, context={}):
         self.getconn(cursor, uid, {})
         ids = None
@@ -196,7 +187,7 @@ class LDAPAddress(osv.osv):
             # if not phone_number.startswith('+'):
             # raise osv.except_osv(_('Warning !'),
             # _('Please enter a valid phone number in %s'
-            #                               ' international format (i.e. leading +)') % phone_tuple[0])
+            # ' international format (i.e. leading +)') % phone_tuple[0])
 
     def getVals(self, att_name, key, vals, dico, uid, ids, cursor, context=None):
         """map to values to dict"""
@@ -250,12 +241,11 @@ class LDAPAddress(osv.osv):
         partner_obj = self.pool.get('res.partner')
         part_name = partner_obj.browse(cursor, uid, vals['id']).name
         vals['partner'] = part_name
-
         contact_obj = {'objectclass': ['inetOrgPerson'],
                        'uid': [str(id)],
                        'ou': [conn.OU],
-                       'cn': partner_obj.browse(cursor, uid, vals['id']).name,
-                       'sn': partner_obj.browse(cursor, uid, vals['id']).name,
+                       'cn': [part_name],
+                       'sn': [part_name],
                        }
         if not vals.get('street'):
             vals['street'] = u''
@@ -281,26 +271,21 @@ class LDAPAddress(osv.osv):
 
         if vals.get('state_id', False):
             self.getVals('st', 'state_id', vals, contact_obj, uid, id, cursor, context)
-
         # we compute the display name
-        vals['displayName'] = '%s' % (contact_obj['cn'][0])
-        # we get the title and function. TODO category
+        vals['displayName'] = '%s %s ' % (part_name, contact_obj['cn'][0])
+         # we get the title and function.
+        # TODO category
         if self.browse(cursor, uid, id).title:
             contact_obj['title'] = self.browse(cursor, uid, id).title.name
-
-
         if self.browse(cursor, uid, id).function:
             contact_obj['description'] = self.browse(cursor, uid, id).function
         # we replace carriage return
         if vals.get('comment', False):
             vals['comment'] = vals['comment'].replace("\n", "\r\n")
-
         self.getVals('description', 'comment', vals, contact_obj, uid, id, cursor, context)
         self.getVals('displayName', 'partner', vals, contact_obj, uid, id, cursor, context)
         self.getVals('departmentNumber', 'function', vals, contact_obj, uid, id, cursor, context)
         self.getVals('labeledURI', 'website', vals, contact_obj, uid, id, cursor, context)
-
-
         # Common attributes
         # self.getVals('givenName', 'firstname', vals, contact_obj, uid, id, cursor, context)
         self.getVals('mail', 'email', vals, contact_obj, uid, id, cursor, context)
@@ -321,12 +306,11 @@ class LDAPAddress(osv.osv):
                 conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
             else:
-                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
         except Exception, e:
             raise e
         conn.connexion.unbind_s()
-
 
     def updateLdapContact(self, id, vals, cursor, uid, context):
         """update an existing contact with the data of OpenERP"""
@@ -346,12 +330,16 @@ class LDAPAddress(osv.osv):
                     val = val[0]
                 modlist.append((ldap.MOD_REPLACE, key, val))
         else:
-            modlist = ldap.modlist.modifyModlist(old_contatc_obj[1], contact_obj)
+            modlist = ldap.modlist.modifyModlist(
+                old_contatc_obj[1],
+                contact_obj
+            )
         try:
             conn.connexion.modify_s(old_contatc_obj[0], modlist)
             conn.connexion.unbind_s()
-        except Exception, e:
-            raise e
+        except Exception:
+            raise
+
 
     def removeLdapContact(self, id, cursor, uid):
         """Remove a contact from ldap"""
