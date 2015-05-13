@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
+# OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,12 +18,10 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
+
 
 class marcas_scooter(osv.osv):
-
-
-
     def create(self, cr, uid, vals, context=None):
         model = vals.get('brand')
         if vals.get('brand'):
@@ -31,14 +29,13 @@ class marcas_scooter(osv.osv):
         return super(marcas_scooter, self).create(cr, uid, vals, context=context)
 
 
-
     _name = 'marcas.scooter'
     _descripcion = 'Marcas'
     _table = 'marcas_scooter'
-    _rec_name ='brand'
+    _rec_name = 'brand'
     _columns = {
-        'brand': fields.char ('Marca', size=64, required =True, help='Marca de la moto'),
-}
+        'brand': fields.char('Marca', size=64, required=True, help='Marca de la moto'),
+    }
 
     # Restriccion unica al campo 
     _sql_constraints = [

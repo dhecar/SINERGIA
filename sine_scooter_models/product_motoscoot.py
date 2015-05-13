@@ -1,6 +1,6 @@
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
+# OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -18,18 +18,19 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
 
 
 class product_product(osv.osv):
     _name = 'product.product'
     _inherit = 'product.product'
 
-
     _columns = {
-	'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id', 'scooter_id', 'scooter models'),
-	
+        'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
+                                         'scooter_id', 'scooter models'),
+
     }
+
 
 product_product()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

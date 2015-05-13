@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
+# OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,17 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
 
 
 class res_partner(osv.osv):
-	_inherit = 'res.partner'
-	_columns = {
-		'scooters_id' : fields.many2many('scooter.asociaciones', 'partner_scooter_rel', 'partner_id', 'scooter_id', string='Scooter belongs', help='Modelos de scooter de cliente'),
+    _inherit = 'res.partner'
+    _columns = {
+        'scooters_id': fields.many2many('scooter.asociaciones', 'partner_scooter_rel', 'partner_id', 'scooter_id',
+                                        string='Scooter belongs', help='Modelos de scooter de cliente'),
 
-}
+    }
+
+
 res_partner()
 
