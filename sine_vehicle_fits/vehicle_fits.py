@@ -105,7 +105,6 @@ class VehicleExport(osv.osv):
         connection_parameters = "host=%s dbname=s% user=%s password=%s" % (host, dbname, user, password)
         return connection_parameters
 
-
     def export_to_magento(self, cr, uid, ids, context=None):
         # Define our connection string
         conn_string = _get_conf_erp()
@@ -172,7 +171,6 @@ class VehicleExport(osv.osv):
     _columns = {
         'date_from': fields.date('Date From'),
         'date_to': fields.date('Date To'),
+
     }
-
-
 VehicleExport()

@@ -9,7 +9,7 @@
 	<field name="model">vehicle.config</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form string="Configuration">
+        <form string="Configuration">
         <group col="2" colspan="2" string="Ftp config">
 		<field name="name"/>
 		<field name="vf_url"/>
@@ -56,17 +56,14 @@
 </record>
 
 
-
-     <!-- Vehicle fits export form -->
+<!-- Vehicle fits export form -->
      <record model="ir.ui.view" id="vehicle_fits_export_form_view">
 	    <field name="name">vf_export.form</field>
 	    <field name="model">vehicle.export</field>
         <field name="arch" type="xml">
-                <button name="export_to_magento" type="object" string="Export fitments" icon="gtk-network"/>
                 <field name="date_from" colspan="4" />
 		        <field name="date_to"  colspan="4" />
-
-        </field>
+      </field>
      </record>
 
 <!-- Vehicle Fits wizard action -->
@@ -76,7 +73,7 @@
     <field name="res_model">vehicle.export</field>
     <field name="view_type">form</field>
     <field name="view_mode">form</field>
-    <field name="target">new</field>
+    <!--<field name="target">new</field>-->
 </record>
 
 

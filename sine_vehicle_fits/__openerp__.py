@@ -5,7 +5,8 @@
     "author" : "David Hernández",
     "category" : "Generic Modules/Others",
     "website" : "http://sinergiainformatica.net",
-    "description": "Export the applications for products to Vehicle Fits. http://vehiclefits.com/",
+    "description": "Export the applications for products to Vehicle Fits. http://vehiclefits.com/. You need a RSA key"
+                   "to connect throught sftp to push the csv file",
     "depends" : ["sine_scooter_models"],
     "update_xml" : ["vehicle_fits_view.xml"],
     "active": True,
