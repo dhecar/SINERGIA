@@ -104,6 +104,7 @@
 		<field name="lst_price" position="after" >
 			<field name="pvptt" />
 			<field name="precio_online" />
+            <field name="descuento" />
 			
 		</field>
 	
