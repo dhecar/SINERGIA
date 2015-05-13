@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+vehicle_fits_conf_user,sine_vehicle_fits_conf.user,model_vehicle_config,group_vehicle_fits_config_user,1,0,0,0
+vehicle_fits_conf_admin,sine_vehicle_fits_conf.admin,model_vehicle_config,group_vehicle_fits_config_admin,1,1,1,1
+vehicle_fits_export_user,sine_vehicle_fits_export.user,model_vehicle_export,group_vehicle_fits_export_user,1,0,0,0
+vehicle_fits_export_admin,sine_vehicle_fits_export.admin,model_vehicle_export,group_vehicle_fits_export_admin,1,0,0,0

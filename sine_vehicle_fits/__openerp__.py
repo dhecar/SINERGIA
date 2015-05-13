@@ -9,6 +9,7 @@
                    "to connect throught sftp to push the csv file",
     "depends" : ["sine_scooter_models"],
     "update_xml" : ["vehicle_fits_view.xml"],
+    "data": ['security/security.xml','security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }
