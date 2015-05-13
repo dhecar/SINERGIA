@@ -32,6 +32,8 @@ class product_product(osv.osv):
 
     _columns = {
         'asoc_id': fields.one2many('competition.asoc', 'asoc'),
+        'shop': fields.char('Tienda competencia', size=30),
+        'shop_price': fields.float('Precio', digits_compute=dp.get_precision(''), help=''),
     }
 
 

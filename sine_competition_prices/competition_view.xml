@@ -23,7 +23,7 @@
             <field name="arch" type="xml">
                 <tree string="Competitors">
 			<field name="linked_to"/>
-                        <field name="online_price"/>
+            <field name="online_price"/>
                 </tree>                
                 
             </field>
@@ -38,8 +38,14 @@
             <field name="arch" type="xml">
 		<notebook>
 		    <page string="Competitors">
+
 			<field name="asoc_id" />
-			<button name="get_prices" string="Get Prices" icon="gtk-apply" type="object" />			
+			<button name="get_prices" string="Get Prices" icon="gtk-apply" type="object" />
+
+            <group  string="Fisical competitors">
+                <field name="shop" />
+                <field name="shop_price" />
+            </group>
 		    </page>
 		</notebook>
 
