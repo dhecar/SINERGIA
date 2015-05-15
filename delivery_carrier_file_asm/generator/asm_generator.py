@@ -46,9 +46,7 @@ class AsmLine(BaseLine):
               ('asm_cod_price', 3),
               ('reembolso', 1),
               ('mail', 50),
-              ('ealerta', 1),
               ('mail', 50),
-              ('prealerta', 1),
               ('mail', 50))
 
 
@@ -90,7 +88,6 @@ class AsmFileGenerator(CarrierFileGenerator):
             line.city = address.city
             line.state = address.state_id.name
             line.phone = address.phone or address.mobile
-             #line.reembolso = configuration.nacex_reembolso
             line.asm_cod_price = configuration.asm_cod_price
             line.mail = address.email
 
