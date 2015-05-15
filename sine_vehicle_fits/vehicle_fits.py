@@ -10,12 +10,12 @@
 # License, or (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
@@ -35,8 +35,8 @@ import base64
 
 from StringIO import StringIO
 
-class vehicle_config(osv.osv):
 
+class vehicle_config(osv.osv):
     def import_file(self, cr, uid, ids, context=None):
         fileobj = TemporaryFile('w+')
         fileobj.write(base64.decodestring(data))
@@ -58,12 +58,12 @@ class vehicle_config(osv.osv):
 
         except Exception, e:
             raise osv.except_osv("Connection Test Failed!",
-                                     "Here is what we got instead:\n %s" % tools.ustr(e))
+                                 "Here is what we got instead:\n %s" % tools.ustr(e))
         finally:
             try:
                 if transport: transport.close()
             except Exception:
-            # ignored, just a consequence of the previous exception
+                # ignored, just a consequence of the previous exception
                 pass
         raise osv.except_osv("Connection Test Succeeded!", "Everything seems properly set up!")
 
@@ -96,25 +96,27 @@ vehicle_config()
 
 
 class VehicleExport(osv.osv):
-    def _get_conf_erp(self, cr, uid, ids, context=None):
-        conf_obj = self.pool.get('vehicle.config')
+    def export_to_magento(self, cr, uid, ids, context=None):
+        conf_obj = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_obj.erp_host
         dbname = conf_obj.erp_db
         user = conf_obj.erp_user
         password = conf_obj.erp_password
-        connection_parameters = "host=%s dbname=s% user=%s password=%s" % (host, dbname, user, password)
-        return connection_parameters
+        connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
+        for date in self.browse(cr, uid, ids):
+            dat_from = date.date_from
+            dat_to = date.date_to
 
-    def export_to_magento(self, cr, uid, ids, context=None):
         # Define our connection string
-        conn_string = _get_conf_erp()
+        conn_string = connection_parameters
         # get a connection, if a connect cannot be made an exception will be raised here
         conn = psycopg2.connect(conn_string)
         # conn.cursor will return a cursor object, you can use this cursor to perform queries
         cursor = conn.cursor()
 
         # query
-        cursor.execute(" SELECT default_code AS sku,CASE WHEN type='MXSC'  THEN 'Maxiscooter'"
+        cursor.execute(" SELECT default_code AS sku,CASE "
+                       " WHEN type='MXSC'  THEN 'Maxiscooter'"
                        " WHEN type='MARCH' THEN 'Marchas' "
                        " WHEN type='SCOOT' THEN 'Scooter 50'"
                        " WHEN type='PBKE' THEN 'Pitbike'"
@@ -128,6 +130,7 @@ class VehicleExport(osv.osv):
                        " scooter_asociaciones.id = scooter_compat_with_product_rel.scooter_id"
                        " LEFT JOIN product_product ON"
                        " product_product.id = scooter_compat_with_product_rel.product_id"
+                       " WHERE scooter_asociaciones.write_date BETWEEN '%s' AND '%s'" % (dat_from, dat_to),
                        " ORDER BY make ")
 
         records = ()
@@ -139,19 +142,21 @@ class VehicleExport(osv.osv):
             for row in records:
                 writer.writerow(row)
         conn.close()
-        for conf_line in self.pool.get(vehicle.config):
-            host = conf_line.sftp_host
-            port = conf_line.sftp_port
-            key = conf_line.sftp_pem
-            rem_dir = conf_line.sftp_remote_dir
-            rem_file = conf_line.sftp_remote_file
-            loc_file = conf_line.sftp_local_file
-            user = conf_line.sftp_user
+
+        conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
+        host = conf_line.sftp_host
+        port = conf_line.sftp_port
+        key = conf_line.sftp_pem
+        rem_dir = conf_line.sftp_remote_dir
+        rem_file = conf_line.sftp_remote_file
+        loc_file = conf_line.sftp_local_file
+        usern = conf_line.sftp_user
 
         # Create the transport with paramiko
         transport = paramiko.Transport((host, port))
-        mykey = paramiko.RSAKey.from_private_key(base64.b64decode(key))
-        username = user
+        key = StringIO(base64.standard_b64decode(conf_line.sftp_pem))
+        mykey = paramiko.RSAKey.from_private_key(key)
+        username = usern
 
         transport.connect(username=username, pkey=mykey)
         sftp = paramiko.SFTPClient.from_transport(transport)
@@ -165,12 +170,15 @@ class VehicleExport(osv.osv):
         sftp.close()
         transport.close()
 
+
     _name = 'vehicle.export'
     _description = 'Wizard to export fitments to Vehicle fits'
 
     _columns = {
-        'date_from': fields.date('Date From'),
-        'date_to': fields.date('Date To'),
+        'date_from': fields.datetime('Date From'),
+        'date_to': fields.datetime('Date To')
 
     }
+
+
 VehicleExport()

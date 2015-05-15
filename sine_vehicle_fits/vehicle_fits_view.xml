@@ -61,19 +61,22 @@
 	    <field name="name">vf_export.form</field>
 	    <field name="model">vehicle.export</field>
         <field name="arch" type="xml">
-                <field name="date_from" colspan="4" />
-		        <field name="date_to"  colspan="4" />
+            <form string="Magento Export">
+                <field name="date_from" />
+		        <field name="date_to" />
+                <button name="export_to_magento" type="object" string="Export to Magento" icon="gtk-network"/>
+            </form>
       </field>
      </record>
 
 <!-- Vehicle Fits wizard action -->
      <record id="action_vehicle_fits_export" model="ir.actions.act_window">
-    <field name="name">Export to Magento</field>
+    <field name="name">Export models to Magento</field>
     <field name="type">ir.actions.act_window</field>
     <field name="res_model">vehicle.export</field>
     <field name="view_type">form</field>
     <field name="view_mode">form</field>
-    <!--<field name="target">new</field>-->
+    <field name="target">new</field>
 </record>
 
 
