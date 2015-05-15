@@ -4,7 +4,7 @@
 # Author: Guewen Baconnier
 #    Copyright 2012 Camptocamp SA
 #
-# Adaptation to Nacex Camaleon
+# Adaptation to Nacex Chamaleon
 # Author: David Hernandez
 #    http://sinergiainformatica.net
 #
