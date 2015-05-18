@@ -30,24 +30,29 @@ from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
 
 
 class AsmLine(BaseLine):
-    fields = (('asm_account', 5),
-              ('reference', 20),
-              ('asm_typo', 1),
-              ('weight', 6),
-              ('name', 35),
-              ('name', 35),
-              ('street', 45),
-              ('country', 2),
+    fields = (('TipoRegistro', 1),
+              ('PlzOrg', 3),
+              ('NomRemitente', 40),
+              ('DirecRemitente', 40),
+              ('PoblRemitente', 40),
+              ('CodPaisRemitente', 4),
+              ('CodPostalRemitente', 5),
+              ('FechaExpedicion', 10),
+              ('CodPlazaCliente', 3),
+              ('CodCliente', 6),
+              ('TipoPortes', 1),
+              ('name', 80),
+              ('street', 80),
+              ('state', 40),
+              ('city', 4),
               ('zip', 15),
-              ('city', 30),
-              ('state', 30),
-              ('phone', 16),
-              ('mail', 50),
-              ('asm_cod_price', 3),
-              ('reembolso', 1),
-              ('mail', 50),
-              ('mail', 50),
-              ('mail', 50))
+              ('asm_typo', 2),
+              ('horario_servicio', 3),
+              ('Bultos', 4),
+              ('weight', 6),
+              ('CodAgente', 5),
+              ('TipoReferencia', 1))
+
 
 
 class AsmFileGenerator(CarrierFileGenerator):
@@ -70,26 +75,23 @@ class AsmFileGenerator(CarrierFileGenerator):
         :return: list of rows
         """
         line = AsmLine()
-        line.empty = ""
-        line.asm_account = configuration.asm_account
-        line.reference = picking.name
-        line.asm_typo = configuration.asm_typo
-        line.weight = "%.2f" % (picking.weight,)
+        line.TipoRegistro = '1'
+        line.PlzOrg = configuration.PlzOrg
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
-            line.name = address.name or (address.partner_id and address.partner_id.name)
-            # if a company, put company name
-            # if address.street.partner_id.title:
-            # line.company_name = address.partner_id.name
             line.street = address.street
-            line.country = address.country_id.code
-            line.zip = address.zip
             line.city = address.city
             line.state = address.state_id.name
+            line.zip = address.zip
             line.phone = address.phone or address.mobile
+            line.nif = "nif"
             line.asm_cod_price = configuration.asm_cod_price
-            line.mail = address.email
+            line.country_remite = "34"
+        line.reference = picking.name
+        line.asm_typo = configuration.asm_typo
+        line.weight = "%.2f" % (picking.weight,)
+        line.mail = address.email
 
         return [line.get_fields()]
 
@@ -106,7 +108,7 @@ class AsmFileGenerator(CarrierFileGenerator):
         :return: the file_handle as StringIO with the rows written in it
         """
 
-        writer = UnicodeWriter(file_handle, delimiter=';', quotechar='"',
+        writer = UnicodeWriter(file_handle, delimiter='|', quotechar='"',
                                lineterminator='\n', quoting=csv.QUOTE_NONE)
         writer.writerows(rows)
         return file_handle
