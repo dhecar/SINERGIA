@@ -121,6 +121,7 @@ class VehicleExport(osv.osv):
                        " WHEN type='SCOOT' THEN 'Scooter 50'"
                        " WHEN type='PBKE' THEN 'Pitbike'"
                        " WHEN type='PBIKE' THEN 'PocketBike'"
+                       " WHEN type='VESP' THEN 'VespaClasicas'"
                        " END As make, brand AS model, model AS year FROM scooter_asociaciones"
                        " LEFT JOIN scooter_model ON"
                        " scooter_asociaciones.model_id = scooter_model.id"
