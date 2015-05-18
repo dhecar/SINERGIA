@@ -41,6 +41,7 @@ class AsmLine(BaseLine):
               ('CodPlazaCliente', 3),
               ('CodCliente', 6),
               ('TipoPortes', 1),
+              ('Referencia', 15),
               ('name', 80),
               ('street', 80),
               ('state', 40),
@@ -87,9 +88,20 @@ class AsmFileGenerator(CarrierFileGenerator):
             line.phone = address.phone or address.mobile
             line.nif = "nif"
             line.asm_cod_price = configuration.asm_cod_price
-            line.country_remite = "34"
-        line.reference = picking.name
+            line.CodPaisRemitente= "34"
+        company = picking.sale_id.company_id
+        if company:
+            line.NomRemitente = company.name
+            line.DirecRemitente = company.street
+            line.PoblRemitente = company.state_id.name
+            line.CodPaisRemitente = "54"
+            line.CodPostalRemitente = company.zip
+            line.CodPlazaCliente = '332'
+
+        line.FechaExpedicion = picking.date
+        line.Referencia = picking.name
         line.asm_typo = configuration.asm_typo
+        line.TipoPortes= configuration.asm_portes
         line.weight = "%.2f" % (picking.weight,)
         line.mail = address.email
 
