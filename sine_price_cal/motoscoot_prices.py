@@ -16,7 +16,6 @@ class product_product(osv.osv):
 
             self.write(cr, uid, product.id, {'pvp': supl_disc[0]})
 
-
     _name = 'product.product'
     _inherit = 'product.product'
 
