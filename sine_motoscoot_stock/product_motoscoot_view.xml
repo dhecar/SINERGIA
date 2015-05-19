@@ -46,9 +46,9 @@
 	    <field name="type">tree</field>
 	    <field name="arch" type="xml">
 	     <field name="virtual_available" position="after">
-		   <field name="stock_grn"  />
-                   <field name="stock_bcn" />
-                   <field name="stock_pt" />
+		            <field name="stock_grn"  />
+                    <field name="stock_bcn" />
+                    <field name="stock_pt" />
 	    </field>
 		<field name="state" position="after">
 			<button name="%(act_stock_product_location_open)d" icon="gtk-find" string="stock" type="action"/>
@@ -68,7 +68,7 @@
 			<li>GRN: <field name="stock_grn"></field></li>
 			<li>BCN: <field name="stock_bcn"></field></li>
 			<li>PT: <field name="stock_pt"></field></li>
-	        </ul>
+        </ul>
 		</field>
         </record>-->
  </data>
