@@ -54,8 +54,6 @@ class AsmLine(BaseLine):
               ('CodAgente', 5),
               ('TipoReferencia', 1))
 
-
-
 class AsmFileGenerator(CarrierFileGenerator):
     @classmethod
     def carrier_for(cls, carrier_name):
