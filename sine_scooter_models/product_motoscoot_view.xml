@@ -6,16 +6,22 @@
             <field name="name">product.normal.form.inherit</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
 		<notebook position="inside">
 			<page string="Modelos Asociados">
 			<separator string="Modelos Scooter" colspan="4" />
 				<field name="scooters_ids" colspan="4" ></field>
-			</page>
+
+                <separator string="Copy Fitments" colspan="4" />
+                <field name="select_origin"  colspan="4" select="1"/>
+                <button name="copy_fitments" string="Copy Fitments" type="object" class="oe_highlight"/>
+
+            </page>
 		</notebook>
             </field>
    </record>
+
+
 
  </data>
 </openerp>

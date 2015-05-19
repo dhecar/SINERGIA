@@ -7,9 +7,9 @@
     "website" : "http://sinergiainformatica.net",
     "description": "Extensión módulo productos para relacionarlos con modelos de Scooter",
     "depends" : ["product"],
-    "update_xml" : ["product_motoscoot_view.xml" , "partner_motoscoot_view.xml" , "scooter_models_view.xml", "marcas_scooter_view.xml","asociaciones_view.xml"],
+    "update_xml" : ["product_motoscoot_view.xml", "partner_motoscoot_view.xml", "scooter_models_view.xml", "marcas_scooter_view.xml", "asociaciones_view.xml"],
 
-    "data": ['security/security.xml','security/ir.model.access.csv'],
+    "data": ['security/security.xml', 'security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }

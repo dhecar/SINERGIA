@@ -1,10 +1,10 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
+# Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
 #    published by the Free Software Foundation, either version 3 of the
 #    License, or (at your option) any later version.
 #
@@ -18,16 +18,30 @@
 #
 ##############################################################################
 
-from osv import fields, osv
+from openerp.osv import fields, osv
 
 
 class product_product(osv.osv):
+
+    def copy_fitments(self, cr, uid, ids, context=None):
+        for prod in self.browse(cr, uid, ids, context=context):
+            if prod.select_origin:
+                orig_fits_ids = ()
+                orig_fits_ids = prod.select_origin.scooters_ids
+                if orig_fits_ids:
+                    for fit in orig_fits_ids:
+                        vals = {'scooters_ids': [(6, 0, fit)]}
+                        prod.write(cr, uid, 'scooters_ids', vals, context=context)
+        return True
+
     _name = 'product.product'
     _inherit = 'product.product'
 
     _columns = {
         'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
                                          'scooter_id', 'scooter models'),
+        'select_origin': fields.many2one('product.product', 'Origin Product Fitments', domain=[('sale_ok', '=', True)],
+                                         change_default=True),
 
     }
 
