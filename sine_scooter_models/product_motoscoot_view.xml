@@ -10,9 +10,8 @@
 		<notebook position="inside">
 			<page string="Modelos Asociados">
 			<separator string="Modelos Scooter" colspan="4" />
-				<field name="scooters_ids" colspan="4" ></field>
-
-                <separator string="Copy Fitments" colspan="4" />
+                <field name="scooters_ids" colspan="4" ></field>
+             <separator string="Copy Fitments" colspan="4" />
                 <field name="select_origin"  colspan="4" select="1"/>
                 <button name="copy_fitments" string="Copy Fitments" type="object" class="oe_highlight"/>
 

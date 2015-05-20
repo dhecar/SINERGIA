@@ -19,20 +19,23 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class product_product(osv.osv):
 
-    def copy_fitments(self, cr, uid, ids, context=None):
+    def copy_fitments(self, cr, uid, ids, vals, context=None):
         for prod in self.browse(cr, uid, ids, context=context):
             if prod.select_origin:
-                orig_fits_ids = ()
-                orig_fits_ids = prod.select_origin.scooters_ids
-                if orig_fits_ids:
-                    for fit in orig_fits_ids:
-                        vals = {'scooters_ids': [(6, 0, fit)]}
-                        prod.write(cr, uid, 'scooters_ids', vals, context=context)
-        return True
+                other_prod = self.browse(cr, uid, prod.select_origin.id, context=context)
+                other_ids = [scooters_ids.id for scooters_ids in other_prod.scooters_ids]
+                vals = {'scooters_ids': [(6, 0, other_ids)]}
+                print vals
+                prod.write(prod.select_origin, vals)
+
+
 
     _name = 'product.product'
     _inherit = 'product.product'
@@ -44,7 +47,6 @@ class product_product(osv.osv):
                                          change_default=True),
 
     }
-
 
 product_product()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
