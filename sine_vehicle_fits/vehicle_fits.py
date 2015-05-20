@@ -21,18 +21,10 @@
 
 from osv import fields, osv
 import psycopg2
-import sys
 import csv
-from decimal import Decimal
-from collections import defaultdict
-import os
 import paramiko
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import time
 import openerp.tools as tools
 import base64
-
 from StringIO import StringIO
 
 
@@ -66,7 +58,6 @@ class vehicle_config(osv.osv):
                 # ignored, just a consequence of the previous exception
                 pass
         raise osv.except_osv("Connection Test Succeeded!", "Everything seems properly set up!")
-
 
     _name = 'vehicle.config'
     _description = 'Configuration for Vehicle Fits ftp link'
@@ -170,7 +161,6 @@ class VehicleExport(osv.osv):
         sftp.put(localpath, filepath)
         sftp.close()
         transport.close()
-
 
     _name = 'vehicle.export'
     _description = 'Wizard to export fitments to Vehicle fits'
