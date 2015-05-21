@@ -8,7 +8,7 @@
     "description": "Adaptacion para Motoscoot.es",
     "depends": ["stock"],
     "update_xml": ["stock_moves_view.xml"],
-    "data": ['stock_priority_wfl.xml'],
+    "data": [],
     "active": True,
     "installable": True
 }
