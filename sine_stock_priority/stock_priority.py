@@ -27,6 +27,28 @@ _logger = logging.getLogger(__name__)
 class StockPicking(osv.osv):
     _inherit = "stock.picking"
 
+    _columns = {
+        'state': fields.selection([
+            ('draft', 'Draft'),
+            ('cancel', 'Cancelled'),
+            ('auto', 'Waiting Another Operation'),
+            ('confirmed', 'Waiting Availability'),
+            ('assigned', 'Ready to Transfer'),
+            ('done', 'Transferred'),
+            ('to_be_validate', 'Esperando Validacion'),
+            ], 'Status', readonly=True, select=True, track_visibility='onchange', help="""
+            * Draft: not confirmed yet and will not be scheduled until confirmed\n
+            * Esperando Validacion: Un administrador debe validar el traspaso de material\n
+            * Waiting Another Operation: waiting for another move to proceed before it becomes automatically available (e.g. in Make-To-Order flows)\n
+            * Waiting Availability: still waiting for the availability of products\n
+            * Ready to Transfer: products reserved, simply waiting for confirmation.\n
+            * Transferred: has been processed, can't be modified or cancelled anymore\n
+            * Cancelled: has been cancelled, can't be confirmed anymore"""
+        ),
+
+    }
+
+
     def action_assign_wkf(self, cr, uid, ids, context=None):
         to_update = []
         for picking in self.browse(cr, uid, ids):
@@ -48,11 +70,12 @@ class StockPicking(osv.osv):
                             elif i.qty - move.product_qty < 1:
                                 diferencia = i.qty - move.product_qty
 
-                                raise osv.except_osv('El envio dejara sin existencias el almacen !',
-                                                     'El producto  %s tiene un stock de %d! y estas intentando '
-                                                     'enviar %d. El stock bajara a %d !!,contacta con el administrador '
-                                                     'para que valide el envio'
-                                                     % (move.product_id.name, i.qty, move.product_qty, diferencia))
+                                if picking.state != 'assigned':
+                                    to_update.append(picking.id)
+                                if to_update:
+                                    self.write(cr, uid, to_update, {'state': 'to_be_validate'})
+
+
                             else:
                                 if picking.state != 'assigned':
                                     to_update.append(picking.id)
@@ -60,6 +83,18 @@ class StockPicking(osv.osv):
                                     self.write(cr, uid, to_update, {'state': 'assigned'})
 
                         return True
+
+    def button_validate(self, cr, uid, ids, context=None):
+        """ Changes picking state to assigned.
+        @return: True
+        """
+        to_update = []
+        for pick in self.browse(cr, uid, ids, context=context):
+            if pick.state != 'assigned':
+                to_update.append(pick.id)
+        if to_update:
+            self.write(cr, uid, to_update, {'state': 'assigned'})
+        return True
 
 
 StockPicking()

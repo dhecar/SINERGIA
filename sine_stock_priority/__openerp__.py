@@ -8,6 +8,7 @@
     "description": "Extension",
     "depends" : ["product","stock_location","stock"],
     "update_xml" : [],
+    "data": ['stock_priority_wfl.xml', 'security/security.xml', 'security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }
