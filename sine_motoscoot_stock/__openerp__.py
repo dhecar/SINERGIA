@@ -7,7 +7,7 @@
     "website" : "http://sinergiainformatica.net",
     "description": "Extension",
     "depends" : ["product","stock_location"],
-    "update_xml" : ["product_motoscoot_view.xml,"],
+    "update_xml" : ["product_motoscoot_view.xml"],
     "active": True,
     "installable": True
 }
