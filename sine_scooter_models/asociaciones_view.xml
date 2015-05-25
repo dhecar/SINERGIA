@@ -9,10 +9,10 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Asociaciones">
-		<field name="type" colspan="4" select="1" />
-		<field name="brand_id"  colspan="4" select="1"/>
-		<field name="model_id" colspan="4" select="1"/>
-    		<field name="compatible_with_ids" select="1" colspan="4" />
+		        <field name="type" colspan="4" select="1" />
+		        <field name="brand_id"  colspan="4" select="1"/>
+		        <field name="model_id" colspan="4" select="1"/>
+    		    <field name="compatible_with_ids" select="1" colspan="4" />
             </form>
 	</field>
    </record>
@@ -27,9 +27,9 @@
         <field name="type">tree</field>
         <field name="arch" type="xml">
              <tree string="Listado asociaciones">
-       		<field name="type" select="1" />
-        	<field name="brand_id"  select="1" />
-        	<field name="model_id" select="1" />
+       		    <field name="type" select="1" />
+        	    <field name="brand_id"  select="1" />
+        	    <field name="model_id" select="1" />
              </tree>
         </field>
    </record>
@@ -44,16 +44,15 @@
         <field name="arch" type="xml">
             <search string="Buscar Asociaciones">
 		<group col="10" colspan="4">
-			
-                <field name="model_id" string="Modelo" />
-		<field name="brand_id" string="Marca" />
-		<field name="type" string="Tipo" />
+            <field name="model_id" string="Modelo" />
+		    <field name="brand_id" string="Marca" />
+		    <field name="type" string="Tipo" />
 		</group>
 		<newline />
 		    <group expand="0" string="Agrupar por...">
-			<filter string="Tipo" domain="[]" context="{'group_by':'type'}" />
-			<filter string="Modelo"  domain="[]" context="{'group_by':'model_id'}" />
-			<filter string="Marca" domain="[]" context="{'group_by':'brand_id'}" />
+			    <filter string="Tipo" domain="[]" context="{'group_by':'type'}" />
+			    <filter string="Modelo"  domain="[]" context="{'group_by':'model_id'}" />
+			    <filter string="Marca" domain="[]" context="{'group_by':'brand_id'}" />
 		    </group> 
             </search>
         </field>
@@ -62,10 +61,10 @@
 <!--ACCIONES-->
 <record model="ir.actions.act_window" id="action_scooter_asociaciones_form">
         <field name="name">Nueva Asociacion</field>
-	<field name="res_model">scooter.asociaciones</field>
-	<field name="view_type">form</field>
-	<field name="view_mode">tree,form</field>
-	<field name="search_view_id" ref="view_scooter_asociaciones_filter" />
+	    <field name="res_model">scooter.asociaciones</field>
+	    <field name="view_type">form</field>
+	    <field name="view_mode">tree,form</field>
+	    <field name="search_view_id" ref="view_scooter_asociaciones_filter" />
 </record>
 
 
