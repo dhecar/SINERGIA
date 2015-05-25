@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from openerp.osv import orm
+from openerp.osv import orm, fields
 
 
 class magento_backend(orm.Model):
     _inherit = 'magento.backend'
+    _columns = {
+        'remote_warehouse': fields.char('Remote warehouse', size=1)
+    }
 
     def select_versions(self, cr, uid, context=None):
         """ Available versions in the backend.

@@ -6,8 +6,11 @@
               ],
  'author': 'Sinergiainformatica.net. David Hernández',
  'license': 'AGPL-3',
- 'description': """Magento Connector Customization Add mapping for msrp, cash_on_delivery_fee """,
+ 'description': """Magento Connector Customization:
+  * Added mapping for msrp,
+  * Added customization for Wyomind magento extension""",
  'data': [],
+ 'update_xml': ["magento_model_view.xml"],
  'installable': True,
  'application': True,
 }
