@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp.osv import orm, fields
-from openerp.addons.connector.unit.mapper import (mapping,ImportMapper)
+from openerp.addons.connector.unit.mapper import (mapping, ImportMapper)
 from .backend import magento_myversion
 
 
