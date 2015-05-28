@@ -38,6 +38,8 @@ class scooter_asociaciones(osv.osv):
                                                 'product_id', string="Compatible con"),
     }
 
+    _order = "brand_id ASC"
+
 
 scooter_asociaciones()
 
