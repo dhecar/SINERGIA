@@ -58,7 +58,7 @@
 
 
 <!--MENUS-->
-<!--<menuitem name="Add URL competition" id="url_list" parent="base.menu_product" action="action_product_url_tree" sequence="24"/>-->
+<menuitem name="Add URL competition" id="url_list" parent="base.menu_product" action="action_product_url_tree" sequence="2"/>
 
 
 
