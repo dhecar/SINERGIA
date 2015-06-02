@@ -21,7 +21,22 @@
    </record>
 
 
+     <!-- Buscador de marcas -->
 
+    <record model="ir.ui.view" id="scooter_model_filter">
+        <field name="name">scooter.search</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <xpath expr="filter[@string='Services']" position="after">
+                <filter name="type" string="Tipo Moto" domain="[('scooters_ids.type','in', 'scooters_ids')]"/>
+                <filter  name="brand_id" string="Fabricante" domain="[('scooters_ids.brand_id.brand','in', 'scooters_ids')]"/>
+                <filter name ="model_id" string="Modelo" domain="[('scooters_ids.model_id.model','in', 'scooters_ids')]"/>
+            </xpath>
+
+        </field>
+    </record>
  </data>
 </openerp>
 
