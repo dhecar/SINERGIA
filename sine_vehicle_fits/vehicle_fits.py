@@ -25,7 +25,6 @@ import csv
 import paramiko
 import openerp.tools as tools
 import base64
-import codecs
 from StringIO import StringIO
 
 
