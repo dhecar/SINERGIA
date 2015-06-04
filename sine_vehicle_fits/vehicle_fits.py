@@ -126,9 +126,9 @@ class VehicleExport(osv.osv):
                        " ORDER BY make ")
 
         records = ()
-        records = cursor.fetchall().encode('utf8')
+        records = cursor.fetchall()
 
-        with open('/opt/fitments/models-to-update.csv', 'w') as f:
+        with open('/opt/fitments/models-to-update.csv', 'w', 'utf-8') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
