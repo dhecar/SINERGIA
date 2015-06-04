@@ -25,6 +25,7 @@ import csv
 import paramiko
 import openerp.tools as tools
 import base64
+import os
 from StringIO import StringIO
 
 
@@ -88,7 +89,6 @@ vehicle_config()
 
 class VehicleExport(osv.osv):
 
-
     def export_to_magento(self, cr, uid, ids, context=None):
         conf_obj = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_obj.erp_host
@@ -133,9 +133,11 @@ class VehicleExport(osv.osv):
         with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
-            for row in records:
-                writer.writerow([unicode(s).encode("utf-8") for s in row])
-        conn.close()
+            while sum(1 for row in records) < 1000:
+                for row in records:
+
+                    writer.writerow([unicode(s).encode("utf-8") for s in row])
+                conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_line.sftp_host
