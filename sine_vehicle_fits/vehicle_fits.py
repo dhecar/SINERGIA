@@ -128,9 +128,9 @@ class VehicleExport(osv.osv):
         records = ()
         records = cursor.fetchall()
 
-        with open('/opt/fitments/models-to-update.csv', 'w').encode('utf-8') as f:
+        with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
-            writer.writerow(('sku', 'make', 'model', 'year'))
+            writer.writerow(('sku', 'make', 'model', 'year')).encode('utf-8')
             for row in records:
                 writer.writerow(row)
         conn.close()
