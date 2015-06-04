@@ -133,11 +133,9 @@ class VehicleExport(osv.osv):
         with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
-            while sum(1 for row in records) < 1000:
-                for row in records:
-
-                    writer.writerow([unicode(s).encode("utf-8") for s in row])
-                conn.close()
+            for row in records:
+                writer.writerow([unicode(s).encode("utf-8") for s in row])
+            conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_line.sftp_host
