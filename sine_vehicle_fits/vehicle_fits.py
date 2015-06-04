@@ -134,7 +134,7 @@ class VehicleExport(osv.osv):
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
-                writer.writerow(row.encode('utf-8'))
+                writer.writerow(row)
         conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
