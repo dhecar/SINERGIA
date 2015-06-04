@@ -25,6 +25,7 @@ import csv
 import paramiko
 import openerp.tools as tools
 import base64
+import codecs
 from StringIO import StringIO
 
 
@@ -128,7 +129,8 @@ class VehicleExport(osv.osv):
         records = ()
         records = cursor.fetchall()
 
-        with open('/opt/fitments/models-to-update.csv', 'w', 'utf-8') as f:
+        with codecs.open('/opt/fitments/models-to-update.csv', mode='w',
+                         encoding='UTF-8', errors='strict', buffering=1) as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
