@@ -129,7 +129,7 @@ class VehicleExport(osv.osv):
         records = ()
         records = cursor.fetchall()
 
-        with codecs.open('/opt/fitments/models-to-update.csv', mode='w',
+        with codecs.open('/opt/fitments/models-to-update.csv', mode='bw',
                          encoding='utf-8', errors='strict', buffering=1) as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
