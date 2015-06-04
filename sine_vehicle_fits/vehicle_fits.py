@@ -131,13 +131,11 @@ class VehicleExport(osv.osv):
         records = ()
         records = cursor.fetchall()
 
-        with codecs.open('/opt/fitments/models-to-update.csv', mode='wb+',
-                         encoding='utf-8', errors='strict', buffering=1) as f:
+        with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
-                yield row.encode('utf-8')
-                writer.writerow(row)
+                writer.writerow([unicode(s).encode("utf-8") for s in row])
         conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
