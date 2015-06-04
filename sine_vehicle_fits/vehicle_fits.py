@@ -130,9 +130,9 @@ class VehicleExport(osv.osv):
 
         with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
-            writer.writerow(('sku', 'make', 'model', 'year')).encode('utf-8')
+            writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
-                writer.writerow(row)
+                writer.writerow(row).encode('utf-8')
         conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
