@@ -42,6 +42,7 @@ class product_product(osv.osv):
                                          'scooter_id', 'scooter models'),
         'select_origin': fields.many2one('product.product', 'Origin Product Fitments', domain=[('sale_ok', '=', True)],
                                          change_default=True),
+        'scooter_id': fields.many2one('scooter.asociaciones', 'Scooter')
 
     }
 
