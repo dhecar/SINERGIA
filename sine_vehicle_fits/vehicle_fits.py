@@ -88,6 +88,11 @@ vehicle_config()
 
 
 class VehicleExport(osv.osv):
+
+    def utf_8_encoder(unicode_csv_data):
+        for line in unicode_csv_data:
+            yield line.encode('utf-8')
+
     def export_to_magento(self, cr, uid, ids, context=None):
         conf_obj = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_obj.erp_host
@@ -134,6 +139,7 @@ class VehicleExport(osv.osv):
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
+                yield [unicode(cell, 'utf-8') for cell in row]
                 writer.writerow(row)
         conn.close()
 
