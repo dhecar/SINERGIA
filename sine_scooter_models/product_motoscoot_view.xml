@@ -30,8 +30,8 @@
         <field name="type">search</field>
         <field name="arch" type="xml">
             <xpath expr="group[@string='Context...']" position="after">
-                <field name="scooter_id" string="Tipo Motor" domain="[('id','in', 'scooters_ids[0][2]')]" />
-              <!--  <field name="scooter_id" string="Marca Moto" domain="[('id','in', 'scooters_ids[0][2]')]" />
+              <!--  <field name="scooter_id" string="Tipo Motor" domain="[('id','in', 'scooters_ids')]"/>
+                <field name="scooter_id" string="Marca Moto" domain="[('id','in', 'scooters_ids[0][2]')]" />
                 <field name="scooter_id" string="Modelo Moto" domain="[('id','in', 'scooters_ids[0][2]')]" />-->
             </xpath>
 
