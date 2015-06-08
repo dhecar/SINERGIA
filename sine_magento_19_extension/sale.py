@@ -11,4 +11,4 @@ class MySaleOrderImportMapper(ImportMapper):
         'warehouse': fields.char('Magento warehouse', size=1)
     }
 
-    direct = ImportMapper.direct + [('association', 'warehouse')]
+    #direct = ImportMapper.direct + [('assignation', 'warehouse')]
