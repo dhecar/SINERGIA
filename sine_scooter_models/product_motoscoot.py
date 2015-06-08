@@ -34,6 +34,28 @@ class product_product(osv.osv):
                 vals = {'scooters_ids': [(6, 0, other_ids)]}
                 prod.write(vals)
 
+    def _find_products_by_scooter(self, cr, uid, obj, name, args, context):
+        new_args = []
+        for (field, operator, value) in args:
+            if field == 'scooter_type':
+                new_args.append(('type', operator, value))
+            elif field == 'scooter_brand_id':
+                new_args.append(('brand_id', operator, value))
+            elif field == 'scooter_model_id':
+                new_args.append(('model_id', operator, value))
+
+        asociaciones_ids = self.pool['scooter.asociaciones'].search(cr, uid, new_args)
+        product_ids = self.pool['product.product'].search(cr, uid, [('scooters_ids', 'in', asociaciones_ids)])
+        return [('id', 'in', product_ids)]
+
+
+    def _null (self,):
+
+        val = {id: '' for id in ids}
+        return val
+
+
+
     _name = 'product.product'
     _inherit = 'product.product'
 
@@ -42,7 +64,10 @@ class product_product(osv.osv):
                                          'scooter_id', 'scooter models'),
         'select_origin': fields.many2one('product.product', 'Origin Product Fitments', domain=[('sale_ok', '=', True)],
                                          change_default=True),
-        'scooter_id': fields.many2one('scooter.asociaciones', 'Scooter')
+
+        'scooter_type': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Type'),
+        'scooter_brand_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Brand'),
+        'scooter_model_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Model')
 
     }
 

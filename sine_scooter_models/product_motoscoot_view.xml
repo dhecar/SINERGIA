@@ -29,10 +29,10 @@
         <field name="inherit_id" ref="product.product_search_form_view" />
         <field name="type">search</field>
         <field name="arch" type="xml">
-            <xpath expr="group[@string='Context...']" position="after">
-              <!--  <field name="scooter_id" string="Tipo Motor" domain="[('id','in', 'scooters_ids')]"/>
-                <field name="scooter_id" string="Marca Moto" domain="[('id','in', 'scooters_ids[0][2]')]" />
-                <field name="scooter_id" string="Modelo Moto" domain="[('id','in', 'scooters_ids[0][2]')]" />-->
+            <xpath expr="//search[@string='Product']/field[@name='name']" position="after">
+                <field name="scooter_type" string="Tipo Moto" filter_domain="[('scooter_type','ilike',self)]" />
+                <field name="scooter_brand_id" string="Marca Moto" filter_domain="[('scooter_brand_id','ilike',self)]"/>
+                <field name="scooter_model_id" string="Modelo Moto" filter_domain="[('scooter_model_id','ilike',self)]"/>
             </xpath>
 
         </field>
