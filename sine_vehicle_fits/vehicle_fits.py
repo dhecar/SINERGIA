@@ -88,7 +88,6 @@ vehicle_config()
 
 
 class VehicleExport(osv.osv):
-
     def export_to_magento(self, cr, uid, ids, context=None):
         conf_obj = self.pool.get('vehicle.config').browse(cr, uid, uid)
         host = conf_obj.erp_host
@@ -110,11 +109,13 @@ class VehicleExport(osv.osv):
         # query
         cursor.execute(" SELECT default_code AS sku,CASE "
                        " WHEN type='MXSC'  THEN 'Maxiscooter'"
-                       " WHEN type='MARCH' THEN 'Marchas' "
-                       " WHEN type='SCOOT' THEN 'Scooter 50'"
-                       " WHEN type='PBKE' THEN 'Pitbike'"
+                       " WHEN type='MARCH' THEN 'Marchas 50-80cc' "
+                       " WHEN type='MARCH2' THEN 'Marchas 125cc' "
+                       " WHEN type='SCOOT' THEN 'Scooters 50cc'"
+                       " WHEN type='SCOOT2' THEN 'Scooter 100-600cc'"
+                       " WHEN type='PBKE' THEN 'Pitbike 4T'"
                        " WHEN type='PBIKE' THEN 'PocketBike'"
-                       " WHEN type='VESP' THEN 'VespaClasicas'"
+                       " WHEN type='VESP' THEN 'Vepas Clasicas 50-200cc'"
                        " END As make, brand AS model, model AS year FROM scooter_asociaciones"
                        " LEFT JOIN scooter_model ON"
                        " scooter_asociaciones.model_id = scooter_model.id"
