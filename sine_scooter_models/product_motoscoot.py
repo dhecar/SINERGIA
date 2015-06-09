@@ -6,8 +6,8 @@
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,7 +26,6 @@ _logger = logging.getLogger(__name__)
 
 
 class product_product(osv.osv):
-
     def copy_fitments(self, cr, uid, ids, context=None):
         for prod in self.browse(cr, uid, ids, context=context):
             if prod.select_origin:
@@ -49,11 +48,10 @@ class product_product(osv.osv):
         return [('id', 'in', product_ids)]
 
 
-    def _null (self,):
+    def _null(self, ):
 
         val = {id: '' for id in ids}
         return val
-
 
 
     _name = 'product.product'
@@ -65,11 +63,14 @@ class product_product(osv.osv):
         'select_origin': fields.many2one('product.product', 'Origin Product Fitments', domain=[('sale_ok', '=', True)],
                                          change_default=True),
 
-        'scooter_type': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Type'),
-        'scooter_brand_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Brand'),
-        'scooter_model_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char', string='Scooter Model')
-
+        'scooter_type': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
+                                        string='Scooter Type', store=True),
+        'scooter_brand_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
+                                            string='Scooter Brand', store=True),
+        'scooter_model_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
+                                            string='Scooter Model', store=True)
     }
+
 
 product_product()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
