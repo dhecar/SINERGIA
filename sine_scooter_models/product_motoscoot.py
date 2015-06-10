@@ -21,11 +21,13 @@
 
 from openerp.osv import fields, osv
 import logging
+import time
 
 _logger = logging.getLogger(__name__)
 
 
 class product_product(osv.osv):
+
     def copy_fitments(self, cr, uid, ids, context=None):
         for prod in self.browse(cr, uid, ids, context=context):
             if prod.select_origin:
@@ -47,12 +49,9 @@ class product_product(osv.osv):
         product_ids = self.pool['product.product'].search(cr, uid, [('scooters_ids', 'in', asociaciones_ids)])
         return [('id', 'in', product_ids)]
 
-
-    def _null(self, ):
-
+    def _null(self):
         val = {id: '' for id in ids}
         return val
-
 
     _name = 'product.product'
     _inherit = 'product.product'
@@ -64,11 +63,11 @@ class product_product(osv.osv):
                                          change_default=True),
 
         'scooter_type': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
-                                        string='Scooter Type', store=True),
+                                        string='Scooter Type', store=False),
         'scooter_brand_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
-                                            string='Scooter Brand', store=True),
+                                            string='Scooter Brand', store=False),
         'scooter_model_id': fields.function(_null, fnct_search=_find_products_by_scooter, type='char',
-                                            string='Scooter Model', store=True)
+                                            string='Scooter Model', store=False)
     }
 
 

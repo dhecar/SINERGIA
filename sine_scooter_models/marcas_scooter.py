@@ -35,7 +35,7 @@ class marcas_scooter(osv.osv):
     _table = 'marcas_scooter'
     _rec_name = 'brand'
     _columns = {
-        'brand': fields.char('Marca', size=64, required=True, help='Marca de la moto'),
+        'brand': fields.char('Marca', size=64, required=True, help='Marca de la moto', select=True),
     }
 
     # Restriccion unica al campo 

@@ -34,7 +34,7 @@ class scooter_model(osv.osv):
     _table = 'scooter_model'
     _rec_name = 'model'
     _columns = {
-        'model': fields.char('Modelo', size=64, required=True, help='Modelo de la moto'),
+        'model': fields.char('Modelo', size=64, required=True, help='Modelo de la moto', select=True),
     }
 
     # constraints = [(_check_unique_insesitive, 'Error: El modelo ya existe', ['model'])]
