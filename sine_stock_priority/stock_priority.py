@@ -66,15 +66,11 @@ class StockPicking(osv.osv):
                                                      'enviar %d !!, contacta con el administrador '
                                                      % (move.product_id.name, i.qty, move.product_qty))
 
-
                             elif i.qty - move.product_qty < 1:
-                                diferencia = i.qty - move.product_qty
-
                                 if picking.state != 'assigned':
                                     to_update.append(picking.id)
                                 if to_update:
                                     self.write(cr, uid, to_update, {'state': 'to_be_validate'})
-
 
                             else:
                                 if picking.state != 'assigned':
@@ -95,6 +91,5 @@ class StockPicking(osv.osv):
         if to_update:
             self.write(cr, uid, to_update, {'state': 'assigned'})
         return True
-
 
 StockPicking()
