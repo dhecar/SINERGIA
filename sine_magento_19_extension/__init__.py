@@ -4,3 +4,4 @@ import connector
 import magento_model
 #import sale
 import product
+import product_brand
