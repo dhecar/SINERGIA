@@ -2,21 +2,29 @@
 <openerp>
     <data>
 
-    <record id="act_to_be_validate" model="workflow.activity">
-        <field name="wkf_id" ref="stock.wkf_picking"/>
-        <field name="name">to_be_validate</field>
-        <field name="kind">function</field>
-        <field name="action">write({'state':'to_be_validate'})</field>
-    </record>
+        <!-- Actions-->
+        <record id="act_to_be_validated" model="workflow.activity">
+            <field name="wkf_id" ref="stock.wkf_picking"/>
+            <field name="name">to_be_validated</field>
+            <field name="kind">function</field>
+            <field name="action">action_assign_wkf()</field>
+        </record>
 
-      <record id="trans_validated" model="workflow.transition">
-            <field name="act_from" ref="stock.act_confirmed"/>
-            <field name="act_to" ref="act_to_be_validate"/>
+        <!--Transitions-->
+        <record id="trans_validated" model="workflow.transition">
+            <field name="act_from" ref="act_to_be_validated"/>
+            <field name="act_to" ref="stock.act_confirmed"/>
             <field name="signal">button_validate</field>
         </record>
 
 
-      <!--New Buton VALIDATE -->
+        <record id="trans_validated_cancel" model="workflow.transition">
+            <field name="act_from" ref="act_to_be_validated"/>
+            <field name="act_to" ref="stock.act_cancel"/>
+             <field name="condition">allow_cancel()</field>
+            <field name="signal">button_cancel</field>
+        </record>
+
 
      <record id="view_picking_inherit_form" model="ir.ui.view">
             <field name="name">stock.picking.inherit.form</field>
@@ -26,8 +34,9 @@
             <field name="arch" type="xml">
                 <form string="Internal Picking List" version="7.0">
                 <header>
-                    <button name="button_validate" states="to_be_validate" string="Validate" type="object" class="oe_highlight" groups="sine_stock_priority.group_stock_manager"/>
-                    <field name="state" widget="statusbar" statusbar_visible="to_be_validate" statusbar_colors='{"to_be_validate":"yellow"}'/>
+                    <button name="button_validate" states="to_be_validated" string="Validate" type="object" class="oe_highlight" groups="sine_stock_priority.group_stock_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="to_be_validated" statusbar_colors='{"to_be_validated":"yellow"}'/>
+                    <button name="button_cancel" states="to_be_validated" string="Cancel Internal Move" type="object" groups="sine_stock_priority.group_stock_manager"/>
                 </header>
         </form>
         </field>

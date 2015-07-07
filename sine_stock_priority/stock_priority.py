@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# OpenERP, Open Source Management Solution
-# Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -35,10 +33,10 @@ class StockPicking(osv.osv):
             ('confirmed', 'Waiting Availability'),
             ('assigned', 'Ready to Transfer'),
             ('done', 'Transferred'),
-            ('to_be_validate', 'Esperando Validacion'),
-            ], 'Status', readonly=True, select=True, track_visibility='onchange', help="""
+            ('to_be_validate', 'Waiting Validation'),
+        ], 'Status', readonly=True, select=True, track_visibility='onchange', help="""
             * Draft: not confirmed yet and will not be scheduled until confirmed\n
-            * Esperando Validacion: Un administrador debe validar el traspaso de material\n
+            * Esperando Validacion: One stock manager have to validate this movement\n
             * Waiting Another Operation: waiting for another move to proceed before it becomes automatically available (e.g. in Make-To-Order flows)\n
             * Waiting Availability: still waiting for the availability of products\n
             * Ready to Transfer: products reserved, simply waiting for confirmation.\n
@@ -47,7 +45,6 @@ class StockPicking(osv.osv):
         ),
 
     }
-
 
     def action_assign_wkf(self, cr, uid, ids, context=None):
         to_update = []
@@ -91,5 +88,16 @@ class StockPicking(osv.osv):
         if to_update:
             self.write(cr, uid, to_update, {'state': 'assigned'})
         return True
+
+    def action_cancel(self, cr, uid, ids, context=None):
+        """ Changes picking state to cancel.
+        @return: True
+        """
+        for pick in self.browse(cr, uid, ids, context=context):
+            ids2 = [move.id for move in pick.move_lines]
+            self.pool.get('stock.move').action_cancel(cr, uid, ids2, context)
+        self.write(cr, uid, ids, {'state': 'cancel', 'invoice_state': 'none'})
+        return True
+
 
 StockPicking()
