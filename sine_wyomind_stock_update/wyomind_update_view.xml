@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+<!--Wyomind Advanced Inventory Form View-->
+    <record model="ir.ui.view" id="wyomind_config_form_view">
+	<field name="name">wyomind_config.form</field>
+	<field name="model">wyomind.config</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+        <form string="Configuration">
+            <field name="url"/>
+		    <field name="apiuser" />
+            <field name="apipass" />
+        </form>
+	    </field>
+    </record>
+
+    <record id="action_wyomind_config_settings" model="ir.actions.act_window">
+            <field name="name">Configure Wyomind Conection</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wyomind.config</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Wyomind Config" id="wyomind_conf" parent="base.menu_config"  sequence="4"/>
+    <menuitem name="Wyomind configuration" id="wyomind_conf_2" parent="wyomind_conf"  sequence="3"  action="action_wyomind_config_settings" />
+
+     </data>
+</openerp>
