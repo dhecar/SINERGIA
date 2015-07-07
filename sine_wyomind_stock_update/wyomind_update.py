@@ -42,7 +42,7 @@ class stock_move(osv.osv):
     def do_partial(self, cr, uid, ids, partial_datas, context=None):
 
         res = super(stock_move, self).do_partial(cr, uid, ids, partial_datas, context=context)
-        conf = self.get('wyomind.config')
+        conf = self.pool.get('wyomind.config')
         url = conf.url
         user = conf.apiuser
         passw = conf.apipass
