@@ -23,6 +23,8 @@ import time
 from openerp import netsvc
 from openerp.tools import float_compare, DEFAULT_SERVER_DATETIME_FORMAT
 import logging
+from openerp.tools.translate import _
+from openerp import tools
 
 _logger = logging.getLogger(__name__)
 
@@ -107,21 +109,40 @@ class stock_move(osv.osv):
             proxy = xmlrpclib.ServerProxy(url, allow_none=True)
             session = proxy.login(user, passw)
 
-            # We get the product qty from stock_report_prodlots .
+            # We get the product qty from stock_report_prodlots
+            # For internal movements, two updates are made, one for each location (origin/destination)
+            # For in movements, we update the destination location
+            # For out movements, we update the origin location
+
             def get_stock(self, cr, uid, ids, context=None):
                 stock_prod_obj = self.pool.get('stock.report.prodlots')
-                # TODO search only movements in internal stock locations
-                for prod_id in move_ids:
-                    result = {}
-                    stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
-                                                                 ('location_id', '=', move.location_dest_id.id)],
-                                                       context=context)
 
-                    if stock_prod_ids:
-                        for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                            result = i.qty
+                '''usage:internal, type :in '''
+                if move.picking_id.type == 'in' and move.location_dest_id.usage == 'internal':
+                    for prod_id in move_ids:
+                        result = {}
+                        stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
+                                                                         ('location_id', '=', move.location_dest_id.id)]
+                                                               , context=context)
+                        print move.location_dest_id.id
+                        if stock_prod_ids:
+                            for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                                result = i.qty
 
-                return result
+                    return result
+                '''usage:internal, type :out '''
+                if move.picking_id.type == 'out' and move.location_id.usage == 'internal':
+                    for prod_id in move_ids:
+                        result = {}
+                        stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
+                                                                         ('location_id', '=', move.location_id.id)],
+                                                               context=context)
+
+                        if stock_prod_ids:
+                            for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                                result = i.qty
+
+                    return result
 
             # We get magento product_id
 
@@ -130,24 +151,22 @@ class stock_move(osv.osv):
                 for magento_prod_id in move_ids:
                     result = {}
                     mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', move.product_id.id)],
-                                                   context=context)
+                                                       context=context)
 
                     if mag_prod_ids:
                         for prod in mag_prod_obj.browse(cr, uid, mag_prod_ids, context=context):
                             result = prod.magento_id
-                            print result
 
                 return result
 
-            # we hardcode the mapping local-remote warehouse
-
-            location = 2
-            if move.location_id == 12:
+            # we hardcoded the mapping local-remote warehouse
+            location = 0
+            if move.location_id.id == 12 or move.location_dest_id.id == 12:
                 location = 2
-            if move.location_id == 15:
-                location = 3
-            if move.location_id == 19:
+            if move.location_id.id == 15 or move.location_dest_id.id == 15:
                 location = 4
+            if move.location_id.id == 19 or move.location_dest_id.id == 19:
+                location = 3
 
             data_basic = {'quantity_in_stock': get_stock(self, cr, uid, ids, context=context),
                           'manage_stock': 1,
@@ -157,8 +176,6 @@ class stock_move(osv.osv):
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
 
-            print data_basic
-
         for pick_id in picking_ids:
             wf_service.trg_write(uid, 'stock.picking', pick_id, cr)
 
@@ -166,3 +183,92 @@ class stock_move(osv.osv):
 
 
 stock_move()
+
+
+class stock_change_product_qty(osv.osv_memory):
+    _inherit = "stock.change.product.qty"
+
+    def change_product_qty(self, cr, uid, ids, context=None):
+        """ Changes the Product Quantity by making a Physical Inventory.
+        @param self: The object pointer.
+        @param cr: A database cursor
+        @param uid: ID of the user currently logged in
+        @param ids: List of IDs selected
+        @param context: A standard dictionary
+        @return:
+        """
+        if context is None:
+            context = {}
+
+        rec_id = context and context.get('active_id', False)
+        assert rec_id, _('Active ID is not set in Context')
+
+        inventry_obj = self.pool.get('stock.inventory')
+        inventry_line_obj = self.pool.get('stock.inventory.line')
+        prod_obj_pool = self.pool.get('product.product')
+
+        res_original = prod_obj_pool.browse(cr, uid, rec_id, context=context)
+        for data in self.browse(cr, uid, ids, context=context):
+            if data.new_quantity < 0:
+                raise osv.except_osv(_('Warning!'), _('Quantity cannot be negative.'))
+            inventory_id = inventry_obj.create(cr, uid, {'name': _('INV: %s') % tools.ustr(res_original.name)},
+                                               context=context)
+            line_data = {
+                'inventory_id': inventory_id,
+                'product_qty': data.new_quantity,
+                'location_id': data.location_id.id,
+                'product_id': rec_id,
+                'product_uom': res_original.uom_id.id,
+                'prod_lot_id': data.prodlot_id.id
+            }
+
+            inventry_line_obj.create(cr, uid, line_data, context=context)
+
+            inventry_obj.action_confirm(cr, uid, [inventory_id], context=context)
+            inventry_obj.action_done(cr, uid, [inventory_id], context=context)
+
+            # Update Stock in Magento
+            conf = self.pool.get('wyomind.config').browse(cr, uid, uid)
+            url = conf.url
+            user = conf.apiuser
+            passw = conf.apipass
+
+            # Connection
+            proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+            session = proxy.login(user, passw)
+
+            def get_mag_prod_id(self, cr, uid, ids, context=None):
+                mag_prod_obj = self.pool.get('magento.product.product')
+                result = {}
+                mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', rec_id)],
+                                                   context=context)
+
+                if mag_prod_ids:
+                    for prod in mag_prod_obj.browse(cr, uid, mag_prod_ids, context=context):
+                        result = prod.magento_id
+
+                    return result
+
+
+            # we hardcoded the mapping local-remote warehouse
+
+            location = 0
+            if data.location_id.id == 12:
+                location = 2
+            if data.location_id.id == 15:
+                location = 4
+            if data.location_id.id == 19:
+                location = 3
+
+            data_basic = {'quantity_in_stock': data.new_quantity,
+                          'manage_stock': 1,
+                          'backorder_allowed': 0,
+                          'use_config_setting_for_backorders': 1}
+
+            proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                              location, data_basic))
+
+        return {}
+
+
+stock_change_product_qty()
