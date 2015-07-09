@@ -428,24 +428,26 @@ class stock_partial_picking(osv.osv_memory):
                       'use_config_setting_for_backorders': 1}
 
         print data_basic
+        print location
         proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                           location, data_basic))
 
-        location = 0
+        location2 = 0
         if wizard_line.location_id.id == 12:
-            location = 2
+            location2 = 2
         if wizard_line.location_id.id == 15:
-            location = 4
+            location2 = 4
         if wizard_line.location_id.id == 19:
-            location = 3
+            location2 = 3
 
         data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
                        'manage_stock': 1,
                        'backorder_allowed': 0,
                        'use_config_setting_for_backorders': 1}
         print data_basic2
+        print location2
         proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
-                                                          location, data_basic2))
+                                                          location2, data_basic2))
 
         if done[partial.picking_id.id]['delivered_picking'] == partial.picking_id.id:
             return {'type': 'ir.actions.act_window_close'}
