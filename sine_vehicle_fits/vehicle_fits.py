@@ -115,7 +115,7 @@ class VehicleExport(osv.osv):
                        " WHEN type='SCOOT2' THEN 'Scooter 100-600cc'"
                        " WHEN type='PBKE' THEN 'Pitbike 4T'"
                        " WHEN type='PBIKE' THEN 'PocketBike'"
-                       " WHEN type='VESP' THEN 'Vepas Clasicas 50-200cc'"
+                       " WHEN type='VESP' THEN 'Vespas Clasicas 50-200cc'"
                        " END As make, brand AS model, model AS year FROM scooter_asociaciones"
                        " LEFT JOIN scooter_model ON"
                        " scooter_asociaciones.model_id = scooter_model.id"
@@ -155,17 +155,11 @@ class VehicleExport(osv.osv):
         transport.connect(username=username, pkey=mykey)
         sftp = paramiko.SFTPClient.from_transport(transport)
         sftp.chdir(rem_dir)
-        filepath = rem_dir+'\057'+rem_file
+        filepath = rem_dir
         localpath = loc_file
 
-        print rem_dir
-        print rem_file
-        print loc_file
-        print localpath
-        print filepath
-
         # Push Csv
-        sftp.put(localpath, filepath)
+        sftp.put(localpath, filepath, callback=None, confirm=True)
         sftp.close()
         transport.close()
 
