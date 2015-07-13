@@ -139,27 +139,20 @@ class VehicleExport(osv.osv):
             conn.close()
 
         conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
-        host = conf_line.sftp_host
-        port = conf_line.sftp_port
-        rem_dir = conf_line.sftp_remote_dir
-        rem_file = conf_line.sftp_remote_file
-        loc_file = conf_line.sftp_local_file
-        usern = conf_line.sftp_user
 
         # Create the transport with paramiko
-        transport = paramiko.Transport((host, port))
         key = StringIO(base64.standard_b64decode(conf_line.sftp_pem))
         mykey = paramiko.RSAKey.from_private_key(key)
-        username = usern
 
-        transport.connect(username=username, pkey=mykey)
+        transport = paramiko.Transport((conf_line.sftp_host, conf_line.sftp_port))
+        transport.connect(username=conf_line.sftp_user, pkey=mykey)
         sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.chdir(rem_dir)
-        filepath = rem_dir
-        localpath = loc_file
+        sftp.chdir(conf_line.sftp_remote_dir)
+        remotepath = conf_line.sftp_remote_dir + '/' + conf_line.sftp_remote_file
+        localpath = conf_line.sftp_local_file
 
         # Push Csv
-        sftp.put(localpath, filepath, callback=None, confirm=True)
+        sftp.put(localpath, remotepath)
         sftp.close()
         transport.close()
 
