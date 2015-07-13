@@ -142,6 +142,7 @@ class ProductProductAdapter(GenericAdapter):
                           [int(id), manufacturer, storeview_id, 'id'])
 
 
+
 @magento_myversion
 class ManufacturerProductImportMapper(ImportMapper):
     _model_name = 'magento.product.manufacturer'
@@ -150,6 +151,8 @@ class ManufacturerProductImportMapper(ImportMapper):
     def manufacturer(self, record):
 
         return {'name': record.get('manufacturer')}
+
+
 
 
 @magento_myversion
@@ -161,3 +164,4 @@ class ProductImportMapper(ImportMapper):
         """Manufacturer linked to the product"""
         mapper = self.get_connector_unit_for_model(ManufacturerProductImportMapper)
         return mapper.map_record(record).values()
+
