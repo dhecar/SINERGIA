@@ -32,7 +32,7 @@ _logger = logging.getLogger(__name__)
 class WyomindConfig(osv.osv):
     _name = 'wyomind.config'
     _description = 'Configuration for Wyomind API stock update'
-    # _table = 'wyomind_config'
+    _table = 'wyomind_config'
     _columns = {
         'url': fields.char('Api Url', help="Example --> http://WEBSITE/index.php/api/xmlrpc/", size=60),
         'apiuser': fields.char('Api User', size=15),
@@ -99,11 +99,13 @@ class stock_move(osv.osv):
 
             # Update xmlrpc. Wyomind Advanced Inventory
             # Get configuration from wyomind_config
+            conf_obj = self.pool.get('wyomind.config')
+            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+            for i in conf_obj.browse(cr, uid, conf_ids):
+                url = i.url
+                user = i.apiuser
+                passw = i.apipass
 
-            conf = self.pool.get('wyomind.config').browse(cr, uid, uid)
-            url = conf.url
-            user = conf.apiuser
-            passw = conf.apipass
 
             # Connection
             proxy = xmlrpclib.ServerProxy(url, allow_none=True)
@@ -124,7 +126,6 @@ class stock_move(osv.osv):
                         stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
                                                                          ('location_id', '=', move.location_dest_id.id)]
                                                                , context=context)
-                        print move.location_dest_id.id
                         if stock_prod_ids:
                             for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                                 result = i.qty
@@ -172,6 +173,8 @@ class stock_move(osv.osv):
                           'manage_stock': 1,
                           'backorder_allowed': 0,
                           'use_config_setting_for_backorders': 1}
+            print 'stockmove'
+            print data_basic
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
@@ -228,10 +231,12 @@ class stock_change_product_qty(osv.osv_memory):
             inventry_obj.action_done(cr, uid, [inventory_id], context=context)
 
             # Update Stock in Magento
-            conf = self.pool.get('wyomind.config').browse(cr, uid, uid)
-            url = conf.url
-            user = conf.apiuser
-            passw = conf.apipass
+            conf_obj = self.pool.get('wyomind.config')
+            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+            for i in conf_obj.browse(cr, uid, conf_ids):
+                url = i.url
+                user = i.apiuser
+                passw = i.apipass
 
             # Connection
             proxy = xmlrpclib.ServerProxy(url, allow_none=True)
@@ -264,6 +269,9 @@ class stock_change_product_qty(osv.osv_memory):
                           'manage_stock': 1,
                           'backorder_allowed': 0,
                           'use_config_setting_for_backorders': 1}
+
+            print 'change_qty'
+            print data_basic
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
@@ -372,6 +380,7 @@ class stock_partial_picking(osv.osv_memory):
                 if stock_prod_ids:
                     for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                         result = i.qty
+                        print result
 
                     return result
 
@@ -395,21 +404,18 @@ class stock_partial_picking(osv.osv_memory):
 
         # Update Stock in Magento
 
-        conf = self.pool.get('wyomind.config').browse(cr, uid, uid)
-        url = conf.url
-        user = conf.apiuser
-        passw = conf.apipass
+        conf_obj = self.pool.get('wyomind.config')
+        conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+        for i in conf_obj.browse(cr, uid, conf_ids):
+            url = i.url
+            user = i.apiuser
+            passw = i.apipass
 
         # Connection
         proxy = xmlrpclib.ServerProxy(url, allow_none=True)
         session = proxy.login(user, passw)
 
-        print get_mag_prod_id(self, cr, uid, ids, context=context)
-        print wizard_line.product_id.id
-        print wizard_line.location_id.id
-        print wizard_line.location_dest_id.id
-        print get_stock_dest(self, cr, uid, ids, context=context)
-        print get_stock_origin(self, cr, uid, ids, context=context)
+
 
         # we hardcoded the mapping local-remote warehouse
 
@@ -426,9 +432,9 @@ class stock_partial_picking(osv.osv_memory):
                       'manage_stock': 1,
                       'backorder_allowed': 0,
                       'use_config_setting_for_backorders': 1}
-
+        print 'partial'
         print data_basic
-        print location
+
         proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                           location, data_basic))
 
@@ -444,8 +450,7 @@ class stock_partial_picking(osv.osv_memory):
                        'manage_stock': 1,
                        'backorder_allowed': 0,
                        'use_config_setting_for_backorders': 1}
-        print data_basic2
-        print location2
+
         proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                           location2, data_basic2))
 
