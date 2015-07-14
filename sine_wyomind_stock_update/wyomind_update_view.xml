@@ -8,9 +8,9 @@
         <field name="type">form</field>
         <field name="arch" type="xml">
         <form string="Configuration">
-            <field name="url"/>
-		    <field name="apiuser" />
-            <field name="apipass" />
+            <field name="url" groups="group_wyomind_config_admin"/>
+		    <field name="apiuser" groups="group_wyomind_config_admin"/>
+            <field name="apipass" groups="group_wyomind_config_admin"/>
         </form>
 	    </field>
     </record>
