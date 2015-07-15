@@ -173,8 +173,6 @@ class stock_move(osv.osv):
                           'manage_stock': 1,
                           'backorder_allowed': 0,
                           'use_config_setting_for_backorders': 1}
-            print 'stockmove'
-            print data_basic
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
@@ -270,9 +268,6 @@ class stock_change_product_qty(osv.osv_memory):
                           'backorder_allowed': 0,
                           'use_config_setting_for_backorders': 1}
 
-            print 'change_qty'
-            print data_basic
-
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
 
@@ -286,6 +281,9 @@ class stock_partial_picking(osv.osv_memory):
     _inherit = "stock.partial.picking"
 
     def do_partial(self, cr, uid, ids, context=None):
+
+
+
         if context is None:
             context = {}
         assert len(ids) == 1, 'Partial picking processing may only be done one at a time.'
@@ -298,6 +296,7 @@ class stock_partial_picking(osv.osv_memory):
         }
         picking_type = partial.picking_id.type
         for wizard_line in partial.move_ids:
+
             line_uom = wizard_line.product_uom
             move_id = wizard_line.move_id.id
 
@@ -350,8 +349,11 @@ class stock_partial_picking(osv.osv_memory):
             if (picking_type == 'in') and (wizard_line.product_id.cost_method == 'average'):
                 partial_data['move%s' % (wizard_line.move_id.id)].update(product_price=wizard_line.cost,
                                                                          product_currency=wizard_line.currency.id)
-                # Wyomind stock update
 
+        done = stock_picking.do_partial(
+            cr, uid, [partial.picking_id.id], partial_data, context=context)
+
+        if done[partial.picking_id.id]['delivered_picking'] == partial.picking_id.id:
             def get_stock_origin(self, cr, uid, ids, context=None):
                 stock_prod_obj = self.pool.get('stock.report.prodlots')
                 if partial.picking_id.type == 'internal' and wizard_line.location_id.usage == 'internal':
@@ -379,7 +381,6 @@ class stock_partial_picking(osv.osv_memory):
                     if stock_prod_ids:
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                             result = i.qty
-                            print result
 
                         return result
 
@@ -399,61 +400,57 @@ class stock_partial_picking(osv.osv_memory):
                     # Do the partial delivery and open the picking that was delivered
                     # We don't need to find which view is required, stock.picking does it.
 
-        done = stock_picking.do_partial(
-            cr, uid, [partial.picking_id.id], partial_data, context=context)
+            def get_location(cr, uid):
+                location = 0
+                if wizard_line.location_dest_id.id == 12:
+                    location = 2
+                if wizard_line.location_dest_id.id == 15:
+                    location = 4
+                if wizard_line.location_dest_id.id == 19:
+                    location = 3
+                return location
 
-        # Update Stock in Magento
+            def get_location2(cr, uid):
+                location2 = 0
+                if wizard_line.location_id.id == 12:
+                    location2 = 2
+                if wizard_line.location_id.id == 15:
+                    location2 = 4
+                if wizard_line.location_id.id == 19:
+                    location2 = 3
+                return location2
 
-        conf_obj = self.pool.get('wyomind.config')
-        conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
-        for i in conf_obj.browse(cr, uid, conf_ids):
-            url = i.url
-            user = i.apiuser
-            passw = i.apipass
+            conf_obj = self.pool.get('wyomind.config')
+            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+            for x in conf_obj.browse(cr, uid, conf_ids):
+                url = x.url
+                user = x.apiuser
+                passw = x.apipass
 
         # Connection
-        proxy = xmlrpclib.ServerProxy(url, allow_none=True)
-        session = proxy.login(user, passw)
+                proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+                session = proxy.login(user, passw)
+            # Wyomind stock update
+            data_basic = {'quantity_in_stock': get_stock_dest(self, cr, uid, ids, context=context),
+                          'manage_stock': 1,
+                          'backorder_allowed': 0,
+                          'use_config_setting_for_backorders': 1}
 
-        # we hardcoded the mapping local-remote warehouse
+            if partial.picking_id.type == 'internal':
+                proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                  get_location(cr, uid), data_basic))
 
-        location = 0
+            data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
+                           'manage_stock': 1,
+                           'backorder_allowed': 0,
+                           'use_config_setting_for_backorders': 1}
 
-        if wizard_line.location_dest_id.id == 12:
-            location = 2
-        if wizard_line.location_dest_id.id == 15:
-            location = 4
-        if wizard_line.location_dest_id.id == 19:
-            location = 3
+            if partial.picking_id.type == 'internal':
+                proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                  get_location2(cr, uid), data_basic2))
 
-        data_basic = {'quantity_in_stock': get_stock_dest(self, cr, uid, ids, context=context),
-                      'manage_stock': 1,
-                      'backorder_allowed': 0,
-                      'use_config_setting_for_backorders': 1}
-        print 'partial'
-        print data_basic
-
-        proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
-                                                          location, data_basic))
-
-        location2 = 0
-        if wizard_line.location_id.id == 12:
-            location2 = 2
-        if wizard_line.location_id.id == 15:
-            location2 = 4
-        if wizard_line.location_id.id == 19:
-            location2 = 3
-
-        data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
-                       'manage_stock': 1,
-                       'backorder_allowed': 0,
-                       'use_config_setting_for_backorders': 1}
-
-        proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
-                                                          location2, data_basic2))
-
-        if done[partial.picking_id.id]['delivered_picking'] == partial.picking_id.id:
             return {'type': 'ir.actions.act_window_close'}
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': context.get('active_model', 'stock.picking'),
