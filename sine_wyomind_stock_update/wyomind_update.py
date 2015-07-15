@@ -350,55 +350,55 @@ class stock_partial_picking(osv.osv_memory):
             if (picking_type == 'in') and (wizard_line.product_id.cost_method == 'average'):
                 partial_data['move%s' % (wizard_line.move_id.id)].update(product_price=wizard_line.cost,
                                                                          product_currency=wizard_line.currency.id)
-        # Wyomind stock update
+                # Wyomind stock update
 
-        def get_stock_origin(self, cr, uid, ids, context=None):
-            stock_prod_obj = self.pool.get('stock.report.prodlots')
-            if partial.picking_id.type == 'internal' and wizard_line.location_id.usage == 'internal':
+            def get_stock_origin(self, cr, uid, ids, context=None):
+                stock_prod_obj = self.pool.get('stock.report.prodlots')
+                if partial.picking_id.type == 'internal' and wizard_line.location_id.usage == 'internal':
 
-                result = {}
-                stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', wizard_line.product_id.id),
-                                                                 ('location_id', '=', wizard_line.location_id.id)],
-                                                       context=context)
+                    result = {}
+                    stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', wizard_line.product_id.id),
+                                                                     ('location_id', '=', wizard_line.location_id.id)],
+                                                           context=context)
 
-                if stock_prod_ids:
-                    for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                        result = i.qty
+                    if stock_prod_ids:
+                        for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                            result = i.qty
 
-                    return result
+                        return result
 
-        def get_stock_dest(self, cr, uid, ids, context=None):
-            stock_prod_obj = self.pool.get('stock.report.prodlots')
-            if partial.picking_id.type == 'internal' and wizard_line.location_dest_id.usage == 'internal':
-
-                result = {}
-                stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', wizard_line.product_id.id),
-                                                                 ('location_id', '=',
-                                                                  wizard_line.location_dest_id.id)],
-                                                       context=context)
+            def get_stock_dest(self, cr, uid, ids, context=None):
+                stock_prod_obj = self.pool.get('stock.report.prodlots')
+                if partial.picking_id.type == 'internal' and wizard_line.location_dest_id.usage == 'internal':
+                    result = {}
+                    stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', wizard_line.product_id.id),
+                                                                     ('location_id', '=',
+                                                                      wizard_line.location_dest_id.id)],
+                                                           context=context)
 
                 if stock_prod_ids:
                     for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
                         result = i.qty
                         print result
 
-                    return result
-
-        def get_mag_prod_id(self, cr, uid, ids, context=None):
-
-            mag_prod_obj = self.pool.get('magento.product.product')
-            result = {}
-            mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', wizard_line.product_id.id)],
-                                               context=context)
-
-            if mag_prod_ids:
-                for prod in mag_prod_obj.browse(cr, uid, mag_prod_ids, context=context):
-                    result = prod.magento_id
-
                 return result
 
-        # Do the partial delivery and open the picking that was delivered
-        # We don't need to find which view is required, stock.picking does it.
+            def get_mag_prod_id(self, cr, uid, ids, context=None):
+
+                mag_prod_obj = self.pool.get('magento.product.product')
+                result = {}
+                mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', wizard_line.product_id.id)],
+                                                   context=context)
+
+                if mag_prod_ids:
+                    for prod in mag_prod_obj.browse(cr, uid, mag_prod_ids, context=context):
+                        result = prod.magento_id
+
+                    return result
+
+                    # Do the partial delivery and open the picking that was delivered
+                    # We don't need to find which view is required, stock.picking does it.
+
         done = stock_picking.do_partial(
             cr, uid, [partial.picking_id.id], partial_data, context=context)
 
@@ -414,8 +414,6 @@ class stock_partial_picking(osv.osv_memory):
         # Connection
         proxy = xmlrpclib.ServerProxy(url, allow_none=True)
         session = proxy.login(user, passw)
-
-
 
         # we hardcoded the mapping local-remote warehouse
 
@@ -456,7 +454,6 @@ class stock_partial_picking(osv.osv_memory):
 
         if done[partial.picking_id.id]['delivered_picking'] == partial.picking_id.id:
             return {'type': 'ir.actions.act_window_close'}
-
         return {
             'type': 'ir.actions.act_window',
             'res_model': context.get('active_model', 'stock.picking'),
