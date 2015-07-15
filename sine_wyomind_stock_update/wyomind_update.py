@@ -376,10 +376,10 @@ class stock_partial_picking(osv.osv_memory):
                                                                       wizard_line.location_dest_id.id)],
                                                            context=context)
 
-                if stock_prod_ids:
-                    for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                        result = i.qty
-                        print result
+                    if stock_prod_ids:
+                        for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
+                            result = i.qty
+                            print result
 
                 return result
 
