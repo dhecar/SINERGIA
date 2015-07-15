@@ -381,7 +381,7 @@ class stock_partial_picking(osv.osv_memory):
                             result = i.qty
                             print result
 
-                return result
+                        return result
 
             def get_mag_prod_id(self, cr, uid, ids, context=None):
 
