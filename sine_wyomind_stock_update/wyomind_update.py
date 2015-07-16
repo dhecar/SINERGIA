@@ -431,23 +431,24 @@ class stock_partial_picking(osv.osv_memory):
                 proxy = xmlrpclib.ServerProxy(url, allow_none=True)
                 session = proxy.login(user, passw)
             # Wyomind stock update
-            data_basic = {'quantity_in_stock': get_stock_dest(self, cr, uid, ids, context=context),
-                          'manage_stock': 1,
-                          'backorder_allowed': 0,
-                          'use_config_setting_for_backorders': 1}
+            for wizard_line in partial.move_ids:
+                data_basic = {'quantity_in_stock': get_stock_dest(self, cr, uid, ids, context=context),
+                              'manage_stock': 1,
+                              'backorder_allowed': 0,
+                              'use_config_setting_for_backorders': 1}
 
-            if partial.picking_id.type == 'internal':
-                proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
-                                                                  get_location(cr, uid), data_basic))
+                if partial.picking_id.type == 'internal':
+                    proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                      get_location(cr, uid), data_basic))
 
-            data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
-                           'manage_stock': 1,
-                           'backorder_allowed': 0,
-                           'use_config_setting_for_backorders': 1}
+                data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
+                              'manage_stock': 1,
+                              'backorder_allowed': 0,
+                              'use_config_setting_for_backorders': 1}
 
-            if partial.picking_id.type == 'internal':
-                proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
-                                                                  get_location2(cr, uid), data_basic2))
+                if partial.picking_id.type == 'internal':
+                    proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                      get_location2(cr, uid), data_basic2))
 
             return {'type': 'ir.actions.act_window_close'}
 
