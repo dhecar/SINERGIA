@@ -89,12 +89,15 @@ vehicle_config()
 
 class VehicleExport(osv.osv):
     def export_to_magento(self, cr, uid, ids, context=None):
-        conf_obj = self.pool.get('vehicle.config').browse(cr, uid, uid)
-        host = conf_obj.erp_host
-        dbname = conf_obj.erp_db
-        user = conf_obj.erp_user
-        password = conf_obj.erp_password
-        connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
+        conf_obj = self.pool.get('vehicle.config')
+        conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+        for sftp_server in conf_obj.browse(cr, uid, conf_ids):
+            host = sftp_server.erp_host
+            dbname = sftp_server.erp_db
+            user = sftp_server.erp_user
+            password = sftp_server.erp_password
+            connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
+
         for date in self.browse(cr, uid, ids):
             dat_from = date.date_from
             dat_to = date.date_to
@@ -138,18 +141,27 @@ class VehicleExport(osv.osv):
                 writer.writerow([unicode(s).encode("utf-8") for s in row])
             conn.close()
 
-        conf_line = self.pool.get('vehicle.config').browse(cr, uid, uid)
+        conf_line_obj = self.pool.get('vehicle.config')
+        conf_line_ids = conf_line_obj.search(cr, uid, [('id', '=', 1)])
+        for x in conf_line_obj.browse(cr, uid, conf_line_ids):
+                pem = x.sftp_pem
+                host = x.sftp_host
+                user = x.sftp_user
+                port = x.sftp_port
+                rdir = x.sftp_remote_dir
+                rfile = x.sftp_remote_file
+                lfile = x.sftp_local_file
 
         # Create the transport with paramiko
-        key = StringIO(base64.standard_b64decode(conf_line.sftp_pem))
+        key = StringIO(base64.standard_b64decode(pem))
         mykey = paramiko.RSAKey.from_private_key(key)
 
-        transport = paramiko.Transport((conf_line.sftp_host, conf_line.sftp_port))
-        transport.connect(username=conf_line.sftp_user, pkey=mykey)
+        transport = paramiko.Transport((host, port))
+        transport.connect(username=user, pkey=mykey)
         sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.chdir(conf_line.sftp_remote_dir)
-        remotepath = conf_line.sftp_remote_dir + '/' + conf_line.sftp_remote_file
-        localpath = conf_line.sftp_local_file
+        sftp.chdir(rdir)
+        remotepath = rdir + '/' + rfile
+        localpath = lfile
 
         # Push Csv
         sftp.put(localpath, remotepath)
