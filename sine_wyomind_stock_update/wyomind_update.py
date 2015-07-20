@@ -442,9 +442,9 @@ class stock_partial_picking(osv.osv_memory):
                                                                       get_location(cr, uid), data_basic))
 
                 data_basic2 = {'quantity_in_stock': get_stock_origin(self, cr, uid, ids, context=context),
-                              'manage_stock': 1,
-                              'backorder_allowed': 0,
-                              'use_config_setting_for_backorders': 1}
+                               'manage_stock': 1,
+                               'backorder_allowed': 0,
+                               'use_config_setting_for_backorders': 1}
 
                 if partial.picking_id.type == 'internal':
                     proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
