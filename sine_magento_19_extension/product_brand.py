@@ -60,8 +60,9 @@ class product_brand(orm.Model):
 
     _columns = {
         'magento_bind_ids': fields.one2many(
-            'magento.product.manufacturer', 'openerp_id',
-            string="Magento Bindings"),
+            'magento.product.manufacturer',
+            'openerp_id',
+            string="Magento Bindings", ),
     }
 
     def copy_data(self, cr, uid, id, default=None, context=None):
@@ -74,14 +75,14 @@ class product_brand(orm.Model):
 
 
 @magento_myversion
-class ProductProductAdapter(GenericAdapter):
+class ProductBrandAdapter(GenericAdapter):
     _model_name = 'magento.product.product'
     _magento_model = 'catalog_product'
     _admin_path = '/{model}/edit/id/{id}'
 
     def _call(self, method, arguments):
         try:
-            return super(ProductProductAdapter, self)._call(method, arguments)
+            return super(ProductBrandAdapter, self)._call(method, arguments)
         except xmlrpclib.Fault as err:
             # this is the error in the Magento API
             # when the product does not exist
@@ -90,58 +91,9 @@ class ProductProductAdapter(GenericAdapter):
             else:
                 raise
 
-    def search(self, filters=None, from_date=None, to_date=None):
-        """ Search records according to some criteria
-        and returns a list of ids
-
-        :rtype: list
-        """
-        if filters is None:
-            filters = {}
-        dt_fmt = MAGENTO_DATETIME_FORMAT
-        if from_date is not None:
-            filters.setdefault('updated_at', {})
-            filters['updated_at']['from'] = from_date.strftime(dt_fmt)
-        if to_date is not None:
-            filters.setdefault('updated_at', {})
-            filters['updated_at']['to'] = to_date.strftime(dt_fmt)
-        # TODO add a search entry point on the Magento API
-        return [int(row['product_id']) for row
-                in self._call('%s.list' % self._magento_model,
-                              [filters] if filters else [{}])]
-
-    def read(self, id, storeview_id=None, attributes=None):
-        """ Returns the information of a record
-
-        :rtype: dict
-        """
-        return self._call('ol_catalog_product.info',
-                          [int(id), storeview_id, attributes, 'id'])
-
-    def write(self, id, data, storeview_id=None):
-        """ Update records on the external system """
-        # XXX actually only ol_catalog_product.update works
-        # the PHP connector maybe breaks the catalog_product.update
-        return self._call('ol_catalog_product.update',
-                          [int(id), data, storeview_id, 'id'])
-
-    def get_images(self, id, storeview_id=None):
-        return self._call('product_media.list', [int(id), storeview_id, 'id'])
-
-    def read_image(self, id, image_name, storeview_id=None):
-        return self._call('product_media.info',
-                          [int(id), image_name, storeview_id, 'id'])
-
-    def update_inventory(self, id, data):
-        # product_stock.update is too slow
-        return self._call('oerp_cataloginventory_stock_item.update',
-                          [int(id), data])
-
     def get_manufacturer(self, id, manufacturer, storeview_id=None):
-        return self._call('ol_catalog_product.info',
+        return self._call('ol_catalog_product_attribute.info',
                           [int(id), manufacturer, storeview_id, 'id'])
-
-
 
 @magento_myversion
 class ManufacturerProductImportMapper(ImportMapper):
@@ -149,15 +101,14 @@ class ManufacturerProductImportMapper(ImportMapper):
 
     @mapping
     def manufacturer(self, record):
-
-        return {'name': record.get('manufacturer')}
+        {'name': record.get('manufacturer')}
 
 
 
 
 @magento_myversion
 class ProductImportMapper(ImportMapper):
-    _model_name = 'magento.product.product'
+    _model_name = 'magento.product.manufacturer'
 
     @mapping
     def prod_manufacturer(self, record):

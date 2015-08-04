@@ -11,7 +11,7 @@ class MyProductImportMapper(ProductImportMapper):
 
     direct = ProductImportMapper.direct + [('msrp', 'pvp_fabricante')]
 
-    @only_create
+
     @mapping
     def prod_brand_id(self, record):
         prod_brand = record['manufacturer']
