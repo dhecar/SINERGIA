@@ -26,9 +26,8 @@ class marcas_scooter(osv.osv):
     def create(self, cr, uid, vals, context=None):
         model = vals.get('brand')
         if vals.get('brand'):
-            vals['brand'] = vals['brand'].upper()
+            vals['brand'] = vals['brand'].title()
         return super(marcas_scooter, self).create(cr, uid, vals, context=context)
-
 
     _name = 'marcas.scooter'
     _descripcion = 'Marcas'

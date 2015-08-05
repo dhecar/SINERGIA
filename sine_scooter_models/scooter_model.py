@@ -26,7 +26,7 @@ class scooter_model(osv.osv):
     def create(self, cr, uid, vals, context=None):
         model = vals.get('model')
         if vals.get('model'):
-            vals['model'] = vals['model'].upper()
+            vals['model'] = vals['model'].title()
         return super(scooter_model, self).create(cr, uid, vals, context=context)
 
 
