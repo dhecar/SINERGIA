@@ -80,7 +80,9 @@
                     <td>Toptaller</td>
                 %elif 'MAG-1%' in picking.origin:
                     <td>Motoscoot</td>
-                %elif 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
+                %endif
+
+                %if 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
                     <td>Motoscoot</td>
                 %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
                     <td>Toptaller</td>
