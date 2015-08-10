@@ -91,7 +91,7 @@
 
                 <td>${formatLang(picking.date_done, date=True)}</td>
                 <td>${picking.weight}</td>
-                <td>${picking.carrier_id and picking.carrier_id.name or ''}</td>
+                <td>${picking.carrier_id and picking.carrier_id.carrier_file_id.name or ''}</td>
                 <td>${picking.carrier_tracking_ref or ''}</td>
                 <td>${formatLang(picking.sale_id.amount_total)}</td>
 
