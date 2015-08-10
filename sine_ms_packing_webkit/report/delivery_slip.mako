@@ -78,13 +78,13 @@
 
                 %if 'MAG-4' in picking.origin:
                     <td>Toptaller</td>
-                %elif 'MAG-1%' in picking.origin:
+                %elif 'MAG-1' in picking.origin:
                     <td>Motoscoot</td>
                 %endif
 
-                %if 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
+                %if 'General' in picking.partner_id.category_id or 'Pilot' in picking.partner_id.category_id:
                     <td>Motoscoot</td>
-                %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
+                %elif 'Taller' in picking.partner_id.category_id or 'Taller std' in picking.partner_id.category_id:
                     <td>Toptaller</td>
                 %else:
                     <td>Final</td>
