@@ -9,7 +9,7 @@
 Replaces the legacy rml picking Order report by brand new webkit reports.
     """,
     'author': "David Hernandez. Sinergiainformatica.net)",
-    'website': 'http://sinergiainforatica.net',
+    'website': 'http://sinergiainformatica.net',
     'depends': ['base',
                 'report_webkit',
                 'base_headers_webkit',
