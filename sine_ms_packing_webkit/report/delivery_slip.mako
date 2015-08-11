@@ -82,22 +82,17 @@
                         <td>Toptaller</td>
                     %elif 'MAG-1' in picking.origin:
                         <td>Motoscoot</td>
-                    %endif
+                    %elif 'SO' in picking.origin and picking.partner_id.category_id:
 
-                    %if picking.partner_id.category_id:
                         %if 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
                             <td>Motoscoot</td>
                         %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
-
                             <td>Toptaller</td>
-                        %else:
-                            <td>N/A</td>
                         %endif
-                    %else:
-                    <td>N/A</td>
+
+                    %elif 'SO' in picking.origin and not picking.partner_id.category_id:
+                        <td>N/A</td>
                     %endif
-
-
 
                         <td>${formatLang(picking.date_done, date=True)}</td>
                         <td>${picking.weight}</td>
