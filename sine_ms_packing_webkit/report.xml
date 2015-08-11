@@ -13,7 +13,7 @@
   </data>
     <data noupdate="1">
         <record id="stock.report_picking_list_out" model="ir.actions.report.xml">
-           <field name="webkit_header" ref="base_headers_webkit.base_reports_portrait_header"></field>
+           <field name="webkit_header" ref="motoscoot_headers.base_reports_motoscoot_albaranes"></field>
         </record>
     </data>
 </openerp>

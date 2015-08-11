@@ -15,47 +15,52 @@
     %>
     %for picking in objects:
         <% setLang(picking.partner_id.lang) %>
-        <div class="address">
-            <table class="recipient">
+
+            <div style="float:right;margin-top:15px;margin-bottom:15px">
+            <table class="recipient" style="border:1px solid #C0C0C0;">
                 %if picking.partner_id.parent_id:
-                <tr><td>Dirección Envio</td></tr>
-                <tr><td class="name">${picking.partner_id.parent_id.name or ''}</td></tr>
-                <tr><td>${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }</td></tr>
-                <% address_lines = picking.partner_id.contact_address.split("\n")[1:] %>
+                <thead><th style="font-weight:bold;width=50">Dirección Envio</th></thead>
+                <tr>
+                    <td class="name">${picking.partner_id.parent_id.name or ''}</td>
+                    <td>${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }</td>
+                </tr>
                 %else:
-                <tr><td class="name">${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }</td></tr>
-                <% address_lines = picking.partner_id.contact_address.split("\n") %>
+                <thead><th style="font-weight:bold;width=50">Dirección Envio</th></thead>
+                <tr>
+                    <td nowrap style="width=250">
+                    ${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }<br>
+                    ${picking.partner_id.street or ''}<br>
+                    ${picking.partner_id.city or ''}<br>
+                    ${picking.partner_id.zip or ''}, ${picking.partner_id.state_id.name or ''}, ${picking.partner_id.country_id.name or ''}
+                    </td>
+                    <td nowrap style="width=150" >Teléfono: ${picking.partner_id.phone or ''}<br>
+                        Móbil: ${picking.partner_id.mobile or ''}<br>
+                        Email: ${picking.partner_id.email or ''}</td>
+                </tr>
                 %endif
-                %for part in address_lines:
-                    %if part:
-                    <tr><td>${part}</td></tr>
-                    %endif
-                %endfor
-                <tr><td>Teléfono: ${picking.partner_id.phone or ''}</td></tr>
-                <tr><td>Móbil: ${picking.partner_id.mobile or ''}</td></tr>
-                <tr><td>Email: ${picking.partner_id.email or ''}</td></tr>
             </table>
+
+            </div>
+            <div style="float:left;margin-top:15px;margin-bottom:15px">
             <%
             invoice_addr = invoice_address(picking)
             %>
-            <table class="invoice" style="margin-bottom:30px">
-                <tr><td class="address_title">${_("Invoice address:")}</td></tr>
-                <tr><td>${invoice_addr.title and invoice_addr.title.name or ''} ${invoice_addr.name }</td></tr>
-                %if invoice_addr.contact_address:
-                    <% address_lines = invoice_addr.contact_address.split("\n") %>
-                    %for part in address_lines:
-                        %if part:
-                        <tr><td>${part}</td></tr>
-                        %endif
-                    %endfor
-                %endif
-                <tr><td>Teléfono: ${picking.partner_id.phone or ''}</td></tr>
-                <tr><td>Móbil: ${picking.partner_id.mobile or ''}</td></tr>
-                <tr><td>Email: ${picking.partner_id.email or ''}</td></tr>
+            <table class="invoice" style="border:1px solid #C0C0C0;">
+                <thead><th style="font-weight:bold;width=50">Dirección Facturación</th></thead>
+                <tr>
+
+                <td nowrap style="width=250">
+                ${invoice_addr.title and invoice_addr.title.name or ''} ${invoice_addr.name }<br>
+                ${invoice_addr.street or ''}<br>
+                ${invoice_addr.city or ''}<br>
+                ${invoice_addr.zip or ''}, ${invoice_addr.state_id.name or ''}, ${invoice_addr.country_id.name or ''}</td>
+                <td nowrap style="width=150" >Teléfono: ${invoice_addr.phone or ''}<br>
+                        Móbil: ${invoice_addr.mobile or ''}<br>
+                        Email: ${invoice_addr.email or ''}<br>
+                </td></tr>
             </table>
+            </div>
 
-
-        </div>
 
         <h1 style="clear:both;">${_(u'Picking List') } ${picking.name}</h1>
 
