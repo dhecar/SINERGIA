@@ -1391,6 +1391,125 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <field eval="20.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
 
+body {
+    font-family: helvetica;
+    font-size: 11px;
+}
+
+table {
+    font-family: helvetica;
+    font-size: 11px;
+
+}
+
+.header {
+    margin-left: 0px;
+    text-align: left;
+    width: 300px;
+    font-size: 12px;
+
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.basic_table{
+    text-align: center;
+    border: 1px solid lightGrey;
+    border-collapse: collapse;
+}
+
+.basic_table th {
+    border: 1px solid lightGrey;
+    font-size: 12px;
+}
+
+.basic_table td {
+    border: 1px solid lightGrey;
+    font-size: 12px;
+}
+
+.list_table {
+    border-color: black;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.list_table td {
+    border-color: gray;
+    border-top: 1px solid gray;
+    text-align: left;
+    font-size: 12px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 3px;
+    padding-bottom:3px;
+}
+
+.list_table th {
+    border-bottom: 2px solid black;
+    text-align: left;
+    font-size: 12px;
+    font-weight: bold;
+    padding-right: 3px
+    padding-left: 3px
+}
+
+.list_table thead {
+    display: table-header-group;
+}
+
+
+.address table {
+    font-size: 11px;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
+}
+
+.address .shipping {
+
+}
+
+
+.address .invoice {
+    margin-top: 10px;
+}
+
+.address .recipient {
+    margin-right: 400px;
+    float: right;
+}
+
+table .address_title {
+    font-weight: bold;
+}
+
+.address td.name {
+    font-weight: bold;
+}
+
+td.amount, th.amount {
+    text-align: right;
+}
+
+h1 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+tr.line .note {
+    border-style: none;
+    font-size: 9px;
+    padding-left: 10px;
+}
+
+tr.line {
+    margin-bottom: 10px;
+}
+
 ]]>
             </field>
             <field name="name">Base Reports Motoscoot Albaranes</field>
