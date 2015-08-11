@@ -930,7 +930,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
             <field name="name">Base Reports Toptaller Facturas</field>
         </record>
 
-                <!-- ...................................BASE Motoscoot._Facturas......................................... -->
+                <!-- ............................BASE Motoscoot._Facturas.........................................-->
 
         <record id="base_reports_motoscoot_facturas" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
@@ -1271,6 +1271,129 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 
 ]]></field>
             <field name="name">Base Reports Motoscoot Facturas</field>
+        </record>
+                <!--.............................BASE Motoscoot Albaranes ........................................-->
+
+        <record id="base_reports_motoscoot_albaranes" model="ir.header_webkit">
+            <field name="footer_html"><![CDATA[
+<html>
+<head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+         <style type="text/css">
+            ${css}
+
+        </style>
+</head>
+<body style="border:0;" onload="subst()">
+<div  class="pie">
+<div>
+
+<table style="font-size:10px;width:100%;text-align:center">
+<tr>
+  <td>
+      <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
+
+</td>
+</tr>
+<tr>
+<td>
+Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755
+</td>
+</tr>
+</table>
+<table style="width:100%;text-align:right">
+            <tr >
+                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
+            </tr>
+        </table>
+
+</div>
+</div>
+</div>
+
+</body>
+</html>]]></field>
+            <field name="orientation">Portrait</field>
+            <field name="format">A4</field>
+            <field name="html"><![CDATA[
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+        <style type="text/css">
+            ${css}
+
+        </style>
+    </head>
+
+<body style="border:0; margin: 0;" onload="subst()">
+
+ <div style="float:none">
+     <table>
+
+         <tr><td><b>Ms Properformance 2008 S.L.</b></td></tr>
+		 <tr><td>NIF 46683904E</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Motoscoot</b></td>
+       </tr>
+	   <tr>
+                <td >
+                    C/Sardenya 6, bajos</br>
+		            17006 Girona - España </br>
+
+		         </td>
+        </tr>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+		<tr>
+		        <td>
+		            Telf: (+34) 972413880</br>
+		            Fax: (+34) 972223322</br>
+		            mail: info@motoscoot.net
+		        </td>
+
+       </tr>
+
+
+     </table>
+    </div>
+
+ ${_debug or ''|n} </body>
+
+
+</html>]]>
+            </field>
+            <field eval="20" name="margin_top"/>
+            <field eval="20.0" name="margin_bottom"/>
+            <field name="css"><![CDATA[
+
+]]>
+            </field>
+            <field name="name">Base Reports Motoscoot Albaranes</field>
         </record>
 
     </data>
