@@ -1209,7 +1209,7 @@ tr { page-break-inside: avoid; }
 
 ]]>
             </field>
-            <field name="name">Base Reports Motoscoot Pickings</field>
+            <field name="name">Reports Motoscoot Pickings</field>
         </record>
 
     </data>
