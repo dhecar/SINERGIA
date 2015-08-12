@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <openerp>
     <data noupdate="1">
-<!-- ...................................BASE MOTOSCOOT._Pedidos......................................... -->
+                <!-- ............................BASE MOTOSCOOT._Pedidos......................................... -->
 
         <record id="base_reports_motoscoot" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
@@ -60,6 +60,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <field name="orientation">Portrait</field>
             <field name="format">A4</field>
             <field name="html"><![CDATA[
+%for order in objects:
+%if 'General' in order.partner_id.category_id.name:
+
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -205,171 +208,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
        ${_debug or ''|n}
 
 </body>
-</html>]]>
-            </field>
-            <field eval="105.0" name="margin_top"/>
-            <field eval="45.0" name="margin_bottom"/>
-            <field name="css"><![CDATA[
-body{
-        font-family:Verdana;
-       }
+</html>
+%elif 'Taller' in order.partner_id.category_id.name:
 
-
-
-       .cabecera {
-        text-align:right;
-        position:relative;
-        height:360px;
-
-        }
-
-        .datos_empresa {
-        font-size:12px;
-        text-align:right;
-        float:right;
-        margin-top:15px;
-
-
-        }
-
-        .datos_cliente {
-        font-size:11px;
-        float:left;
-        top:10px;
-
-        width:300px;
-        text-align:left;
-
-        }
-
-
-        .datos_pedido {
-        }
-
-
-        .datos_pedido td {
-        font-size:11px;
-        color:#424242;
-        }
-
-        .datos_pedido td b {
-        text-transform: uppercase;
-        font-size:12px;
-        }
-
-        .ref {
-        font-size:9px;
-        text-align:center;
-
-        }
-        .totals {
-        font-size:12px;
-        }
-
-        .pie {
-
-         font-size:11px;
-
-
-        }
-
-        .logo {
-        border-top: 1px double #848484;
-        border-bottom: 1px solid #848484;
-        }
-
-        .apunte {
-        background:#E6E6E6;
-        height:45px;
-
-        width:300px;
-        }
-
-        .vertical {
-        white-space:nowrap;
-        -webkit-transform:rotate(270deg);
-        display:block;
-        text-align:center;
-        float:left;
-        position:fixed;
-
-        top:450px;
-        font-size:9px;
-        color: #848484;
-        height:20px;
-        left:-305px;
-        padding-bottom:5px;
-        padding-top:1px;
-
-        }
-
-        .vertical p {
-        line-height:23px;
-       }
-]]>
-            </field>
-            <field name="name">Base Reports Motoscoot</field>
-        </record>
-
-   <!-- ...................................BASE TOPTALLER._Pedidos......................................... -->
-  
-        <record id="base_reports_toptaller" model="ir.header_webkit">
-            <field name="footer_html"><![CDATA[
-<html>
-<head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
-        <script>
-            function subst() {
-            var vars={};
-            var x=document.location.search.substring(1).split('&');
-            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
-            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
-            for(var i in x) {
-            var y = document.getElementsByClassName(x[i]);
-            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
-                }
-            }
-        </script>
-         <style type="text/css">
-            ${css}
-
-        </style>
-</head>
-<body style="border:0;" onload="subst()">
-<div  class="pie">
-<div class="logo">
-${helper.embed_logo_by_name('Motoscoot_footer')|n}
-</div>
-<div>
-
-<table style="font-size:10px;width:100%;text-align:center">
-<tr>
-  <td>
-      <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
-
-</td>
-</tr>
-<tr>
-<td>
-Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755
-</td>
-</tr>
-</table>
-<table style="width:100%;text-align:right">
-            <tr >
-                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
-            </tr>
-        </table>
-
-</div>
-</div>
-</div>
-
-</body>
-</html>]]></field>
-            <field name="orientation">Portrait</field>
-            <field name="format">A4</field>
-            <field name="html"><![CDATA[
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -515,12 +356,16 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
        ${_debug or ''|n}
 
 </body>
-</html>]]>
+</html>
+%endif
+%endfor
+
+]]>
             </field>
             <field eval="105.0" name="margin_top"/>
             <field eval="45.0" name="margin_bottom"/>
             <field name="css"><![CDATA[
-       body{
+body{
         font-family:Verdana;
        }
 
@@ -616,320 +461,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
         .vertical p {
         line-height:23px;
        }
-]]></field>
-            <field name="name">Base Reports Toptaller</field>
-        </record>
-
-         <!-- ...................................BASE TOPTALLER._Facturas......................................... -->
-
-        <record id="base_reports_toptaller_facturas" model="ir.header_webkit">
-            <field name="footer_html"><![CDATA[
-<html>    <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
-        <script>
-            function subst() {
-            var vars={};
-            var x=document.location.search.substring(1).split('&');
-            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
-            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
-            for(var i in x) {
-            var y = document.getElementsByClassName(x[i]);
-            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
-                }
-            }
-        </script>
-         <style type="text/css">
-            ${css}
-
-        </style>
-
-    </head>
-<body style="border:0; margin:0" onload="subst()">
-
-<div class="apunte"><p>Noticias cliente</p></div>
-<div  class="pie">
-<div class="logo">
-${helper.embed_logo_by_name('Motoscoot_footer')|n}
-</div>
-<div>
-
-<table style="font-size:11px;width:100%;text-align:center">
-<tr>
-  <td>
-      <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b> ES76 0081 0135 3000 0110 3918BSABESBBXXX  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
-
-</td>
-</tr>
-</table>
-<table style="width:100%;text-align:right">
-            <tr >
-                <td style="text-align:right;font-size:12;" width="95%">Page <span class="page"/></td><td style="text-align:left;font-size:12;">  of <span class="topage"/></td>
-            </tr>
-        </table>
-
-</div>
-</div>
-</div>
-
-</body></html>]]></field>
-            <field name="orientation">Portrait</field>
-            <field name="format">A4</field>
-            <field name="html"><![CDATA[
-
-
-<html>
-    <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
-        <script>
-            function subst() {
-            var vars={};
-            var x=document.location.search.substring(1).split('&');
-            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
-            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
-            for(var i in x) {
-            var y = document.getElementsByClassName(x[i]);
-            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
-                }
-            }
-        </script>
-        <style type="text/css">
-            ${css}
-
-        </style>
-    </head>
-    <body  onload="subst()">
-
-
-
-    <%page expression_filter="entity"/>
-    <%
-    def carriage_returns(text):
-        return text.replace('\n', '<br />')
-    %>
-
-    <%def name="address(partner)">
-        <%doc>
-            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
-        </%doc>
-        %if partner.parent_id:
-            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-	        <tr><td>${partner.parent_id.website}</td></tr>
-            <% address_lines = partner.contact_address.split("\n")[1:] %>
-        %else:
-            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
-            <% address_lines = partner.contact_address.split("\n") %>
-	        ${partner.state_id.name}
-        %endif
-    </%def>
-
-
-    %for order in objects:
-    <% setLang(order.partner_id.lang) %>
-    <%
-      quotation = order.state in ['draft', 'sent']
-    %>
-    %endfor
-
-
-
-<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
-<div class="vertical"><p>Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755</p></div>
-<div class="cabecera">
-
-
-<div class="datos_cliente">
-
-    <table >
-
-	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
-	 <tr><td>${order.partner_invoice_id.name}</td></tr>
-	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
-	 <tr><td>${order.partner_invoice_id.street}</td></tr>
-	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
-	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
-     </table>
-     </br>
-     <table >
-
-	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-	 <tr><td>${order.partner_id.name}</td></tr>
-	 <tr><td>${order.partner_id.street}</td></tr>
-	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-	 <tr><td>${order.partner_id.country_id.name}</td></tr>
-     </table>
-
-<!--Datos Factura-->
-<br><br>
-     <table class="datos_pedido">
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;       <b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-     </tr>
-</table>
-
-</div>
-
-
-<div class="datos_empresa">
-     <table>
-
-         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
-		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
-         <tr>&nbsp;</tr><tr>&nbsp;<tr>
-       <tr>
-                <td><b>Toptaller</b></td>
-       </tr>
-	   <tr>
-                <td >
-                    ${company.partner_id.street or ''|entity}</br>
-		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
-
-		         </td>
-        </tr>
-      <tr>&nbsp;<tr><tr>&nbsp;<tr>
-
-		<tr>
-		        <td>
-		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
-		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
-		            mail: ${company.partner_id.email or ''|entity}
-		        </td>
-
-       </tr>
-
-
-     </table>
-</div>
-
-</div>
-<hr style="width:50%;align:center">
-
-
-    %if order.note1:
-        <p class="std_text"> ${order.note1 | n} </p>
-    %endif
-
-       ${_debug or ''|n}
-
-</body>
-</html>]]>
+]]>
             </field>
-            <field eval="105.0" name="margin_top"/>
-            <field eval="45.0" name="margin_bottom"/>
-            <field name="css"><![CDATA[
-
-         body {
-        font-family:helvetica;
-        font-size:10;
-
-        }
-
-       .cabecera {
-        text-align:right;
-        position:relative;
-
-        height:315px;
-        padding-bottom:10px;
-        padding-left:20px;
-        }
-
-        .datos_empresa {
-        font-size:12px;
-        text-align:right;
-        float:right;
-        margin-top:55px;
-
-
-        }
-
-        .datos_cliente {
-        font-size:12px;
-        float:left;
-        top:10px;
-        z-index:2;
-        width:300px;
-        text-align:left;
-
-        }
-
-
-        .datos_pedido {
-        }
-
-
-        .datos_pedido td {
-        font-size:11px;
-        color:#424242;
-        }
-
-        .datos_pedido td b {
-        text-transform: uppercase;
-        font-size:12px;
-        }
-
-        .ref {
-        font-size:9px;
-        text-align:center;
-
-        }
-        .totals {
-        font-size:12px;
-        }
-
-        .pie {
-
-         font-size:12px;
-         height:290px;
-
-        }
-        .logo {
-        border-top: 1px double #848484;
-        border-bottom: 1px solid #848484;
-        }
-
-        .apunte {
-        background:#E6E6E6;
-        height:25px;
-        margin-bottom:15px;
-
-        }
-
-        .vertical {
-        white-space:nowrap;
-        -webkit-transform:rotate(270deg);
-        display:block;
-        text-align:center;
-        float:left;
-        position:fixed;
-
-        top:450px;
-        font-size:9px;
-        color: #848484;
-        height:20px;
-        left:-305px;
-        padding-bottom:5px;
-        padding-top:1px;
-
-        }
-
-        .vertical p {
-        line-height:23px;
-       }
-
-
-]]></field>
-            <field name="name">Base Reports Toptaller Facturas</field>
+            <field name="name">Base Reports Motoscoot</field>
         </record>
-
                 <!-- ............................BASE Motoscoot._Facturas.........................................-->
 
         <record id="base_reports_motoscoot_facturas" model="ir.header_webkit">
@@ -985,6 +520,9 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
             <field name="orientation">Portrait</field>
             <field name="format">A4</field>
             <field name="html"><![CDATA[
+
+%for inv in objects:
+%if 'General' in inv.partner_id.category_id.name:
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -1165,7 +703,159 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
        ${_debug or ''|n}
 
 </body>
-</html>]]>
+</html>
+
+%elif 'Taller' in inv.partner_id.category_id.name:
+
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+        <style type="text/css">
+            ${css}
+
+        </style>
+    </head>
+    <body  onload="subst()">
+
+
+
+    <%page expression_filter="entity"/>
+    <%
+    def carriage_returns(text):
+        return text.replace('\n', '<br />')
+    %>
+
+    <%def name="address(partner)">
+        <%doc>
+            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+        </%doc>
+        %if partner.parent_id:
+            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+	        <tr><td>${partner.parent_id.website}</td></tr>
+            <% address_lines = partner.contact_address.split("\n")[1:] %>
+        %else:
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+            <% address_lines = partner.contact_address.split("\n") %>
+	        ${partner.state_id.name}
+        %endif
+    </%def>
+
+
+    %for order in objects:
+    <% setLang(order.partner_id.lang) %>
+    <%
+      quotation = order.state in ['draft', 'sent']
+    %>
+    %endfor
+
+
+
+<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
+<div class="vertical"><p>Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755</p></div>
+<div class="cabecera">
+
+
+<div class="datos_cliente">
+
+    <table >
+
+	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+	 <tr><td>${order.partner_invoice_id.name}</td></tr>
+	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+	 <tr><td>${order.partner_invoice_id.street}</td></tr>
+	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+     </table>
+     </br>
+     <table >
+
+	 <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+	 <tr><td>${order.partner_id.name}</td></tr>
+	 <tr><td>${order.partner_id.street}</td></tr>
+	 <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+	 <tr><td>${order.partner_id.country_id.name}</td></tr>
+     </table>
+
+<!--Datos Factura-->
+<br><br>
+     <table class="datos_pedido">
+    <tr>
+          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;       <b>Fecha</b>:&nbsp;${order.date_order} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+     <tr>
+     <tr>
+        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+     </tr>
+</table>
+
+</div>
+
+
+<div class="datos_empresa">
+     <table>
+
+         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+		 <tr><td>NIF ${company.partner_id.vat}</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Toptaller</b></td>
+       </tr>
+	   <tr>
+                <td >
+                    ${company.partner_id.street or ''|entity}</br>
+		            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
+
+		         </td>
+        </tr>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+		<tr>
+		        <td>
+		            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+		            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
+		            mail: ${company.partner_id.email or ''|entity}
+		        </td>
+
+       </tr>
+
+
+     </table>
+</div>
+
+</div>
+<hr style="width:50%;align:center">
+
+
+    %if order.note1:
+        <p class="std_text"> ${order.note1 | n} </p>
+    %endif
+
+       ${_debug or ''|n}
+
+</body>
+</html>
+
+%endif
+%endfor
+]]>
             </field>
             <field eval="105.0" name="margin_top"/>
             <field eval="45.0" name="margin_bottom"/>
