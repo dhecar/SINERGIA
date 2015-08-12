@@ -73,7 +73,8 @@
       </thead>
       <tbody>
         %for line in order.order_line:
-	   <tr>
+	   <div style="page-break-inside: avoid">
+           <tr>
 	    <td class="ref">${line.product_id.default_code}</td>
 	    <td class="ref align_top">
                <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
@@ -91,6 +92,7 @@
        <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
        </tr>
         %endfor
+       <div>
       </tbody>
 
       <tfoot>
