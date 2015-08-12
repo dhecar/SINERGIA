@@ -23,6 +23,7 @@
 
         .list_main_table thead {
         border-bottom:1px solid;
+
         }
 
         div.formatted_note {
