@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="sine_sale_comment_view_form" model="ir.ui.view">
+            <field name="name">sine.comment.view_form</field>
+            <field name="model">sale.comment</field>
+            <field name="arch" type="xml">
+                <form string="Comments" version="7.0">
+                    <field name="comment"/>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="sine_sale_comment_form" model="ir.actions.act_window">
+            <field name="name">Comments </field>
+            <field name="res_model">sale.comment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+        </record>
+
+
+<menuitem action="sine_sale_comment_form" id="sale_comments_form" parent="base.menu_sale_config_sales" sequence="20"/>
+    </data>
+
+</openerp>
