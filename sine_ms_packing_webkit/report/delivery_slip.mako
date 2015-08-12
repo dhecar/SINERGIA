@@ -204,5 +204,6 @@
         <p style="page-break-after: always"/>
         <br/>
     %endfor
+ ${_debug or ''|n}
 </body>
 </html>
