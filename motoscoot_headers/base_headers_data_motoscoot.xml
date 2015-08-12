@@ -209,7 +209,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 </body>
 </html>
-%elif 'Taller' in order.partner_id.category_id.name:
+%elif 'Taller std' in order.partner_id.category_id.name:
 
 <html>
     <head>
