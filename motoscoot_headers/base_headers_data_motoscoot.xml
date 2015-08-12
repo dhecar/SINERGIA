@@ -83,7 +83,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
         </style>
     </head>
-    <body>
+    <body style="border:0; margin: 0;" onload="subst()">
 
 
 
@@ -162,7 +162,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
      </tr>
 </table>
 
-<div class="apunte"><p>Noticias cliente</p></div>
+<div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
 </div>
 
 
@@ -231,7 +231,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
         </style>
     </head>
-    <body>
+    <body style="border:0; margin: 0;" onload="subst()">
 
 
 
@@ -310,7 +310,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
      </tr>
 </table>
 
-<div class="apunte"><p>Noticias cliente</p></div>
+<div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
 </div>
 
 
@@ -435,9 +435,11 @@ body{
 
         .apunte {
         background:#E6E6E6;
-        height:45px;
-
+        height:55px;
         width:300px;
+        padding:5px;
+        text-align:justify
+        margin-bottom:20px;
         }
 
         .vertical {
