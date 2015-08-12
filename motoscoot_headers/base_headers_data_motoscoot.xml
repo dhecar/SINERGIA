@@ -967,7 +967,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
         </record>
                 <!--.............................BASE Motoscoot Albaranes ........................................-->
 
-        <record id="base_reports_motoscoot_albaranes" model="ir.header_webkit">
+        <record id="base_reports_motoscoot_pickings" model="ir.header_webkit">
             <field name="footer_html"><![CDATA[
 <html>
 <head>
@@ -1205,7 +1205,7 @@ tr.line {
 
 ]]>
             </field>
-            <field name="name">Base Reports Motoscoot Albaranes</field>
+            <field name="name">Base Reports Motoscoot Pickings</field>
         </record>
 
     </data>
