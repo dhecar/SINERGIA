@@ -23,7 +23,6 @@ from openerp import netsvc
 from openerp.tools.translate import _
 
 
-
 class SaleOrder(orm.Model):
 
     _inherit = "sale.order"
