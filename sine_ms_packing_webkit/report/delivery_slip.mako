@@ -161,9 +161,9 @@
                         <td style="text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
                         <td style="text-align:left; " >${( line.product_id.name ) }</td>
                         <!--<td style="text-align:left; ">${( line.product_id.loc_rack )}  ${( line.product_id.loc_row )}  ${( line.product_id.loc_case)}</td>-->
-                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_grn[0]) }</td>
-                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_bcn[0]) }</td>
-                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_pt[0]) }</td>
+                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_grn) }</td>
+                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_bcn) }</td>
+                        <td style="text-align:left;" >${ (picking.sale_id.order_line.stock_pt) }</td>
                     </tr>
                 %endfor
 
