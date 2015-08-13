@@ -50,6 +50,8 @@ class UPSLine(BaseLine):
 
 
 class UpsFileGenerator(CarrierFileGenerator):
+
+
     @classmethod
     def carrier_for(cls, carrier_name):
         return carrier_name == 'Ups'

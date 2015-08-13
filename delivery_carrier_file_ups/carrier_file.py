@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Author: Guewen Baconnier
+# Author: Guewen Baconnier
 #    Copyright 2012 Camptocamp SA
 #
 #    Adaptation to UPS by David Hernández
@@ -59,7 +59,6 @@ class carrier_file(osv.osv):
             ('84', 'UPS Today Intercity'),
             ('85', 'UPS Today Express'),
             ('86', 'UPS Today Express Saver'))
-
 
     _columns = {
         'type': fields.selection(get_type_selection, 'Type', required=True),
