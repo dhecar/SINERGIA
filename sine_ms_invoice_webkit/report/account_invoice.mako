@@ -4,6 +4,12 @@
     <style type="text/css">
         ${css}
 
+ table {
+        width:98%;
+        position:relative;
+        left:15px;
+        }
+
 .list_main_table {
     border:thin solid #E3E4EA;
     text-align:center;
@@ -204,7 +210,7 @@ td.vat {
 
     %for inv in objects:
     <% setLang(inv.partner_id.lang) %>
-       <table class="list_main_table orden"  width="100%">
+       <table class="list_main_table orden">
         <br style="clear:both">
       <thead>
           <tr>
@@ -231,7 +237,7 @@ td.vat {
 	    <td class="ref">${ formatLang(line.quantity) }</td>
 	   <td class="ref">${formatLang(line.price_unit)}</td>
        <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
-       <td class="ref">${formatLang(line.price_unit, digits=get_digits(dp='Sale Price'))}</td>
+       <td class="ref">${formatLang(line.price_unit, digits=get_digits(dp='Sale Price'))}${inv.currency_id.symbol}</td>
        </tr>
         %endfor
         </tbody>
@@ -241,7 +247,7 @@ td.vat {
             ${_("Net Total:")}
           </td>
           <td class="ref2">
-            ${formatLang(inv.amount_untaxed, get_digits(dp='Sale Price'))}
+            ${formatLang(inv.amount_untaxed, get_digits(dp='Sale Price'))}${inv.currency_id.symbol}
           </td>
         </tr>
         <tr>
@@ -250,7 +256,7 @@ td.vat {
             ${_("Taxes:")}
           </td>
           <td class="ref2">
-            ${formatLang(inv.amount_tax, get_digits(dp='Sale Price'))}
+            ${formatLang(inv.amount_tax, get_digits(dp='Sale Price'))}${inv.currency_id.symbol}
           </td>
         </tr>
         <tr >
@@ -259,7 +265,7 @@ td.vat {
             ${_("Total:")}
           </td>
           <td class="ref2" style="border-top:2px solid #000000;border-bottom:2px double #848484;">
-            <b>${formatLang(inv.amount_total, get_digits(dp='Sale Price'))}</b>
+            <b>${formatLang(inv.amount_total, get_digits(dp='Sale Price'))}${inv.currency_id.symbol}</b>
           </td>
         </tr>
          </tfoot>
