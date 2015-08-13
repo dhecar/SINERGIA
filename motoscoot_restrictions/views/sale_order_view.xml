@@ -18,7 +18,7 @@
 
 
                 <field name="shop_id" position="attributes" >
-                    <attribute name="attrs">{'invisible': [('groups_id', '=', group_barcelona_level0)]}</attribute>
+                    <attribute name="attrs">{'invisible': [('groups_id', '=', motoscoot_restrictions.group_barcelona_level0)]}</attribute>
                 </field>
 
             </field>
