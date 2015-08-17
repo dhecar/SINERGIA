@@ -4,9 +4,9 @@
         <record model="ir.ui.view" id="sale_order_restrict_view">
             <field name="name">sale.order.restrict.view</field>
             <field name="model">sale.order</field>
+            <field name="priority" eval="20"/>
             <field name="inherit_id" ref="sale.view_order_form" />
-
-           <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
             <field name="arch" type="xml">
 
                 <field name="price_unit" position="attributes" >
@@ -17,9 +17,14 @@
                     <attribute name="readonly">True</attribute>
                 </field>
 
-                <xpath expr="//group/field[@name='shop_id']" position='attributes'>
+                <!--<xpath expr="//group/field[@name='shop_id']" position='replace'>
+                    <field name="shop_id" groups="group_shop_see_users" />
+                </xpath>-->
 
-                    <attribute name="invisible">True</attribute>
+
+
+                 <xpath expr="//field[@name='shop_id']" position='replace'>
+                    <field  name="shop_id"  invisible="1" />
                 </xpath>
 
                 <xpath expr="//page[@string='Other Information']" position='attributes'>
@@ -28,15 +33,7 @@
 
 
             </field>
+
         </record>
-
-
-
-
-
-
-
-
-
-    </data>
-</openerp>
+        </data>
+    </openerp>
