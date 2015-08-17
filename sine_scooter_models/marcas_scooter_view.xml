@@ -47,7 +47,7 @@
 
 <!--MENUS-->
 
-        <menuitem name="Scooter" icon="terp-project" id="scooter_menu"/>
+        <menuitem name="Scooter" icon="terp-project" id="scooter_menu" groups="sine_scooter_models.group_asociaciones_scooter_admin"/>
 
         <menuitem name="Menu Creacion" parent="scooter_menu" id="scooter_menu_mainform"/>
 

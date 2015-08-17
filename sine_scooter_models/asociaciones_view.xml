@@ -69,8 +69,8 @@
 
 
 <!--MENUS-->
-<menuitem name="Menu Asociaciones" id="asociaciones_scooter" parent="scooter_menu"  sequence="3"/>
-<menuitem name="Nueva Asociacion" id="asociaciones" parent="asociaciones_scooter" action="action_scooter_asociaciones_form" sequence="3"/>
+<menuitem name="Menu Asociaciones" id="asociaciones_scooter" parent="scooter_menu"  sequence="3" />
+<menuitem name="Nueva Asociacion" id="asociaciones" parent="asociaciones_scooter" action="action_scooter_asociaciones_form" sequence="3" />
 
 
  </data>
