@@ -89,7 +89,7 @@
                         <td>Motoscoot</td>
                     %elif 'SO' in picking.origin and picking.partner_id.category_id:
 
-                        %if 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
+                        %if 'General' in picking.partner_id.category_id.name or 'Piloto' in picking.partner_id.category_id.name:
                             <td>Motoscoot</td>
                         %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
                             <td>Toptaller</td>
@@ -122,7 +122,7 @@
 
                     <td>${picking.origin or ''}</td>
 
-                    %if 'General' in picking.partner_id.category_id.name or 'Pilot' in picking.partner_id.category_id.name:
+                    %if 'General' in picking.partner_id.category_id.name or 'Piloto' in picking.partner_id.category_id.name:
                         <td>Motoscoot</td>
                     %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
                         <td>Toptaller</td>

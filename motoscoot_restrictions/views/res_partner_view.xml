@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="res_partner_restrict_view">
+            <field name="name">res.partner.restrict.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="groups_id" eval="[(6, 0, [ref('motoscoot_restrictions.group_barcelona_level0') ])]" />
+            <field name="arch" type="xml">
+
+                <field name="category_id" position="replace" >
+                <field name="category_id" widget="many2many_tags"  options="{'limit': 1,'no_create_edit': True}"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_simple_restrict_view">
+            <field name="name">res.partner.simple.restrict.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_simple_form" />
+            <field name="groups_id" eval="[(6, 0, [ref('motoscoot_restrictions.group_barcelona_level0') ])]" />
+            <field name="arch" type="xml">
+                <field name="category_id" position="replace" >
+                <field name="category_id" widget="many2many_tags"  options="{'limit': 1,'no_create_edit': True}"/>
+                </field>
+
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>
