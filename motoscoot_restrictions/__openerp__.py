@@ -6,9 +6,9 @@
     "category" : "Generic Modules/Others",
     "website" : "http://sinergiainformatica.net",
     "description": "Restrictions in Mostoscoot",
-    "depends" : ['sale', 'product', 'stock', 'base'],
+    "depends" : ['sale', 'product', 'stock', 'base', 'ms_groups'],
+    "data": [],
     "update_xml" : ['views/sale_order_view.xml', 'views/product_view.xml', 'views/res_partner_view.xml'],
-    "data": ['security/security.xml', 'security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }

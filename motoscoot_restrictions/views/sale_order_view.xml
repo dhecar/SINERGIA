@@ -6,7 +6,7 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
 
-            <field name="groups_id" eval="[(6, 0, [ref('motoscoot_restrictions.group_barcelona_level0') ])]" />
+           <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
             <field name="arch" type="xml">
 
                 <field name="price_unit" position="attributes" >
@@ -17,9 +17,9 @@
                     <attribute name="readonly">True</attribute>
                 </field>
 
-                <xpath expr="//group/field[@name='shop_id']" position='replace'>
+                <xpath expr="//group/field[@name='shop_id']" position='attributes'>
 
-                    <field name="shop_id" invisible="1" />
+                    <attribute name="invisible">True</attribute>
                 </xpath>
 
                 <xpath expr="//page[@string='Other Information']" position='attributes'>
