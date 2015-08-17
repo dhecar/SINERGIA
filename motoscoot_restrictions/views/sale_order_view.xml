@@ -17,11 +17,25 @@
                     <attribute name="readonly">True</attribute>
                 </field>
 
-                <!--<xpath expr="//group/field[@name='shop_id']" position='replace'>
-                    <field name="shop_id" groups="group_shop_see_users" />
-                </xpath>-->
+                <field name="tax_id" position="attributes" >
+                    <attribute name="readonly">True</attribute>
+                </field>
 
+                <field name="delay" position="attributes" >
+                    <attribute name="readonly">True</attribute>
+                </field>
 
+                <field name="type" position="attributes" >
+                    <attribute name="readonly">True</attribute>
+                </field>
+
+                <field name="th_weight" position="attributes" >
+                    <attribute name="readonly">True</attribute>
+                </field>
+
+                <field name="address_allotment_id" position="attributes" >
+                    <attribute name="readonly">True</attribute>
+                </field>
 
                  <xpath expr="//field[@name='shop_id']" position='replace'>
                     <field  name="shop_id"  invisible="1" />
