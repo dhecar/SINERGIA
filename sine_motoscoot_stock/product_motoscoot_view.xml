@@ -71,6 +71,29 @@
         </ul>
 		</field>
         </record>-->
+
+
+
+
+<!-- NOTA INTERNA PARA ALMACEN EN VISTA FORM + Stock Por Ubicacion-->
+
+        <record id="product_internal_note_form" model="ir.ui.view">
+            <field name="name">product.internal.note.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                    <field name="description" position="after">
+                        <field name="internal_note"/>
+                    </field>
+                    <field name="list_price" position="after">
+                        <field name="stock_grn" label="GRN"/>
+                        <field name="stock_bcn" label="BCN"/>
+				        <field name="stock_pt" label="PT"/>
+                    </field>
+            </field>
+        </record>
+
+
  </data>
 </openerp>
 

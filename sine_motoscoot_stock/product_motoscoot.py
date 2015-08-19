@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution
@@ -96,6 +97,7 @@ class product_product(osv.osv):
         'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
         'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
         'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
+        'internal_note': fields.text('Nota Interna', translate=True),
 
     }
 
