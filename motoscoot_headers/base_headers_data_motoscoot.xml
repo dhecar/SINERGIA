@@ -130,7 +130,13 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
 	 <tr><td>${order.partner_invoice_id.name}</td></tr>
-	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+
+	 %if order.partner_invoice_id.vat:
+	     <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
+	 %elif order.partner_invoice_id.magento_bind_ids:
+         <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
+     %endif
+
 	 <tr><td>${order.partner_invoice_id.street}</td></tr>
 	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
 	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
@@ -159,6 +165,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
      </tr>
      <tr>
         <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
      </tr>
 </table>
 
@@ -193,6 +202,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
        </tr>
 
+         <tr>
+                <td>Tienda: ${order.shop_id.name}</td>
+       </tr>
 
      </table>
 </div>
@@ -278,7 +290,12 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 	 <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
 	 <tr><td>${order.partner_invoice_id.name}</td></tr>
-	 <tr><td>DNI/CIF:&nbsp;${order.partner_id.vat}</td></tr>
+	 %if order.partner_invoice_id.vat:
+	     <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
+	 %elif order.partner_invoice_id.magento_bind_ids:
+         <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
+     %endif
+
 	 <tr><td>${order.partner_invoice_id.street}</td></tr>
 	 <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
 	 <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
@@ -300,13 +317,16 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
           <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp;       <b>Fecha</b>:&nbsp;${order.date_order} </td>
      </tr>
      <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.partner_id.payment_type_customer.name}</td>
+        <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
      <tr>
      <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.partner_id.property_payment_term.name}</td>
+        <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
      </tr>
      <tr>
         <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+     </tr>
+     <tr>
+        <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
      </tr>
 </table>
 
@@ -341,6 +361,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
        </tr>
 
+
+       <tr>
+                <td>Tienda: ${order.shop_id.name}</td>
+       </tr>
 
      </table>
 </div>
