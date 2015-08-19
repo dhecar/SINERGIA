@@ -8,6 +8,7 @@
     'description': """Provides the possibility to fill a commercial
                     comment into each sale order""",
     'depends': ["sale"],
+    'data': ['security/security.xml','security/ir.model.access.csv'],
     'update_xml': ["sine_sale_view.xml"],
     'active': True,
     'installable': True
