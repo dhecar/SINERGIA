@@ -26,6 +26,7 @@ from report import report_sxw
 import pooler
 import time
 
+
 class DeliverySlip(report_sxw.rml_parse):
 
     def _get_invoice_address(self, picking):
@@ -57,7 +58,6 @@ class DeliverySlip(report_sxw.rml_parse):
             'invoice_address': self._get_invoice_address,
             'shipping_address': self._get_shipping_address,
         })
-
 
 
 report_sxw.report_sxw('report.webkit.motoscoot_picking',
