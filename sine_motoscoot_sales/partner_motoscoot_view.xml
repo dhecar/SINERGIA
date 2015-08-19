@@ -11,9 +11,9 @@
 			        <field name="vat" attrs="{'required':[('is_company','=',True)]}"/>
 		        </field>
 
-                <field name="category_id" position="replace">
+              <!--  <field name="category_id" position="replace">
                     <field name="category_id" widget="many2many_tags" placeholder="Tags..." on_change="onchange_partner_category(category_id,context)"/>
-                </field>
+                </field>-->
             </field>
          </record>
 

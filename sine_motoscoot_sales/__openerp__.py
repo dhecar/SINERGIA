@@ -7,7 +7,7 @@
     "website" : "http://sinergiainformatica.net",
     "description": "Extension módulo sale",
     "depends" : ["sale","sine_motoscoot_stock"],
-    "update_xml" : ["sale_view.xml"],
+    "update_xml" : ["sale_view.xml","partner_motoscoot_view.xml"],
     "active": True,
     "installable": True
 }
