@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    "name" : "Adapatacion para Motoscoot.es",
+    "name" : "Adaptacion para Motoscoot.es",
     "version" : "7.0",
     "author" : "David Hernández",
     "category" : "Generic Modules/Others",

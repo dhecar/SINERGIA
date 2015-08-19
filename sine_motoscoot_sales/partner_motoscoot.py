@@ -36,11 +36,26 @@ def _get_sale_products(self, cr, uid, ids, field_name, arg, context=None):
 
 
 class res_partner(osv.osv):
+
+
     _inherit = 'res.partner'
     _columns = {
         'ventas': fields.function(_get_sale_products, type='one2many', obj='product.product', method=True, string='Ventas'),
-
+        'category_id': fields.many2many('res.partner.category', id1='partner_id', id2='category_id', string='Tags'),
     }
+
+    def onchange_partner_category(self, cr, uid, ids, part, context=None):
+
+        for part in self.browse(cr, uid, ids, context=None):
+
+            part_category = part.category_id.name
+            val = {}
+            pricelist = self.pool.get('product.pricelist').search(cr, uid, [('part_category', 'ilike', 'name')],
+                                                              context=context)
+            if part_category:
+                val['property_product_pricelist'] = pricelist
+                print val
+                return {'value': val}
 
 
 res_partner()
