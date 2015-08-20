@@ -33,6 +33,30 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="product_pricelist_tree_view">
+            <field name="name">product.pricelist.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <field name="default_code" position="before">
+			        <button name="%(act_calculate_pricelist)d" type="action" icon="terp-dolar"/>
+		        </field>
+            </field>
+
+        </record>
+
+        <record model="ir.ui.view" id="product_kanban_pricelist_view">
+	        <field name="name">Product Kanban Pricelist Button</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='tags']" position="before">
+                    <button name="%(act_calculate_pricelist)d" type="action" icon="terp-dolar"/>
+                </xpath>
+		    </field>
+        </record>
+
     </data>
 </openerp>
 
