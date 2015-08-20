@@ -36,7 +36,7 @@
         </record>
 
 
-<!--BOTON EN VISTA TREE -->
+<!--BOTON STOCK EN VISTA TREE -->
 
  
  <record model="ir.ui.view" id="product_motoscoot_tree_view">
@@ -45,17 +45,13 @@
             <field name="inherit_id" ref="product.product_product_tree_view" />
 	    <field name="type">tree</field>
 	    <field name="arch" type="xml">
-	     <field name="virtual_available" position="after">
-		            <field name="stock_grn"  />
-                    <field name="stock_bcn" />
-                    <field name="stock_pt" />
-	    </field>
-		<field name="state" position="after">
-			<button name="%(act_stock_product_location_open)d" icon="gtk-find" string="stock" type="action"/>
-		</field>
-	    </field>
+	        <field name="default_code" position="before">
+			    <button name="%(act_stock_product_location_open)d" icon="STOCK_INFO" string="stock" type="action"/>
+		    </field>
+        </field>
 
   </record>
+
 
 
 <!-- VISTA KANBAN -->
@@ -64,13 +60,13 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_kanban_view"/>
             <field name="arch" type="xml">
-		<ul>
-			<li>GRN: <field name="stock_grn"></field></li>
-			<li>BCN: <field name="stock_bcn"></field></li>
-			<li>PT: <field name="stock_pt"></field></li>
-        </ul>
+
+         <xpath expr="//div[@name='tags']" position="before">
+        	<button name="%(act_stock_product_location_open)d" icon="STOCK_INFO" string="stock" type="action"/>
+		 </xpath>
+
 		</field>
-        </record>-->
+        </record>
 
 
 
