@@ -20,7 +20,7 @@
 ##############################################################################
 
 from osv import fields, osv
-
+import openerp.addons.decimal_precision as dp
 
 class product_product(osv.osv):
     _name = 'product.product'
@@ -98,6 +98,8 @@ class product_product(osv.osv):
         'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
         'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
         'internal_note': fields.text('Nota Interna', translate=True),
+        'pvp_fabricante': fields.float('Precio Base TT',
+                                       digits_compute=dp.get_precision('Precio Base TT (Tarifa Fabricante sin IVA)')),
 
     }
 

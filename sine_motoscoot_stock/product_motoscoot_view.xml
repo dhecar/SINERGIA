@@ -71,7 +71,7 @@
 
 
 
-<!-- NOTA INTERNA PARA ALMACEN EN VISTA FORM + Stock Por Ubicacion-->
+<!-- NOTA INTERNA PARA ALMACEN EN VISTA FORM + Stock Por Ubicacion + Precio Base TT-->
 
         <record id="product_internal_note_form" model="ir.ui.view">
             <field name="name">product.internal.note.inherit</field>
@@ -81,7 +81,13 @@
                     <field name="description" position="after">
                         <field name="internal_note"/>
                     </field>
+
+                    <field name="list_price" position="attributes">
+                        <field name="string">Precio Base MS</field>
+                    </field>
+
                     <field name="list_price" position="after">
+                        <field name="pvp_fabricante" label="Precio Base TT"/>
                         <field name="stock_grn" label="GRN"/>
                         <field name="stock_bcn" label="BCN"/>
 				        <field name="stock_pt" label="PT"/>
