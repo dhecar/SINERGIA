@@ -43,7 +43,6 @@
 			        <button name="%(act_calculate_pricelist)d" type="action" icon="terp-dolar"/>
 		        </field>
             </field>
-
         </record>
 
         <record model="ir.ui.view" id="product_kanban_pricelist_view">
