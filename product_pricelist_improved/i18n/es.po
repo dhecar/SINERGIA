@@ -160,7 +160,7 @@ msgstr "Selecciona un producto"
 #: field:calculate.pricelist.line,standard_price:0
 #: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_standard_price
 msgid "Standard Price"
-msgstr "oste"
+msgstr "Coste"
 
 #. module: product_pricelist_improved
 #: field:calculate.pricelist,state:0
