@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    Module Writen to OpenERP, Open Source Management Solution
-#    Copyright (C) 2015 OBERTIX FREE SOLUTIONS (<http://obetix.net>).
+#    Copyright (C) 2015 OBERTIX FREE SOLUTIONS (<http://obertix.net>).
 #                       cubells <vicent@vcubells.net>
 #
 #    All Rights Reserved
