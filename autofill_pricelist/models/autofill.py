@@ -39,8 +39,11 @@ class res_partner(osv.osv):
 
     def onchange_category(self, cr, uid, id, category_id, context=None):
         if category_id:
-            print category_id
-            pricelist_id = self.pool.get('res.partner.category').browse(cr, uid, category_id[0][2], context).pricelist[0] or False
-            return {'value': {'property_product_pricelist': pricelist_id}}
+            pricelist_id = self.pool.get('res.partner.category').browse(cr, uid, category_id[0][2], context)
+            if pricelist_id:
+                return {'value': {'property_product_pricelist': pricelist_id[0].pricelist.id}}
+            else:
+                return {'value': {'property_product_pricelist': 1}}
+
             return {}
 
