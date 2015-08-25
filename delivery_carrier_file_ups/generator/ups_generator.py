@@ -158,7 +158,7 @@ class UpsFileGenerator(CarrierFileGenerator):
                 CashOnly = SubElement(COD, 'CashOnly')
                 CashOnly.text = '1'
                 Amount = SubElement(COD, 'Amount')
-                Amount.text = line.total
+                Amount.text = str(float(line.total))
                 Currency = SubElement(COD, 'Currency')
                 Currency.text = line.currency
             else:
