@@ -151,7 +151,7 @@ class UpsFileGenerator(CarrierFileGenerator):
 
             # CONTRAREEMBOLSOS #
             if line.cash:
-                print line.ups_cod_price
+
                 BillingOption = SubElement(Shipment, 'BillingOption')
                 BillingOption.text = 'PP'
                 COD = SubElement(Shipment, 'COD')
