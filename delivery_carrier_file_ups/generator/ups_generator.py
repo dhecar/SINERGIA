@@ -100,6 +100,7 @@ class UpsFileGenerator(CarrierFileGenerator):
         line.total = picking.sale_id.amount_total
         line.currency = picking.company_id.currency_id.name
         line.savepath = configuration.export_path
+        line.emailnotif = configuration.ups_mail_notification
 
         if configuration.xml_export:
 
@@ -173,7 +174,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             NotificationRequest.text = '1'
             QuantumViewNotify = SubElement(QuantumViewNotifyDetails, 'QuantumViewNotify')
             NotificationEMailAddress = SubElement(QuantumViewNotify, 'NotificationEMailAddress')
-            NotificationEMailAddress.text = 'info@motoscoot.es'
+            NotificationEMailAddress.text = line.emailnotif
             NotificationEMailAddress = SubElement(QuantumViewNotify, 'NotificationEMailAddress')
             NotificationEMailAddress.text = line.mail
             NotificationRequest = SubElement(QuantumViewNotify, 'NotificationRequest')

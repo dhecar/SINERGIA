@@ -69,6 +69,7 @@ class carrier_file(osv.osv):
         'ups_description_goods': fields.char('Descripcion mercancia', size=30),
         'ups_cash': fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
         'ups_cod_price': fields.float('Precio contrareembolso', digits_compute=dp.get_precision('Precio de reembolso')),
+        'ups_mail_notification': fields.char('Email Notificacion', size=120)
     }
 
 

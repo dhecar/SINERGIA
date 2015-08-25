@@ -18,6 +18,7 @@
 			    <field name="ups_cash" />
 			    <field name="ups_cod_price" />
                 <field name="xml_export" />
+                <field name="ups_mail_notification" />
                         </group>
                     </form>
                 </data>
