@@ -2,7 +2,7 @@
 ##############################################################################
 #
 # Author: Guewen Baconnier
-#    Copyright 2012 Camptocamp SA
+# Copyright 2012 Camptocamp SA
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -22,7 +22,11 @@ import csv
 from openerp.addons.base_delivery_carrier_files.generator import CarrierFileGenerator
 from openerp.addons.base_delivery_carrier_files.generator import BaseLine
 from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
-
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import SubElement, tostring
+from xml.dom import minidom
+import xml.etree.cElementTree as ET
 
 class UPSLine(BaseLine):
     fields = (('name', 30),
@@ -50,8 +54,6 @@ class UPSLine(BaseLine):
 
 
 class UpsFileGenerator(CarrierFileGenerator):
-
-
     @classmethod
     def carrier_for(cls, carrier_name):
         return carrier_name == 'Ups'
@@ -62,7 +64,18 @@ class UpsFileGenerator(CarrierFileGenerator):
     def _get_filename_grouped(self, configuration, extension='csv'):
         return super(UpsFileGenerator, self)._get_filename_grouped(configuration, extension='csv')
 
+
+
+
     def _get_rows(self, picking, configuration):
+
+        def prettify(elem):
+            """Return a pretty-printed XML string for the Element.
+            """
+            rough_string = ElementTree.tostring(elem, 'utf-8')
+            reparsed = minidom.parseString(rough_string)
+            return reparsed.toprettyxml(indent="  ")
+
         """
         Returns the rows to create in the file for a picking
 
@@ -75,9 +88,6 @@ class UpsFileGenerator(CarrierFileGenerator):
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
-            # if a company, put company name
-            #if address.street.partner_id.title:
-            #    line.company_name = address.partner_id.name
             line.street = address.street
             line.zip = address.zip
             line.city = (address.city and address.state_id.name)
@@ -87,17 +97,104 @@ class UpsFileGenerator(CarrierFileGenerator):
         line.ups_account = configuration.ups_account
         line.service = configuration.ups_service_level
         line.package_type = configuration.ups_package_type
-        line.numpack = picking.number_of_packages
+        if picking.number_of_packages:
+            line.numpack = picking.number_of_packages
+        else:
+            line.numpack = '1'
         line.goods = configuration.ups_description_goods
         line.reference1 = picking.name
         line.reference2 = picking.name
-        #line.amount = picking.origin.amount
-        #line.currency = picking.origin.currency
         line.weight = "%.2f" % (picking.weight)
         line.cash = configuration.ups_cash
         line.ups_cod_price = configuration.ups_cod_price
         line.total = picking.sale_id.amount_total
         line.currency = picking.company_id.currency_id.name
+        line.savepath = configuration.export_path
+
+        if configuration.xml_export:
+
+            filename = line.reference1.replace('/', '_') + '.xml'
+
+            OpenShipments = Element('OpenShipments', xmlns='x-schema:OpenShipments.xdr')
+            OpenShipment = SubElement(OpenShipments, 'OpenShipment', ProcessStatus='')
+            Receiver = SubElement(OpenShipment, 'Receiver')
+            CompanyName = SubElement(Receiver, 'CompanyName')
+            CompanyName.text = line.name
+            ContactPerson = SubElement(Receiver, 'ContactPerson')
+            ContactPerson.text = line.name
+            AddressLine1 = SubElement(Receiver, 'AddressLine1')
+            AddressLine1.text = line.street
+            City = SubElement(Receiver, 'City')
+            City.text = line.city
+            CountryCode = SubElement(Receiver, 'CountryCode')
+            CountryCode.text = line.country
+            PostalCode = SubElement(Receiver, 'PostalCode')
+            PostalCode.text = line.zip
+            Phone = SubElement(Receiver, 'Phone')
+            Phone.text = line.phone
+            EmailAddress1 = SubElement(Receiver, 'EmailAddress1')
+            EmailAddress1.text = line.mail
+            EmailContact = SubElement(Receiver, 'EmailContact1')
+            EmailContact.text = line.mail
+            # <Openshipments><Openshipment/><Shipper />
+            Shipper = SubElement(OpenShipment, 'Shipper')
+            #
+            UpsAccountNumber = SubElement(Shipper, 'UpsAccountNumber')
+            UpsAccountNumber.text = line.ups_account
+            # Openshipments><Openshipment/><Shipment />
+            Shipment = SubElement(OpenShipment, 'Shipment')
+            #
+            ServiceLevel = SubElement(Shipment, 'ServiceLevel')
+            ServiceLevel.text = line.service
+            PackageType = SubElement(Shipment, 'PackageType')
+            PackageType.text = line.package_type
+            NumberOfPackages = SubElement(Shipment, 'NumberOfPackages')
+            NumberOfPackages.text = line.numpack
+            ShipmentActualWeight = SubElement(Shipment, 'ShipmentActualWeight')
+            ShipmentActualWeight.text = line.weight
+            DescriptionOfGoods = SubElement(Shipment, 'DescriptionOfGoods')
+            DescriptionOfGoods.text = line.goods
+            Reference1 = SubElement(Shipment, 'Reference1')
+            Reference1.text = line.reference1
+            Reference2 = SubElement(Shipment, 'Reference2')
+            Reference2.text = line.reference2
+
+            # CONTRAREEMBOLSOS #
+            if (line.ups_cod_price == 'T'):
+                BillingOption = SubElement(Shipment, 'BillingOption')
+                BillingOption.text = 'PP'
+                COD = SubElement(Shipment, 'COD')
+                CashOnly = SubElement(COD, 'CashOnly')
+                CashOnly.text = '1'
+                Amount = SubElement(COD, 'Amount')
+                Amount.text = line.total
+                Currency = SubElement(COD, 'Currency')
+                Currency.text = line.currency
+            else:
+                BillingOption = SubElement(Shipment, 'BillingOption')
+                BillingOption.text = 'PP'
+            #
+            QuantumViewNotifyDetails = SubElement(Shipment, 'QuantumViewNotifyDetails')
+            QuantumViewNotify = SubElement(QuantumViewNotifyDetails, 'QuantumViewNotify')
+            NotificationEMailAddress = SubElement(QuantumViewNotify, 'NotificationEMailAddress')
+            NotificationEMailAddress.text = line.mail
+            NotificationRequest = SubElement(QuantumViewNotify, 'NotificationRequest')
+            NotificationRequest.text = '1'
+            QuantumViewNotify = SubElement(QuantumViewNotifyDetails, 'QuantumViewNotify')
+            NotificationEMailAddress = SubElement(QuantumViewNotify, 'NotificationEMailAddress')
+            NotificationEMailAddress.text = 'info@motoscoot.es'
+            NotificationEMailAddress = SubElement(QuantumViewNotify, 'NotificationEMailAddress')
+            NotificationEMailAddress.text = line.mail
+            NotificationRequest = SubElement(QuantumViewNotify, 'NotificationRequest')
+            NotificationRequest.text = '2'
+
+            # Saving the file
+            tree = ET.ElementTree(OpenShipments)
+            tree.write(line.savepath + filename)
+
+        else:
+            return [line.get_fields()]
+
         return [line.get_fields()]
 
     def _write_rows(self, file_handle, rows, configuration):
@@ -115,6 +212,9 @@ class UpsFileGenerator(CarrierFileGenerator):
         writer.writerows(rows)
 
         return file_handle
+
+
+
 
 
 
