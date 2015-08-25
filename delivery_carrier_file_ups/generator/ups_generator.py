@@ -64,17 +64,7 @@ class UpsFileGenerator(CarrierFileGenerator):
     def _get_filename_grouped(self, configuration, extension='csv'):
         return super(UpsFileGenerator, self)._get_filename_grouped(configuration, extension='csv')
 
-
-
-
     def _get_rows(self, picking, configuration):
-
-        def prettify(elem):
-            """Return a pretty-printed XML string for the Element.
-            """
-            rough_string = ElementTree.tostring(elem, 'utf-8')
-            reparsed = minidom.parseString(rough_string)
-            return reparsed.toprettyxml(indent="  ")
 
         """
         Returns the rows to create in the file for a picking
@@ -188,9 +178,25 @@ class UpsFileGenerator(CarrierFileGenerator):
             NotificationRequest = SubElement(QuantumViewNotify, 'NotificationRequest')
             NotificationRequest.text = '2'
 
-            # Saving the file
-            tree = ET.ElementTree(OpenShipments)
-            tree.write(line.savepath + filename)
+            def indent(elem, level=0):
+                i = "\n" + level*"  "
+                if len(elem):
+                    if not elem.text or not elem.text.strip():
+                        elem.text = i + "  "
+                    if not elem.tail or not elem.tail.strip():
+                        elem.tail = i
+                    for elem in elem:
+                        indent(elem, level+1)
+                    if not elem.tail or not elem.tail.strip():
+                        elem.tail = i
+                else:
+                    if level and (not elem.tail or not elem.tail.strip()):
+                        elem.tail = i
+
+            indent(OpenShipments)
+            output_file = (open(line.savepath + filename, 'w'))
+            output_file.write(ElementTree.tostring(OpenShipments, encoding='UTF-8'))
+            output_file.close()
 
         else:
             return [line.get_fields()]
