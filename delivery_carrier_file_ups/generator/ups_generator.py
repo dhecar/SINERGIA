@@ -150,7 +150,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             Reference2.text = line.reference2
 
             # CONTRAREEMBOLSOS #
-            if (line.cash == 'T'):
+            if line.cash:
                 print line.ups_cod_price
                 BillingOption = SubElement(Shipment, 'BillingOption')
                 BillingOption.text = 'PP'
