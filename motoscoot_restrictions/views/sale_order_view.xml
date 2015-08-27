@@ -45,6 +45,10 @@
                   <attribute name="invisible">True</attribute>
                 </xpath>
 
+                <xpath expr="//form[@string='Sales Order Lines']/field[@name='name']" position='attributes'>
+                     <attribute name="readonly">True</attribute>
+                </xpath>
+
 
             </field>
 
