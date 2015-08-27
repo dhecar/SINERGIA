@@ -8,11 +8,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
             <field name="arch" type="xml">
-		    <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
-                <field name="stock_grn" />
-				<field name="stock_bcn" />
-				<field name="stock_pt" />
-		    </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                    <field name="stock_grn" />
+				    <field name="stock_bcn" />
+				    <field name="stock_pt" />
+		        </xpath>
 
                 <field name="discount" position="before">
                     <field name="stock_grn" invisible="1"/>
@@ -20,7 +21,12 @@
 				    <field name="stock_pt" invisible="1"/>
                 </field>
 
-            </field>
+
+                 <field name="pricelist_id" position="attributes">
+                    <attribute name="context">{'pricelist_user_only':True}</attribute>
+                 </field>
+                </field>
+
    </record>
 
   </data>

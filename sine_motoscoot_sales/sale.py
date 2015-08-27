@@ -24,10 +24,8 @@ class sale_order_line(osv.osv):
     _inherit = 'sale.order.line'
     _columns = {
         'stock_grn': fields.related('product_id','stock_grn', type='float', string='G'),
-        'stock_bcn' : fields.related('product_id','stock_bcn', type='float',  string='B'),
-        'stock_pt' : fields.related('product_id','stock_pt', type='float',  string='P'),
+        'stock_bcn': fields.related('product_id','stock_bcn', type='float',  string='B'),
+        'stock_pt': fields.related('product_id','stock_pt', type='float',  string='P'),
     }
 
-
 sale_order_line()
-    

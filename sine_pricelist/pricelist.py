@@ -53,6 +53,12 @@ class product_pricelist(orm.Model):
         'user_link_ids': fields.many2many('res.users', 'pricelist_partner_rel', 'pricelist_id', 'user_id', required=True),
     }
 
+    def _search(self, cr, user, args, offset=0, limit=None, order=None, context=None, count=False, access_rights_uid=None):
+        if context and context.get('pricelist_user_only'):
+            pricelist_ids = self.pool['res.users'].read(cr, user, user, ['pricelist_ids'], context=context)['pricelist_ids']
+            args = [('id', 'in', pricelist_ids)] + args
+        return super(product_pricelist,self)._search(cr, user, args, offset, limit, order, context, count, access_rights_uid)
+
     # def price_get_multi(self, cr, uid, product_ids, context=None):
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
         """multi products 'price_get'.
@@ -242,5 +248,3 @@ class res_users(orm.Model):
     _columns = {
         'pricelist_ids': fields.many2many('product.pricelist', 'pricelist_partner_rel', 'user_id', 'pricelist_id'),
     }
-
-res_users()
