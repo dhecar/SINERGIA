@@ -121,13 +121,14 @@ class CalculatePricelist(orm.TransientModel):
                 context=context)[plist.id]
             list_price = data.product_id.list_price or 0.0
             percent = 0.0
-            if list_price:
-                percent = 100 - ((price * 100) / list_price)
+
             base = get_real_price(
                 pricelist_obj.price_get(
                     cr, uid, [plist.id], data.product_id.id, data.qty, False,
                     context=context),
                 data.product_id.id, float(data.qty), plist.id)
+            if base:
+                percent = 100 - ((price * 100) / base)
             standard_price = data.product_id.standard_price or 0.0
             default_code = data.product_id.default_code or ''
             if default_code:
