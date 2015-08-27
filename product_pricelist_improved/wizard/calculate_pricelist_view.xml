@@ -12,7 +12,6 @@
                         <label string="This wizard allows to calculate the diferent pricelist for a product" colspan="4"/>
                     </group>
                     <group states="initial,done" string="Pricelist data" colspan="2" cols="4">
-                        <field name="partner_id" string="Select a customer"/>
                         <field name="product_id" string="Select a product"/>
                         <field name="qty"/>
                     </group>
@@ -22,11 +21,15 @@
                                 <field name="pricelist_ids" widget="one2many_list" nolabel="1" class="oe_inline oe_no_button">
                                     <tree editable="bottom" create="false" delete="false" colors="red:margin &lt; 0">
                                         <field name="pricelist_id"/>
-                                        <field name="product_id"/>
+                                        <field name="product_id" invisible="True"/>
+                                        <field name="default_code"/>
                                         <field name="qty"/>
-                                        <field name="standard_price"/>
+                                        <field name="standard_price" invisible="True"/>
+                                        <field name="base"/>
+                                        <field name="percent"/>
                                         <field name="price"/>
                                         <field name="margin" invisible="True"/>
+                                        <field name="total"/>
                                     </tree>
                                 </field>
                             </page>

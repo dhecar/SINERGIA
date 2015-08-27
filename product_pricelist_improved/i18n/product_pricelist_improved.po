@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-20 04:52+0000\n"
-"PO-Revision-Date: 2015-08-20 04:52+0000\n"
+"POT-Creation-Date: 2015-08-27 14:07+0000\n"
+"PO-Revision-Date: 2015-08-27 14:07+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,base:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_base
+msgid "Base Price"
+msgstr ""
 
 #. module: product_pricelist_improved
 #: view:calculate.pricelist:0
@@ -37,7 +43,7 @@ msgstr ""
 
 #. module: product_pricelist_improved
 #: view:calculate.pricelist:0
-msgid "Cancelar"
+msgid "Cancel"
 msgstr ""
 
 #. module: product_pricelist_improved
@@ -46,14 +52,20 @@ msgid "Check Pricelist"
 msgstr ""
 
 #. module: product_pricelist_improved
-#: field:calculate.pricelist,partner_id:0
-#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_partner_id
-msgid "Customer"
+#: field:calculate.pricelist.line,percent:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_percent
+msgid "Discount"
 msgstr ""
 
 #. module: product_pricelist_improved
 #: selection:calculate.pricelist,state:0
 msgid "Done"
+msgstr ""
+
+#. module: product_pricelist_improved
+#: field:calculate.pricelist.line,price:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_price
+msgid "Final Price"
 msgstr ""
 
 #. module: product_pricelist_improved
@@ -84,9 +96,9 @@ msgid "Minimum profit margin on the price of products in this product"
 msgstr ""
 
 #. module: product_pricelist_improved
-#: field:calculate.pricelist.line,price:0
-#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_price
-msgid "Price"
+#: field:calculate.pricelist.line,total:0
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_total
+msgid "Price with Tax"
 msgstr ""
 
 #. module: product_pricelist_improved
@@ -118,8 +130,10 @@ msgstr ""
 #. module: product_pricelist_improved
 #: code:_description:0
 #: field:calculate.pricelist,product_id:0
+#: field:calculate.pricelist.line,default_code:0
 #: field:calculate.pricelist.line,product_id:0
 #: model:ir.model,name:product_pricelist_improved.model_product_product
+#: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_default_code
 #: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_line_product_id
 #: model:ir.model.fields,field_description:product_pricelist_improved.field_calculate_pricelist_product_id
 #, python-format
@@ -144,11 +158,6 @@ msgstr ""
 #. module: product_pricelist_improved
 #: view:calculate.pricelist:0
 msgid "Recalculate"
-msgstr ""
-
-#. module: product_pricelist_improved
-#: view:calculate.pricelist:0
-msgid "Select a customer"
 msgstr ""
 
 #. module: product_pricelist_improved
