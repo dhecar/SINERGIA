@@ -10,31 +10,31 @@
             <field name="arch" type="xml">
 
                 <field name="price_unit" position="attributes" >
-                        <attribute name="readonly">True</attribute>
+                        <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="discount" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="tax_id" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="delay" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="type" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="th_weight" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                 <field name="address_allotment_id" position="attributes" >
-                    <attribute name="readonly">True</attribute>
+                    <attribute name="invisible">True</attribute>
                 </field>
 
                  <xpath expr="//field[@name='shop_id']" position='replace'>
@@ -46,7 +46,7 @@
                 </xpath>
 
                 <xpath expr="//form[@string='Sales Order Lines']/field[@name='name']" position='attributes'>
-                     <attribute name="readonly">True</attribute>
+                     <attribute name="invisible">True</attribute>
                 </xpath>
 
 
