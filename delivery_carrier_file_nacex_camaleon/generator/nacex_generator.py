@@ -90,7 +90,7 @@ class NacexFileGenerator(CarrierFileGenerator):
             line.city = address.city
             line.state = address.state_id.name
             line.phone = address.phone or address.mobile
-            line.reembolso = configuration.nacex_reembolso
+            line.total = picking.sale_id.amount_total
             line.nacex_cod_price = configuration.nacex_cod_price
             line.mail = address.email
             line.ealerta = configuration.nacex_ealerta
