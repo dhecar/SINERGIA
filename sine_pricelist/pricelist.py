@@ -49,6 +49,10 @@ class product_pricelist(orm.Model):
     _name = "product.pricelist"
     _inherit = "product.pricelist"
 
+    _columns = {
+        'user_link_ids': fields.many2many('res.users', 'pricelist_partner_rel', 'pricelist_id', 'user_id', required=True),
+    }
+
     # def price_get_multi(self, cr, uid, product_ids, context=None):
     def price_get_multi(self, cr, uid, pricelist_ids, products_by_qty_by_partner, context=None):
         """multi products 'price_get'.
@@ -231,8 +235,12 @@ class product_pricelist(orm.Model):
 
         return results
 
-
 product_pricelist()
 
+class res_users(orm.Model):
+    _inherit = 'res.users'
+    _columns = {
+        'pricelist_ids': fields.many2many('product.pricelist', 'pricelist_partner_rel', 'user_id', 'pricelist_id'),
+    }
 
-
+res_users()
