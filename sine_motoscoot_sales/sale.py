@@ -26,6 +26,16 @@ class sale_order_line(osv.osv):
         'stock_grn': fields.related('product_id','stock_grn', type='float', string='G'),
         'stock_bcn': fields.related('product_id','stock_bcn', type='float',  string='B'),
         'stock_pt': fields.related('product_id','stock_pt', type='float',  string='P'),
+
     }
 
 sale_order_line()
+
+
+class sale_order(osv.osv):
+    _inherit = 'sale.order'
+    _columns = {
+        'sale_internal_comment':  fields.text('Internal Comment', help=''),
+    }
+
+sale_order()

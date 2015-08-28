@@ -25,9 +25,24 @@
                  <field name="pricelist_id" position="attributes">
                     <attribute name="context">{'pricelist_user_only':True}</attribute>
                  </field>
+
+
                 </field>
 
    </record>
 
-  </data>
+        <record model="ir.ui.view" id="sale_internal_comment_form_view">
+	        <field name="name">sale.internal.comment.model</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+                <field name="type">form</field>
+                <field name="arch" type="xml">
+                <field name="note" position="before">
+		            <field name="sale_internal_comment" class="oe_inline" placeholder="Internal Comment..."/>
+                </field>
+
+        	</field>
+        </record>
+
+ </data>
 </openerp>
