@@ -12,11 +12,12 @@
                         <group colspan="4" col="4" attrs="{'invisible': [('type', '!=', 'Nacex')]}">
                             <separator string="Nacex Options" colspan="4"/>
                             <field name="nacex_account"/>
-			    <field name="nacex_typo"/>
-			    <field name="nacex_reembolso"/>
-			    <field name="nacex_cod_price" />
-			    <field name="nacex_ealerta"/>
-			    <field name="nacex_prealerta"/>
+			                <field name="nacex_typo"/>
+			                <field name="nacex_reembolso"/>
+                            <field name="nacex_cash" />
+			                <field name="nacex_cod_price" />
+			                <field name="nacex_ealerta"/>
+			                <field name="nacex_prealerta"/>
                         </group>
                     </form>
                 </data>

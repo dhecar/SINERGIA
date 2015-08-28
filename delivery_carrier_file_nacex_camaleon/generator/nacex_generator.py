@@ -30,7 +30,8 @@ from openerp.addons.base_delivery_carrier_files.csv_writer import UnicodeWriter
 
 
 class NacexLine(BaseLine):
-    fields = (('nacex_account', 5),
+    fields = (('empty', 1),
+              ('nacex_account', 5),
               ('reference', 20),
               ('nacex_typo', 1),
               ('weight', 6),
@@ -40,17 +41,14 @@ class NacexLine(BaseLine):
               ('country', 2),
               ('zip', 15),
               ('city', 30),
-              ('state', 30),
               ('phone', 16),
-              ('mail', 50),
-              ('nacex_cod_price', 3),
-              ('reembolso', 1),
-              ('mail', 50),
+              ('tipo_reembolso', 1),
+              ('total', 5),
+              ('observaciones', 150),
               ('ealerta', 1),
               ('mail', 50),
               ('prealerta', 1),
               ('mail', 50))
-
 
 class NacexFileGenerator(CarrierFileGenerator):
     @classmethod
@@ -81,22 +79,23 @@ class NacexFileGenerator(CarrierFileGenerator):
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
             line.name = address.name or (address.partner_id and address.partner_id.name)
-            # if a company, put company name
-            # if address.street.partner_id.title:
-            # line.company_name = address.partner_id.name
             line.street = address.street
             line.country = address.country_id.code
             line.zip = address.zip
-            line.city = address.city
-            line.state = address.state_id.name
+            line.city = address.city + ' ' + address.state_id.name
             line.phone = address.phone or address.mobile
-            line.total = picking.sale_id.amount_total
-            line.nacex_cod_price = configuration.nacex_cod_price
-            line.mail = address.email
+
+            # Reembolso ?
+            if configuration.nacex_cash:
+                line.tipo_reembolso = configuration.nacex_reembolso
+                line.total = picking.sale_id.amount_total
+
+            line.observaciones = 'Observaciones'
             line.ealerta = configuration.nacex_ealerta
             line.mail = address.email
             line.prealerta = configuration.nacex_prealerta
             line.mail = address.email
+
         return [line.get_fields()]
 
 

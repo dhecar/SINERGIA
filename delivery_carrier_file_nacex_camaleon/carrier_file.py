@@ -67,6 +67,7 @@ class carrier_file(osv.osv):
         'nacex_prealerta': fields.selection(_get_alerta, 'Tipo Prealerta',
                                             help=" Tipo de Prealerta [Email o SMS que se envía al"
                                                  " destinatario para avisar previamente de la entrega]"),
+        'nacex_cash': fields.boolean('Contrareembolso?', help="Marcar para contrareembolso"),
 
     }
 
