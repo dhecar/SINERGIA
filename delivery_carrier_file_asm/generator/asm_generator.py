@@ -102,6 +102,7 @@ class AsmFileGenerator(CarrierFileGenerator):
         line.asm_typo = configuration.asm_typo
         line.TipoPortes= configuration.asm_portes
         line.weight = "%.2f" % (picking.weight,)
+        line.Bultos = picking.number_of_packages
         line.mail = address.email
 
         return [line.get_fields()]
