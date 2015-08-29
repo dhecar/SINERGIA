@@ -211,7 +211,7 @@ class product_pricelist(orm.Model):
                                                                                price_type.field, context=context)[
                                                              product_id], round=False, context=context)
 
-                        if price:
+                        if price is not False:
                             price_limit = price
 
                             price = price * (1.0 + (res['price_discount'] or 0.0))
@@ -229,6 +229,7 @@ class product_pricelist(orm.Model):
                         price = False
 
                 if price:
+                    results['item_id'] = res['id']
                     if 'uom' in context and not uom_price_already_computed:
                         product = products_dict[product_id]
                         uom = product.uos_id or product.uom_id
