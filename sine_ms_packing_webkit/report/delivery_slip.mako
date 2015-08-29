@@ -41,27 +41,32 @@
 
     <div class="barcode-class">*${picking.name or ''}*</div>
 
-
-
-            <div style="float:right;margin-top:15px;margin-bottom:15px;">
+        <div style="float:right;margin-top:15px;margin-bottom:15px;">
             <table class="recipient" style="border:1px solid #C0C0C0;">
+
                 %if picking.partner_id.parent_id:
-                <thead><th style="font-weight:bold;">Dirección Envio</th></thead>
+                <%
+                shipping_addr = shipping_address(picking)
+                %>
+                <thead><th style="font-weight:bold;">Dirección de Envio</th></thead>
                 <tr>
-                    <td class="name">${picking.partner_id.parent_id.name or ''}</td>
-                    <td>${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }</td>
+                    <td class="name">${shipping_addr.name or ''}</td>
+                    <td>${shipping_addr.title and shipping_addr.name or ''} ${shipping_addr.name }</td>
                 </tr>
                 %else:
-                <thead><th style="font-weight:bold;width=50">Dirección Envio</th></thead>
+                <%
+                shipping_addr = shipping_address(picking)
+                %>
+                <thead><th style="font-weight:bold;width=50">Dirección de Envio</th></thead>
                 <tr>
                     <td nowrap style="width=250">
-                    ${picking.partner_id.title and picking.partner_id.title.name or ''} ${picking.partner_id.name }<br>
-                    ${picking.partner_id.street or ''}<br>
-                    ${picking.partner_id.city or ''}<br>
-                    ${picking.partner_id.zip or ''}, ${picking.partner_id.state_id.name or ''}, ${picking.partner_id.country_id.name or ''}<br>
-                    Teléfono: ${picking.partner_id.phone or ''}<br>
-                    Móbil: ${picking.partner_id.mobile or ''}<br>
-                    Email: ${picking.partner_id.email or ''}</td>
+                    ${shipping_addr.title and shipping_addr.name or ''} ${shipping_addr.name }<br>
+                    ${shipping_addr.street or ''}<br>
+                    ${shipping_addr.city or ''}<br>
+                    ${shipping_addr.zip or ''}, ${shipping_addr.state_id.name or ''}, ${shipping_addr.country_id.name or ''}<br>
+                    Teléfono: ${shipping_addr.phone or ''}<br>
+                    Móbil: ${shipping_addr.mobile or ''}<br>
+                    Email: ${shipping_addr.email or ''}</td>
 
                 </tr>
                 %endif
