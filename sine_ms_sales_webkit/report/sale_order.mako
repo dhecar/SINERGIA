@@ -83,10 +83,7 @@
 	    <td class="ref">${line.product_id.default_code}</td>
 	    <td class="ref align_top">
                <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
-                 %if line.formatted_note:
-                 <br/>
-                 <div class="formatted_note">${line.formatted_note| n}</div>
-                 %endif
+
                </div>
         </td>
 	    <td class="ref">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
