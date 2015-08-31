@@ -15,5 +15,5 @@ class report_webkit_html(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.sale.order.motoscoot.webkit',
                       'sale.order',
-                      '/opt/odoo/custom/addons/SINERGIA/sine_ms_sales_webkit/report/sale_order.mako',
+                      'addons/sine_ms_sales_webkit/report/sale_order.mako',
                       parser=report_webkit_html)

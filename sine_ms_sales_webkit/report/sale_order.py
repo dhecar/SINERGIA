@@ -60,5 +60,5 @@ class SaleOrderReport(report_sxw.rml_parse):
 
 report_sxw.report_sxw('report.sale.order.webkit',
                       'sale.order',
-                      'addons/sale_report_webkit/report/sale_order.mako',
+                      'addons/sine_ms_sales_webkit/report/sale_order.mako',
                       parser=SaleOrderReport)
