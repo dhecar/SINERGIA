@@ -24,7 +24,7 @@
  'category': 'Reports/Webkit',
  'description': """
 Sale order webkit Motoscoot Adaptation
-########################################
+#########################################
 
 * Replaces the legacy RML Quotation/Sales Order report by a brand new webkit
   report.
