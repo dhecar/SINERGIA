@@ -47,40 +47,39 @@ class StockPicking(osv.osv):
     }
 
     def action_assign_wkf(self, cr, uid, ids, context=None):
+        if not context:
+            context = {}
+        res = super(StockPicking, self).action_assign_wkf(cr, uid, ids,
+                                                          context=context)
+        stock_prod_obj = self.pool['stock.report.prodlots']
         to_update = []
-        for picking in self.browse(cr, uid, ids):
+        for picking in self.browse(cr, uid, ids, context=context):
             if picking.type == 'internal':
                 for move in picking.move_lines:
-                    stock_prod_obj = self.pool.get('stock.report.prodlots')
-                    stock_prod_ids = stock_prod_obj.search(cr, uid,
-                                                           [('product_id', '=', move.product_id.id),
-                                                            ('location_id', '=', move.location_id.id)])
-                    if stock_prod_ids:
-                        for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                            if i.qty < 0:
-                                raise osv.except_osv('No hay stock de este producto!',
-                                                     'El producto  %s tiene un stock de %d! y estas intentando '
-                                                     'enviar %d !!, contacta con el administrador '
-                                                     % (move.product_id.name, i.qty, move.product_qty))
-
-                            elif i.qty - move.product_qty < 1:
-                                if picking.state != 'assigned':
-                                    to_update.append(picking.id)
-                                if to_update:
-                                    self.write(cr, uid, to_update, {'state': 'to_be_validate'})
-
-                            else:
-                                if picking.state != 'assigned':
-                                    to_update.append(picking.id)
-                                if to_update:
-                                    self.write(cr, uid, to_update, {'state': 'assigned'})
-
-                        return True
+                    stock_prod_ids = stock_prod_obj.search(
+                        cr, uid, [
+                            ('product_id', '=', move.product_id.id),
+                            ('location_id', '=', move.location_id.id)],
+                        context=context)
+                    for i in stock_prod_obj.browse(cr, uid, stock_prod_ids,
+                                                   context=context):
+                        if i.qty < 0:
+                            raise osv.except_osv(
+                                'No hay stock de este producto!',
+                                'El producto %s tiene un stock de %d! y estás '
+                                'intentando enviar %d !!, contacta con el '
+                                'administrador ' % (
+                                    move.product_id.name, i.qty,
+                                    move.product_qty))
+                        elif i.qty - move.product_qty < 1:
+                            if picking.state != 'assigned':
+                                to_update.append(picking.id)
+                            if to_update:
+                                self.write(cr, uid, to_update,
+                                           {'state': 'to_be_validate'})
+        return res
 
     def button_validate(self, cr, uid, ids, context=None):
-        """ Changes picking state to assigned.
-        @return: True
-        """
         to_update = []
         for pick in self.browse(cr, uid, ids, context=context):
             if pick.state != 'assigned':
@@ -88,16 +87,5 @@ class StockPicking(osv.osv):
         if to_update:
             self.write(cr, uid, to_update, {'state': 'assigned'})
         return True
-
-    def action_cancel(self, cr, uid, ids, context=None):
-        """ Changes picking state to cancel.
-        @return: True
-        """
-        for pick in self.browse(cr, uid, ids, context=context):
-            ids2 = [move.id for move in pick.move_lines]
-            self.pool.get('stock.move').action_cancel(cr, uid, ids2, context)
-        self.write(cr, uid, ids, {'state': 'cancel', 'invoice_state': 'none'})
-        return True
-
 
 StockPicking()
