@@ -8,12 +8,8 @@
             file="sine_ms_sales_webkit/report/sale_order.mako"
             string="Orden MS"
             report_type="webkit"
-	    usage ="default"/>
+	        usage ="default"/>
   </data>
-    <data noupdate="1">
-        <record id="sale.report_sale_order" model="ir.actions.report.xml">
-           <field name="webkit_header" ref="motoscoot_headers.base_reports_motoscoot"></field>
-        </record>
-   </data>
+
 
 </openerp>
