@@ -37,7 +37,7 @@ Depends on base_header_webkit community addon available here:
  'author': "Sinergiainformatica. David Hernandez",
  'website': 'http://sinergiainformatica.net',
  'depends': ['base', 'report_webkit', 'base_headers_webkit', 'sale'],
- 'data': ['sale_report.xml', 'ir.model.access.csv'],
+ 'data': ['sale_report.xml', 'security/ir.model.access.csv'],
  'demo_xml': [],
  'test': [],
  'installable': True,
