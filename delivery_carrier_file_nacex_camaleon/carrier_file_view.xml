@@ -14,6 +14,7 @@
                             <field name="nacex_account"/>
 			                <field name="nacex_typo"/>
 			                <field name="nacex_reembolso"/>
+                            <field name="nacex_paquete"/>
                             <field name="nacex_cash" />
 			                <field name="nacex_cod_price" />
 			                <field name="nacex_ealerta"/>

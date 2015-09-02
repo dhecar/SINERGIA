@@ -34,7 +34,9 @@ class NacexLine(BaseLine):
               ('nacex_account', 5),
               ('reference', 20),
               ('nacex_typo', 1),
+              ('tipo_paq', 1),
               ('weight', 6),
+              ('num_paq', 2),
               ('name', 35),
               ('name', 35),
               ('street', 45),
@@ -74,7 +76,9 @@ class NacexFileGenerator(CarrierFileGenerator):
         line.nacex_account = configuration.nacex_account
         line.reference = picking.name
         line.nacex_typo = configuration.nacex_typo
+        line.tipo_paq = configuration.nacex_paquete
         line.weight = "%.2f" % (picking.weight,)
+        line.num_paq = picking.number_of_packages
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
@@ -82,13 +86,16 @@ class NacexFileGenerator(CarrierFileGenerator):
             line.street = address.street
             line.country = address.country_id.code
             line.zip = address.zip
-            line.city = address.city + ' ' + address.state_id.name
+            line.city = address.city
             line.phone = address.phone or address.mobile
 
             # Reembolso ?
             if configuration.nacex_cash:
                 line.tipo_reembolso = configuration.nacex_reembolso
                 line.total = picking.sale_id.amount_total
+            else:
+                line.tipo_reembolso = 'N'
+                line.total = '0'
 
             line.observaciones = 'Observaciones'
             line.ealerta = configuration.nacex_ealerta
@@ -97,7 +104,6 @@ class NacexFileGenerator(CarrierFileGenerator):
             line.mail = address.email
 
         return [line.get_fields()]
-
 
     def _write_rows(self, file_handle, rows, configuration):
         """

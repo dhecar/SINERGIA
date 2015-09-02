@@ -47,6 +47,11 @@ class carrier_file(osv.osv):
             ('E', 'Email'),
             ('S', 'SMS'))
 
+    def _get_tipo_paq(self, cursor, user_id, context):
+        return (
+            ('1', 'Bolsa'),
+            ('2', 'Paquete'))
+
 
     def get_type_selection(self, cr, uid, context=None):
         result = super(carrier_file, self).get_type_selection(cr, uid, context=context)
@@ -58,7 +63,8 @@ class carrier_file(osv.osv):
         'type': fields.selection(get_type_selection, 'Type', required=True),
         'nacex_account': fields.char('Nacex Account', size=9),
         'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio'),
-        'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso'),
+        'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso', required=True),
+        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete'),
         'nacex_cod_price': fields.float('Precio contrareembolso',
                                         digits_compute=dp.get_precision('Precio de reembolso')),
         'nacex_ealerta': fields.selection(_get_alerta, 'Tipo de Alerta',
@@ -71,5 +77,7 @@ class carrier_file(osv.osv):
 
     }
 
-
+    _defaults = {
+        'nacex_paquete': lambda *a: 2,
+        }
 carrier_file()
