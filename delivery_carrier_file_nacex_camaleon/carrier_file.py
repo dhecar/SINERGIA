@@ -61,12 +61,15 @@ class carrier_file(osv.osv):
 
     _columns = {
         'type': fields.selection(get_type_selection, 'Type', required=True),
-        'nacex_account': fields.char('Nacex Account', size=9),
-        'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio'),
+        'nacex_account': fields.char('Nacex Account', size=9, required=True),
+        'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio', required=True),
         'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso', required=True),
-        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete'),
+        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete', required=True),
         'nacex_cod_price': fields.float('Precio contrareembolso',
-                                        digits_compute=dp.get_precision('Precio de reembolso')),
+                                        digits_compute=dp.get_precision('Precio de reembolso'),
+                                        help="Este precio es indicativo, para poder añadir un valor a la linea de venta"
+                                             "debes hacerlo a mano o utilizar el módulo sine_delivery_extension"
+                                             "para añadir esta linea. (ten en cuenta que el precio debe ir sin IVA"),
         'nacex_ealerta': fields.selection(_get_alerta, 'Tipo de Alerta',
                                           help="Tipo de E-Alerta [Email o SMS que se envía al "
                                                "remitente para indicar que se ha entregado el envió]"),
