@@ -35,6 +35,7 @@ def rounding(f, r):
 class product_pricelist_item(orm.Model):
     _name = "product.pricelist.item"
     _inherit = "product.pricelist.item"
+
     _columns = {
         'brand_id': fields.many2one('product.brand', 'Marca del Producto', ondelete='cascade',
                                     help="Especifica la marca sobre la que quieres aplicar la tarifa"),
