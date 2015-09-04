@@ -92,7 +92,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             line.numpack = '1'
         line.goods = configuration.ups_description_goods
         line.reference1 = picking.name
-        line.reference2 = picking.name
+        line.reference2 = picking.origin
         line.weight = str("%.2f" % (picking.weight)).replace('.', ',')
         line.cash = configuration.ups_cash
         line.ups_cod_price = configuration.ups_cod_price
