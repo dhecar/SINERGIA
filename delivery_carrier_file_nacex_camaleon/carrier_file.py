@@ -60,11 +60,11 @@ class carrier_file(osv.osv):
         return result
 
     _columns = {
-        'type': fields.selection(get_type_selection, 'Type', required=True),
-        'nacex_account': fields.char('Nacex Account', size=9, required=True),
-        'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio', required=True),
-        'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso', required=True),
-        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete', required=True),
+        'type': fields.selection(get_type_selection, 'Type'),
+        'nacex_account': fields.char('Nacex Account', size=9),
+        'nacex_typo': fields.selection(_get_typo, 'Tipo de servicio'),
+        'nacex_reembolso': fields.selection(_get_reembolso, 'Tipo de Reembolso'),
+        'nacex_paquete': fields.selection(_get_tipo_paq, 'Tipo Paquete'),
         'nacex_cod_price': fields.float('Precio contrareembolso',
                                         digits_compute=dp.get_precision('Precio de reembolso'),
                                         help="Este precio es indicativo, para poder añadir un valor a la linea de venta"
