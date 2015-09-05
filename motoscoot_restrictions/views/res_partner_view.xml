@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
 
                 <field name="category_id" position="replace" >
-                    <field name="category_id" widget="many2many_tags"  domain="[('name','!=','Taller'),('name','!=','Taller Premium'),('name','!=','NOT LOGGED IN')]" options="{'no_create': True,'no_create_edit': True,'no_quick_create': True}"/>
+                    <field name="category_id" widget="many2many_tags"  domain="[('name','=','General'),('name','=','Piloto')]" options="{'no_create': True,'no_create_edit': True,'no_quick_create': True}"/>
                 </field>
 
             </field>
