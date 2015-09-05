@@ -62,7 +62,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <field name="html"><![CDATA[
 %for order in objects:
 
-%if 'General'  in order.partner_id.category_id.name:
+%if 'General' in order.partner_id.category_id.name:
 
 <html>
     <head>
@@ -174,11 +174,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 </table>
 
 %if order.comment_id.comment:
-
 <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
 </div>
 %endif
-
 
 <div class="datos_empresa">
      <table>
@@ -220,7 +218,6 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 </body>
 </html>
-
 %elif 'Taller' in order.partner_id.category_id.name:
 
 <html>
@@ -332,10 +329,8 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 </table>
 
 %if order.comment_id.comment:
-
 <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
 </div>
-
 %endif
 
 <div class="datos_empresa">
@@ -380,10 +375,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 </body>
 </html>
 
-%else :
-
-
-
+%else:
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -493,13 +485,11 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
      </tr>
 </table>
 
-
 %if order.comment_id.comment:
-
 <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
 </div>
-
 %endif
+
 
 <div class="datos_empresa">
      <table>
@@ -541,10 +531,8 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 </body>
 </html>
-
 %endif
 %endfor
-
 ]]>
             </field>
             <field eval="115.0" name="margin_top"/>
