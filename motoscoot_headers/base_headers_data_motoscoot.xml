@@ -656,7 +656,7 @@ body{
     </head>
 <body style="border:0; margin:0" onload="subst()">
 
-<div class="apunte"><p>Noticias cliente</p></div>
+<div class="apunte"><p></p></div>
 <div  class="pie">
 <div class="logo">
 ${helper.embed_logo_by_name('Motoscoot_footer')|n}
@@ -753,7 +753,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <div class="datos_cliente">
 
     <table >
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+         <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
 
           %if inv.partner_id.vat:
@@ -768,14 +768,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
          <tr><td>${inv.partner_id.country_id.name}</td></tr>
      </table>
      </br>
-     <table >
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${inv.partner_id.name}</td></tr>
-         <tr><td>${inv.partner_id.street}</td></tr>
-         <tr><td>${inv.partner_id.zip} ${inv.partner_id.city}(${inv.partner_id.state_id.name})</td></tr>
-         <tr><td>${inv.partner_id.country_id.name}</td></tr>
-     </table>
 
 <!--Datos Factura-->
 <br><br>
@@ -899,7 +892,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <div class="datos_cliente">
 
     <table >
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+         <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
 
           %if inv.partner_id.vat:
@@ -914,14 +907,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
          <tr><td>${inv.partner_id.country_id.name}</td></tr>
      </table>
      </br>
-     <table >
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${inv.partner_id.name}</td></tr>
-         <tr><td>${inv.partner_id.street}</td></tr>
-         <tr><td>${inv.partner_id.zip} ${inv.partner_id.city}(${inv.partner_id.state_id.name})</td></tr>
-         <tr><td>${inv.partner_id.country_id.name}</td></tr>
-     </table>
 
 <!--Datos Factura-->
 <br><br>
@@ -1048,7 +1034,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <div class="datos_cliente">
 
     <table >
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+         <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
 
           %if inv.partner_id.vat:
@@ -1063,14 +1049,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
          <tr><td>${inv.partner_id.country_id.name}</td></tr>
      </table>
      </br>
-     <table >
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${inv.partner_id.name}</td></tr>
-         <tr><td>${inv.partner_id.street}</td></tr>
-         <tr><td>${inv.partner_id.zip} ${inv.partner_id.city}(${inv.partner_id.state_id.name})</td></tr>
-         <tr><td>${inv.partner_id.country_id.name}</td></tr>
-     </table>
 
 <!--Datos Factura-->
 <br><br>

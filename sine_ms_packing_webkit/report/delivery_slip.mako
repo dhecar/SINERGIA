@@ -123,7 +123,7 @@
 
                         %if 'General' in picking.partner_id.category_id.name or 'Piloto' in picking.partner_id.category_id.name:
                             <td>Motoscoot</td>
-                        %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
+                        %elif 'Taller' in picking.partner_id.category_id.name or 'Taller' in picking.partner_id.category_id.name:
                             <td>Toptaller</td>
                         %endif
 
@@ -156,7 +156,7 @@
 
                     %if 'General' in picking.partner_id.category_id.name or 'Piloto' in picking.partner_id.category_id.name:
                         <td>Motoscoot</td>
-                    %elif 'Taller' in picking.partner_id.category_id.name or 'Taller std' in picking.partner_id.category_id.name:
+                    %elif 'Taller' in picking.partner_id.category_id.name or 'Taller' in picking.partner_id.category_id.name:
                         <td>Toptaller</td>
                     %else:
                         <td>Final</td>
