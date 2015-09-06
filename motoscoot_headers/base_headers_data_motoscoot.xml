@@ -124,77 +124,78 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 <div class="cabecera">
 
-<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Motoscoot')|n}</div>
-<div class="datos_cliente">
+    <div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Motoscoot')|n}</div>
+    <div class="datos_cliente">
 
-    <table >
+        <table >
 
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
-         <tr><td>${order.partner_invoice_id.name}</td></tr>
+            <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+            <tr><td>${order.partner_invoice_id.name}</td></tr>
 
-         %if order.partner_invoice_id.vat:
-             <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
-         %elif order.partner_invoice_id.magento_bind_ids:
+            %if order.partner_invoice_id.vat:
+                <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
+            %elif order.partner_invoice_id.magento_bind_ids:
 
-<tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
-     %endif
+            <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
+            %endif
 
-         <tr><td>${order.partner_invoice_id.street}</td></tr>
-         <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
-     </table>
-     </br>
-     <table >
+            <tr><td>${order.partner_invoice_id.street}</td></tr>
+            <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+        </table>
+        </br>
+        <table >
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${order.partner_id.name}</td></tr>
-         <tr><td>${order.partner_id.street}</td></tr>
-         <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_id.country_id.name}</td></tr>
-     </table>
+            <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+            <tr><td>${order.partner_id.name}</td></tr>
+            <tr><td>${order.partner_id.street}</td></tr>
+            <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_id.country_id.name}</td></tr>
+        </table>
 
-<!--Datos Pedidos-->
-<br>
-     <table class="datos_pedido">
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
-     </tr>
-</table>
+        <!--Datos Pedidos-->
+        <br>
+        <table class="datos_pedido">
+            <tr>
+            <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
+            </tr>
+            <tr>
+            <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
+            <tr>
+            <tr>
+            <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
+            </tr>
+        </table>
 
-%if order.comment_id.comment:
-<div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
-</div>
-%endif
+    %if order.comment_id.comment:
+    <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
+    %endif
 
-<div class="datos_empresa">
-     <table>
+    </div><!Fin Datos Cliente-->
 
-         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
-                 <tr><td>NIF ${company.partner_id.vat}</td></tr>
-         <tr>&nbsp;</tr><tr>&nbsp;<tr>
-       <tr>
+
+    <div class="datos_empresa">
+        <table>
+            <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+            <tr><td>NIF ${company.partner_id.vat}</td></tr>
+            <tr>&nbsp;</tr><tr>&nbsp;<tr>
+            <tr>
                 <td><b>Motoscoot</b></td>
-       </tr>
-           <tr>
+            </tr>
+            <tr>
                 <td >
                     ${company.partner_id.street or ''|entity}</br>
                             ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
 
                          </td>
-        </tr>
-      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+            </tr>
+            <tr>&nbsp;<tr><tr>&nbsp;<tr>
 
                 <tr>
                         <td>
@@ -203,16 +204,16 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
                             mail: ${company.partner_id.email or ''|entity}
                         </td>
 
-       </tr>
+            </tr>
 
-         <tr>
+            <tr>
                 <td>Tienda: ${order.shop_id.name}</td>
-       </tr>
+            </tr>
 
-     </table>
-</div>
+        </table>
+        </div><!-Fin Datos Empresa-->
 
-</div>
+</div><!-Fin Cabecera-->
 
        ${_debug or ''|n}
 
@@ -279,77 +280,79 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 
 <div class="cabecera">
-<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
 
-<div class="datos_cliente">
+    <div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Cabecera_tt')|n}</div>
+    <div class="datos_cliente">
 
-    <table >
+        <table >
 
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
-         <tr><td>${order.partner_invoice_id.name}</td></tr>
-         %if order.partner_invoice_id.vat:
-             <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
-         %elif order.partner_invoice_id.magento_bind_ids:
+            <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+            <tr><td>${order.partner_invoice_id.name}</td></tr>
 
-<tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
-     %endif
+            %if order.partner_invoice_id.vat:
+                <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
+            %elif order.partner_invoice_id.magento_bind_ids:
 
-         <tr><td>${order.partner_invoice_id.street}</td></tr>
-         <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
-     </table>
-     </br>
-     <table >
+            <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
+            %endif
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${order.partner_id.name}</td></tr>
-         <tr><td>${order.partner_id.street}</td></tr>
-         <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_id.country_id.name}</td></tr>
-     </table>
+            <tr><td>${order.partner_invoice_id.street}</td></tr>
+            <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+        </table>
+        </br>
+        <table >
 
-<!--Datos Pedidos-->
-<br>
-     <table class="datos_pedido">
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
-     </tr>
-</table>
+            <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+            <tr><td>${order.partner_id.name}</td></tr>
+            <tr><td>${order.partner_id.street}</td></tr>
+            <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_id.country_id.name}</td></tr>
+        </table>
 
-%if order.comment_id.comment:
-<div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
-</div>
-%endif
+        <!--Datos Pedidos-->
+        <br>
+        <table class="datos_pedido">
+            <tr>
+            <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
+            </tr>
+            <tr>
+            <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
+            <tr>
+            <tr>
+            <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
+            </tr>
+        </table>
 
-<div class="datos_empresa">
-     <table>
+    %if order.comment_id.comment:
+    <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
+    %endif
 
-         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
-                 <tr><td>NIF ${company.partner_id.vat}</td></tr>
-         <tr>&nbsp;</tr><tr>&nbsp;<tr>
-       <tr>
-                <td><b>Toptaller</b></td>
-       </tr>
-           <tr>
+    </div><!Fin Datos Cliente-->
+
+
+    <div class="datos_empresa">
+        <table>
+            <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+            <tr><td>NIF ${company.partner_id.vat}</td></tr>
+            <tr>&nbsp;</tr><tr>&nbsp;<tr>
+            <tr>
+                <td><b>Motoscoot</b></td>
+            </tr>
+            <tr>
                 <td >
                     ${company.partner_id.street or ''|entity}</br>
                             ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
 
                          </td>
-        </tr>
-      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+            </tr>
+            <tr>&nbsp;<tr><tr>&nbsp;<tr>
 
                 <tr>
                         <td>
@@ -358,24 +361,23 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
                             mail: ${company.partner_id.email or ''|entity}
                         </td>
 
-       </tr>
+            </tr>
 
-
-       <tr>
+            <tr>
                 <td>Tienda: ${order.shop_id.name}</td>
-       </tr>
+            </tr>
 
-     </table>
-</div>
+        </table>
+        </div><!-Fin Datos Empresa-->
 
-</div>
+</div><!-Fin Cabecera-->
 
        ${_debug or ''|n}
 
 </body>
 </html>
-
 %else:
+
 <html>
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
@@ -436,78 +438,78 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
 <div class="cabecera">
 
-<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Motoscoot')|n}</div>
-<div class="datos_cliente">
+    <div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Motoscoot')|n}</div>
+    <div class="datos_cliente">
 
-    <table >
+        <table >
 
-         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
-         <tr><td>${order.partner_invoice_id.name}</td></tr>
+            <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+            <tr><td>${order.partner_invoice_id.name}</td></tr>
 
-         %if order.partner_invoice_id.vat:
-             <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
-         %elif order.partner_invoice_id.magento_bind_ids:
+            %if order.partner_invoice_id.vat:
+                <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.vat}</td></tr>
+            %elif order.partner_invoice_id.magento_bind_ids:
 
-<tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
-     %endif
+            <tr><td>DNI/CIF:&nbsp;${order.partner_invoice_id.magento_bind_ids[0].taxvat}</td></tr>
+            %endif
 
-         <tr><td>${order.partner_invoice_id.street}</td></tr>
-         <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
-     </table>
-     </br>
-     <table >
+            <tr><td>${order.partner_invoice_id.street}</td></tr>
+            <tr><td>${order.partner_invoice_id.zip} ${order.partner_invoice_id.city}(${order.partner_invoice_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_invoice_id.country_id.name}</td></tr>
+        </table>
+        </br>
+        <table >
 
-         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-         <tr><td>${order.partner_id.name}</td></tr>
-         <tr><td>${order.partner_id.street}</td></tr>
-         <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-         <tr><td>${order.partner_id.country_id.name}</td></tr>
-     </table>
+            <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+            <tr><td>${order.partner_id.name}</td></tr>
+            <tr><td>${order.partner_id.street}</td></tr>
+            <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_id.country_id.name}</td></tr>
+        </table>
 
-<!--Datos Pedidos-->
-<br>
-     <table class="datos_pedido">
-    <tr>
-          <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
-     </tr>
-     <tr>
-        <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
-     <tr>
-     <tr>
-        <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
-     </tr>
-     <tr>
-        <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
-     </tr>
-</table>
+        <!--Datos Pedidos-->
+        <br>
+        <table class="datos_pedido">
+            <tr>
+            <td><b>${quotation and _(u'Quotation N°') or _(u'Order N°')}</b>:&nbsp;${order.name}&nbsp; <b>Fecha</b>:&nbsp;${order.date_order} </td>
+            </tr>
+            <tr>
+            <td>${_('Payment Type')}:&nbsp;${order.payment_type.name}</td>
+            <tr>
+            <tr>
+            <td>${_('Payment Term')}:&nbsp;${order.payment_term.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Comercial")}:&nbsp;${order.user_id.name}</td>
+            </tr>
+            <tr>
+            <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
+            </tr>
+        </table>
 
-%if order.comment_id.comment:
-<div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
-</div>
-%endif
+    %if order.comment_id.comment:
+    <div class="apunte"><p>${order.comment_id.comment or ''}</p></div>
+    %endif
+
+    </div><!Fin Datos Cliente-->
 
 
-<div class="datos_empresa">
-     <table>
-
-         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
-                 <tr><td>NIF ${company.partner_id.vat}</td></tr>
-         <tr>&nbsp;</tr><tr>&nbsp;<tr>
-       <tr>
+    <div class="datos_empresa">
+        <table>
+            <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+            <tr><td>NIF ${company.partner_id.vat}</td></tr>
+            <tr>&nbsp;</tr><tr>&nbsp;<tr>
+            <tr>
                 <td><b>Motoscoot</b></td>
-       </tr>
-           <tr>
+            </tr>
+            <tr>
                 <td >
                     ${company.partner_id.street or ''|entity}</br>
                             ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
 
                          </td>
-        </tr>
-      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+            </tr>
+            <tr>&nbsp;<tr><tr>&nbsp;<tr>
 
                 <tr>
                         <td>
@@ -516,16 +518,16 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
                             mail: ${company.partner_id.email or ''|entity}
                         </td>
 
-       </tr>
+            </tr>
 
-         <tr>
+            <tr>
                 <td>Tienda: ${order.shop_id.name}</td>
-       </tr>
+            </tr>
 
-     </table>
-</div>
+        </table>
+        </div><!-Fin Datos Empresa-->
 
-</div>
+</div><!-Fin Cabecera-->
 
        ${_debug or ''|n}
 
@@ -685,8 +687,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
             <field name="html"><![CDATA[
 %for inv in objects:
 
-%if 'General' or 'Piloto' in inv.partner_id.category_id.name:
-
+%if 'General' in inv.partner_id.category_id.name:
 
 <html>
     <head>
@@ -980,6 +981,151 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 </body>
 </html>
 
+%else:
+
+
+<html>
+    <head>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <script>
+            function subst() {
+            var vars={};
+            var x=document.location.search.substring(1).split('&');
+            for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+            var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+            for(var i in x) {
+            var y = document.getElementsByClassName(x[i]);
+            for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+                }
+            }
+        </script>
+        <style type="text/css">
+            ${css}
+
+        </style>
+    </head>
+    <body  style="border:0; margin:0" onload="subst()">
+
+
+
+    <%page expression_filter="entity"/>
+    <%
+    def carriage_returns(text):
+        return text.replace('\n', '<br />')
+    %>
+
+    <%def name="address(partner)">
+        <%doc>
+            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+        </%doc>
+        %if partner.parent_id:
+            <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+                <tr><td>${partner.parent_id.website}</td></tr>
+            <% address_lines = partner.contact_address.split("\n")[1:] %>
+        %else:
+            <tr><td>${partner.title and partner.title.name or ''} ${partner.name}</td></tr>
+            <% address_lines = partner.contact_address.split("\n") %>
+                ${partner.state_id.name}
+        %endif
+    </%def>
+
+
+    %for order in objects:
+    <% setLang(order.partner_id.lang) %>
+    <%
+      quotation = order.state in ['draft', 'sent']
+    %>
+    %endfor
+
+
+
+
+<div class="vertical"><p>Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Folio 114, Secci&oacute;n 8, Hoja GI 46003, Inscripci&oacute;n 1 - CIF B17990755</p></div>
+<div class="cabecera">
+<div style="float:right;position:relative;top:10px;">${helper.embed_logo_by_name('Motoscoot')|n}</div>
+
+<div class="datos_cliente">
+
+    <table >
+         <tr><td><i><b>Direcci&oacute;n Factura</b></i></td></tr>
+         <tr><td>${inv.partner_id.name}</td></tr>
+
+          %if inv.partner_id.vat:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.vat}</td></tr>
+          %elif inv.partner_id.magento_bind_ids:
+
+<tr><td>DNI/CIF:&nbsp;${inv.partner_id.magento_bind_ids[0].taxvat}</td></tr>
+          %endif
+
+         <tr><td>${inv.partner_id.street}</td></tr>
+         <tr><td>${inv.partner_id.zip} ${inv.partner_id.city}(${inv.partner_id.state_id.name})</td></tr>
+         <tr><td>${inv.partner_id.country_id.name}</td></tr>
+     </table>
+     </br>
+     <table >
+
+         <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
+         <tr><td>${inv.partner_id.name}</td></tr>
+         <tr><td>${inv.partner_id.street}</td></tr>
+         <tr><td>${inv.partner_id.zip} ${inv.partner_id.city}(${inv.partner_id.state_id.name})</td></tr>
+         <tr><td>${inv.partner_id.country_id.name}</td></tr>
+     </table>
+
+<!--Datos Factura-->
+<br><br>
+     <table class="datos_pedido">
+    <tr>
+          <td><b>Factura</b>:&nbsp;${inv.number}&nbsp;
+       <b>Fecha</b>:&nbsp;${inv.date_invoice} </td>
+     </tr>
+     <tr>
+        <td>${_('Payment Type')}:&nbsp;${inv.payment_type.name}</td>
+     <tr>
+     <tr>
+        <td>${_("Comercial")}:&nbsp;${inv.user_id.name}</td>
+     </tr>
+</table>
+
+</div>
+
+
+<div class="datos_empresa">
+     <table>
+
+         <tr><td><b>${company.partner_id.name |entity}</b></td></tr>
+                 <tr><td>NIF ${company.partner_id.vat}</td></tr>
+         <tr>&nbsp;</tr><tr>&nbsp;<tr>
+       <tr>
+                <td><b>Motoscoot</b></td>
+       </tr>
+           <tr>
+                <td >
+                    ${company.partner_id.street or ''|entity}</br>
+                            ${company.partner_id.zip} ${company.partner_id.state_id.name}(${company.partner_id.city}) - ${company.partner_id.country_id.name}</br>
+
+                         </td>
+        </tr>
+      <tr>&nbsp;<tr><tr>&nbsp;<tr>
+
+                <tr>
+                        <td>
+                            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+                            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
+                            mail: ${company.partner_id.email or ''|entity}
+                        </td>
+
+       </tr>
+
+
+     </table>
+</div>
+</div>
+
+       ${_debug or ''|n}
+
+</body>
+</html>
 
 
 %endif
