@@ -343,7 +343,7 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <tr><td>NIF ${company.partner_id.vat}</td></tr>
             <tr>&nbsp;</tr><tr>&nbsp;<tr>
             <tr>
-                <td><b>Motoscoot</b></td>
+                <td><b>Toptaller</b></td>
             </tr>
             <tr>
                 <td >
@@ -356,9 +356,9 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
 
                 <tr>
                         <td>
-                            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
-                            Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
-                            mail: ${company.partner_id.email or ''|entity}
+                            Telf: (+34)972 413893</br>
+                            Fax: (+34)${company.partner_id.fax or ''|entity}</br>
+                            mail: info@toptaller.com
                         </td>
 
             </tr>
@@ -947,9 +947,9 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 
                 <tr>
                         <td>
-                            Telf: (+34) ${company.partner_id.phone or ''|entity}</br>
+                            Telf: (+34)972413893</br>
                             Fax: (+34) ${company.partner_id.fax or ''|entity}</br>
-                            mail: ${company.partner_id.email or ''|entity}
+                            mail: info@toptaller.com
                         </td>
 
        </tr>
