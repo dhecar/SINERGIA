@@ -119,6 +119,8 @@
                         <td>Toptaller</td>
                     %elif 'MAG-1' in picking.origin:
                         <td>Motoscoot</td>
+                    %elif 'MAG-5' in picking.origin:
+                        <td>Motoscoot</td>
                     %elif 'SO' in picking.origin and picking.partner_id.category_id:
 
                         %if 'General' in picking.partner_id.category_id.name or 'Piloto' in picking.partner_id.category_id.name:
