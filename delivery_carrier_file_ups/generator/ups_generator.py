@@ -139,7 +139,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             PackageType = SubElement(Shipment, 'PackageType')
             PackageType.text = line.package_type
             NumberOfPackages = SubElement(Shipment, 'NumberOfPackages')
-            NumberOfPackages.text = line.numpack
+            NumberOfPackages.text = str(line.numpack)
             ShipmentActualWeight = SubElement(Shipment, 'ShipmentActualWeight')
             ShipmentActualWeight.text = line.weight
             DescriptionOfGoods = SubElement(Shipment, 'DescriptionOfGoods')
