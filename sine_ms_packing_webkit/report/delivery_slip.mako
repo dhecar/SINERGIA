@@ -121,7 +121,7 @@
                         <td>Motoscoot</td>
                     %elif 'MAG-5' in picking.origin:
                         <td>Motoscoot</td>
-                    %elif 'MAG-6' in picking,origin:
+                    %elif 'MAG-6' in picking.origin:
                         <td>Toptaller</td>
                     %elif 'SO' in picking.origin and picking.partner_id.category_id:
 
