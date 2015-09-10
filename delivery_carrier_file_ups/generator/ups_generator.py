@@ -77,7 +77,7 @@ class UpsFileGenerator(CarrierFileGenerator):
         address = picking.partner_id
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
-            line.street = address.street
+            line.street = address.street + "  " + address.street2
             line.zip = address.zip
             line.city = (address.city and address.state_id.name)
             line.country = address.country_id.code
