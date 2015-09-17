@@ -21,9 +21,8 @@
 #
 ###############################################################################
 
-import operator
 from report import report_sxw
-import pooler
+from osv import fields, osv
 import time
 
 
@@ -38,7 +37,6 @@ class DeliverySlip(report_sxw.rml_parse):
         )['invoice']
         return partner_obj.browse(
             self.cr, self.uid, invoice_address_id)
-
 
     def _get_shipping_address(self, picking):
         if picking.sale_id:

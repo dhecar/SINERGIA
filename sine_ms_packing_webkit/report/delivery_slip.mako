@@ -261,12 +261,14 @@
 
     <br>
     <br/>
-        %if picking.note :
-            <p class="std_text">${picking.note | carriage_returns}</p>
+        %if picking.sale_id.sale_internal_comment :
+            <p class="std_text">${picking.sale_id.sale_internal_comment | carriage_returns}</p>
         %endif
 
         <p style="page-break-after: always"/>
         <br/>
+
+
     %endfor
  ${_debug or ''|n}
 </body>
