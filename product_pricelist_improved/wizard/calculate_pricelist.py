@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 ##############################################################################
 #
-#    Module Writen to OpenERP, Open Source Management Solution
-#    Copyright (C) 2015 OBERTIX FREE SOLUTIONS (<http://obertix.net>).
+# Module Writen to OpenERP, Open Source Management Solution
+# Copyright (C) 2015 OBERTIX FREE SOLUTIONS (<http://obertix.net>).
 #                       cubells <vicent@vcubells.net>
 #
 #    All Rights Reserved
@@ -23,6 +23,7 @@
 
 from openerp.osv import osv, fields, orm
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -32,7 +33,8 @@ class CalculatePricelist(orm.TransientModel):
 
     _columns = {
         'pricelist_ids': fields.one2many('calculate.pricelist.line',
-                                         'wizard_id', 'Pricelist line'),
+                                         'wizard_id', 'Pricelist line',
+                                         domain=[('pricelist_id.type', '=', 'sale')]),
         'state': fields.selection([
             ('initial', 'Initial'),
             ('done', 'Done'),
@@ -41,6 +43,10 @@ class CalculatePricelist(orm.TransientModel):
                                       domain=[('sale_ok', '=', True)],
                                       required=True),
         'qty': fields.integer('Quantity', required=True),
+
+        'pricelist_ids2': fields.one2many('calculate.pricelist.line',
+                                          'wizard_id', 'Pricelist line',
+                                          domain=[('pricelist_id.type', '=', 'purchase')]),
     }
 
     _defaults = {
@@ -107,11 +113,11 @@ class CalculatePricelist(orm.TransientModel):
         for line in line_obj.browse(cr, uid, line_ids, context=context):
             line_obj.unlink(cr, uid, line.id, context=context)
         data = self.browse(cr, uid, ids[0], context)
-        price_ids = pricelist_obj.search(cr, uid, [('type', '=', 'sale')],
+        price_ids = pricelist_obj.search(cr, uid, [('type', 'in', ['sale', 'purchase'])],
                                          context=context)
         for plist in pricelist_obj.browse(cr, uid, price_ids, context=context):
             tax = data.product_id.taxes_id and \
-                data.product_id.taxes_id[0].amount or 0.0
+                  data.product_id.taxes_id[0].amount or 0.0
             tax += 1
             if plist.version_id:
                 if plist.version_id[0].items_id:
