@@ -44,6 +44,10 @@
         <div style="float:right;margin-top:15px;margin-bottom:15px;">
             <table class="recipient" style="border:1px solid #C0C0C0;">
 
+                <%
+                prod_qty = total_prod(picking)
+                %>
+
                 %if picking.partner_id.parent_id:
                 <%
                 shipping_addr = shipping_address(picking)
@@ -99,6 +103,7 @@
 
             %if picking.origin and picking.sale_id:
                 <tr>
+                    <td style="font-weight:bold;">Num.ART</td>
                     <td style="font-weight:bold;">${_("Vendedor")}</td>
                     <td style="font-weight:bold;">${_("Pedido")}</td>
                     <td style="font-weight:bold;">${_("C. Final")}</td>
@@ -111,6 +116,7 @@
 
                 </tr>
                 <tr>
+                    <td>${prod_qty} art.</td>
                     <td>${user.name}</td>
 
                     <td>${picking.origin or ''}</td>

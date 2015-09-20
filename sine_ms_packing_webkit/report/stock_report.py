@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-#   Copyright (c) 2011-2013 Camptocamp SA (http://www.camptocamp.com)
-#   @author Nicolas Bessi
+# Copyright (c) 2011-2013 Camptocamp SA (http://www.camptocamp.com)
+# @author Nicolas Bessi
 #   Copyright (c) 2013 Agile Business Group (http://www.agilebg.com)
 #   @author Lorenzo Battistini
 #
@@ -22,12 +22,11 @@
 ###############################################################################
 
 from report import report_sxw
-from osv import fields, osv
+
 import time
 
 
 class DeliverySlip(report_sxw.rml_parse):
-
     def _get_invoice_address(self, picking):
         if picking.sale_id:
             return picking.sale_id.partner_invoice_id
@@ -48,6 +47,11 @@ class DeliverySlip(report_sxw.rml_parse):
         return partner_obj.browse(
             self.cr, self.uid, shipping_address_id)
 
+    def _sum_total_products(self, picking):
+        if picking.move_lines:
+            total = int(sum(picking.move_lines.product_qty))
+            return total
+
 
     def __init__(self, cr, uid, name, context):
         super(DeliverySlip, self).__init__(cr, uid, name, context=context)
@@ -55,6 +59,8 @@ class DeliverySlip(report_sxw.rml_parse):
             'time': time,
             'invoice_address': self._get_invoice_address,
             'shipping_address': self._get_shipping_address,
+            'total_prod': self._sum_total_products,
+
         })
 
 
@@ -62,3 +68,6 @@ report_sxw.report_sxw('report.webkit.motoscoot_picking',
                       'stock.picking',
                       'addons/sine_ms_packing_webkit/report/delivery_slip.mako',
                       parser=DeliverySlip)
+
+
+
