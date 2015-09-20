@@ -46,7 +46,6 @@ class DeliverySlip(report_sxw.rml_parse):
         )['shipping']
         return partner_obj.browse(
             self.cr, self.uid, shipping_address_id)
-
     def _sum_total_products(self, picking):
         if picking.move_lines:
             total = int(sum(picking.move_lines.product_qty))

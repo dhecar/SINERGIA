@@ -103,7 +103,7 @@
 
             %if picking.origin and picking.sale_id:
                 <tr>
-                    <td style="font-weight:bold;">Num.ART</td>
+                    <td style="font-weight:bold;">Num. Art</td>
                     <td style="font-weight:bold;">${_("Vendedor")}</td>
                     <td style="font-weight:bold;">${_("Pedido")}</td>
                     <td style="font-weight:bold;">${_("C. Final")}</td>
