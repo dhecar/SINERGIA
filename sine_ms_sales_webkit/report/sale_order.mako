@@ -94,7 +94,7 @@
        <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
        </tr>
         %endfor
-       <div>
+       </div>
       </tbody>
 
       <tfoot>

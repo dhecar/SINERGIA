@@ -12,7 +12,7 @@
                         <field name="is_printed"/>
                         <field name="payment1_id"/>
                         <field name="payment2_id"/>
-                        <field name="sh_id" />
+                        <field name="sh_id"/>
                     </field>
            </field>
         </record>
