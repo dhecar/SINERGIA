@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+
+        <!--Form stock_picking View-->
+        <record id="view_picking_inherit_form" model="ir.ui.view">
+            <field name="name">stock.picking.inh.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                    <field name="origin" position="after">
+                        <field name="is_printed"/>
+                        <field name="payment1_id"/>
+                        <field name="payment2_id"/>
+                        <field name="sh_id" />
+                    </field>
+           </field>
+        </record>
+
+        <!--Tree stock_picking_out View -->
         <record id="view_picking_out_inherit_tree" model="ir.ui.view">
             <field name="name">stock.picking.out.inherit.tree</field>
             <field name="model">stock.picking.out</field>
@@ -9,6 +26,9 @@
             <field name="arch" type="xml">
                 <field name="state" position="after">
                         <field name="is_printed"/>
+                        <field name="payment1_id" invisible="1"/>
+                        <field name="payment2_id" invisible ="1"/>
+                        <field name="sh_id" invisible="1" />
                 </field>
 
                 <xpath expr="//tree[@string='Delivery Orders']" position="attributes">
@@ -19,17 +39,7 @@
             </field>
             </record>
 
-        <record id="view_picking_inherit_form" model="ir.ui.view">
-            <field name="name">stock.picking.inh.form</field>
-            <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="stock.view_picking_form"/>
-            <field name="arch" type="xml">
-                    <field name="origin" position="after">
-                        <field name="is_printed"/>
-                    </field>
-           </field>
-        </record>
-
+       <!-- Form stock_picking_out Form-->
         <record id="view_picking_out_inherit_form" model="ir.ui.view">
             <field name="name">stock.picking.out.inh.form</field>
             <field name="model">stock.picking.out</field>
@@ -37,9 +47,14 @@
             <field name="arch" type="xml">
                     <field name="origin" position="after">
                         <field name="is_printed"/>
+                        <field name="payment1_id"/>
+                        <field name="payment2_id"/>
+                        <field name="sh_id" />
+
                     </field>
            </field>
         </record>
+
 
 
 
