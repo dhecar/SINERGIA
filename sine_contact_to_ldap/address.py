@@ -303,10 +303,10 @@ class LDAPAddress(osv.osv):
         conn = self.connectToLdap(cursor, uid, context=context)
         try:
             if self.getconn(cursor, uid, context).ACTIVDIR:
-                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s+'_'+%s,OU=%s,%s" % (contact_obj['cn'][0], [str(id)], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
             else:
-                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s+'_'+%s,OU=%s,%s" % (contact_obj['cn'], [str(id)], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
         except Exception, e:
             raise e

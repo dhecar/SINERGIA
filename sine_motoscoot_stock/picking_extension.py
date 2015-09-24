@@ -15,6 +15,7 @@ class stock_picking_out(osv.osv):
     }
 
 
+
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
     _columns = {

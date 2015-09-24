@@ -17,6 +17,7 @@
            </field>
         </record>
 
+
         <!--Tree stock_picking_out View -->
         <record id="view_picking_out_inherit_tree" model="ir.ui.view">
             <field name="name">stock.picking.out.inherit.tree</field>
