@@ -30,6 +30,7 @@
                         <field name="payment1_id" invisible="1"/>
                         <field name="payment2_id" invisible ="1"/>
                         <field name="sh_id" invisible="1" />
+                        <field name="pricelist_type" invisible="1"/>
                 </field>
 
                 <xpath expr="//tree[@string='Delivery Orders']" position="attributes">
@@ -51,7 +52,6 @@
                         <field name="payment1_id"/>
                         <field name="payment2_id"/>
                         <field name="sh_id" />
-
                     </field>
            </field>
         </record>
