@@ -13,7 +13,7 @@
         <!-- Tree colors-->
 
         <xpath expr="//tree[@string='Sales Order Lines']"   position="attributes">
-        <attribute name="colors">green:model_ok==True;red:model_ok==False</attribute>
+        <attribute name="colors">green:model_ok==True;black:model_ok==False</attribute>
         </xpath>
 
 	</field>
