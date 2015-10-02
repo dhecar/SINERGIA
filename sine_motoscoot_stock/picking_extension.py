@@ -1,7 +1,6 @@
 from osv import fields, osv
 
 
-
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
     _columns = {
@@ -12,10 +11,9 @@ class stock_picking_out(osv.osv):
                                       string='Tipo Pago Erp', readonly=True),
         'sh_id': fields.related('sale_id', 'shop_id', type='many2one', relation='sale.shop',
                                 string='Tienda', readonly=True),
-        'pricelist_type':fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
-                                string='Tarifa', readonly=True),
+        'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
+                                         string='Tarifa', readonly=True),
     }
-
 
 
 class stock_picking(osv.osv):
@@ -28,7 +26,7 @@ class stock_picking(osv.osv):
                                       string='Tipo Pago Erp ', readonly=True),
         'sh_id': fields.related('sale_id', 'shop_id', type='many2one', relation='sale.shop',
                                 string='Tienda', readonly=True),
-        'pricelist_type':fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
-                                string='Tarifa', readonly=True),
+        'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
+                                         string='Tarifa', readonly=True),
 
     }

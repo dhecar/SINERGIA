@@ -103,6 +103,8 @@ class product_product(osv.osv):
                                        digits_compute=dp.get_precision('Precio Base TT (Tarifa Fabricante sin IVA)')),
 
 
+
+
     }
 
 
