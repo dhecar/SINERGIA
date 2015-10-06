@@ -39,7 +39,8 @@
 
     <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
 
-    <div class="barcode-class">*${picking.name or ''}*</div>
+
+
 
         <div style="float:right;margin-top:15px;margin-bottom:15px;">
             <table class="recipient" style="border:1px solid #C0C0C0;">
@@ -199,9 +200,11 @@
                 </tr>
             </thead>
                 <tbody>
-                %for line in picking.move_lines:
+
+                %for line in picking.move_lines_sorted:
+
                     <tr style="border-top:1px solid grey;border-right:1px solid grey;border-left:1px solid grey">
-                        <td style="text-align:left; " >${ formatLang( line.product_qty ) }</td>
+                        <td style="text-align:left; " >${ formatLang(line.product_qty) }</td>
                         <td style="text-align:left;bottom-border:1px solid grey"><b>${( line.product_id.default_code )}</b></td>
                         %if line.product_id.internal_note:
                             <td style="text-align:center;font-size:20px; " >*</td>
@@ -239,7 +242,7 @@
                     </tr>
             </thead>
                 <tbody>
-                %for line in picking.move_lines:
+                %for line in picking.move_lines_sorted:
                     <tr style="border-top:3px solid grey;border-right:1px solid grey;border-left:1px solid grey">
                         <td style="text-align:left; " >${ formatLang( line.product_qty ) }</td>
                         <td style="text-align:left"><b>${( line.product_id.default_code )}</b></td>
