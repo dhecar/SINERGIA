@@ -42,8 +42,11 @@ class sale_order_line(osv.osv):
         for i in ids:
 
             prod_models_ids = self.browse(cr, uid, i,  context).product_id.scooters_ids
-            customer_models_ids = self.browse(cr, uid, i, context).order_partner_id.scooters_id
-            res[i] = comp(prod_models_ids, customer_models_ids)
+            if prod_models_ids:
+                customer_models_ids = self.browse(cr, uid, i, context).order_partner_id.scooters_id
+                res[i] = comp(prod_models_ids, customer_models_ids)
+            else:
+                res[i] = False
 
         return res
 
