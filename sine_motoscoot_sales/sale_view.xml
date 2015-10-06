@@ -26,12 +26,6 @@
                     <attribute name="context">{'pricelist_user_only':True}</attribute>
                  </field>
 
-                <!-- Button Partner History DIV-->
-                <xpath expr="//h1" position="after">
-                    <div class="oe_button_box oe_right">
-                        <button string="Historial Cliente" name="partner_history" type="object"/>
-                    </div>
-                </xpath>
            </field>
 
    </record>
