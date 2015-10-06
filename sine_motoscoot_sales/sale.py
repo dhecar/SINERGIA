@@ -18,7 +18,7 @@
 #
 ##############################################################################
 
-from osv import fields,osv
+from osv import fields, osv
 
 class sale_order_line(osv.osv):
     _inherit = 'sale.order.line'
@@ -26,6 +26,7 @@ class sale_order_line(osv.osv):
         'stock_grn': fields.related('product_id','stock_grn', type='float', string='G'),
         'stock_bcn': fields.related('product_id','stock_bcn', type='float',  string='B'),
         'stock_pt': fields.related('product_id','stock_pt', type='float',  string='P'),
+        'date_ordered': fields.related('order_id', 'date_order', type='char', relation='sale.order', string='Fecha Orden'),
 
     }
 
@@ -33,9 +34,23 @@ sale_order_line()
 
 
 class sale_order(osv.osv):
+
+    def partner_history(self, cr, uid, ids, context=None):
+        partner_id = self.read(cr, uid, ids, 'partner_id')
+        field_name = 'sale_id'
+        sales_obj = self.pool['sale.order']
+        sale_ids = sales_obj.browse(cr, uid, partner_id, context)
+        sales_read = sales_obj.read(
+            cr, uid, sale_ids, [field_name], context=context)
+        return sales_read[field_name]
+
+
     _inherit = 'sale.order'
     _columns = {
         'sale_internal_comment':  fields.text('Internal Comment', help=''),
-    }
 
+    }
 sale_order()
+
+
+

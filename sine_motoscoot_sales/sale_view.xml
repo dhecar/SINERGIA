@@ -26,12 +26,17 @@
                     <attribute name="context">{'pricelist_user_only':True}</attribute>
                  </field>
 
-
-                </field>
+                <!-- Button Partner History DIV-->
+                <xpath expr="//h1" position="after">
+                    <div class="oe_button_box oe_right">
+                        <button string="Historial Cliente" name="partner_history" type="object"/>
+                    </div>
+                </xpath>
+           </field>
 
    </record>
 
-        <record model="ir.ui.view" id="sale_internal_comment_form_view">
+     <record model="ir.ui.view" id="sale_internal_comment_form_view">
 	        <field name="name">sale.internal.comment.model</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
@@ -41,8 +46,21 @@
 		            <field name="sale_internal_comment" class="oe_inline" placeholder="Internal Comment..."/>
                 </field>
 
+
         	</field>
         </record>
 
+
+
+<record id="view_order_line_inherit_tree" model="ir.ui.view">
+            <field name="name">sale.order.line.inh.tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Sales Order Lines']/field[@name='order_id']" position="after">
+                    <field name="date_ordered"/>
+                </xpath>
+            </field>
+        </record>
  </data>
 </openerp>
