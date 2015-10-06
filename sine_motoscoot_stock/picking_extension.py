@@ -1,4 +1,5 @@
 from osv import fields, osv
+import one2many_sorted
 
 
 class stock_picking_out(osv.osv):
@@ -13,7 +14,44 @@ class stock_picking_out(osv.osv):
                                 string='Tienda', readonly=True),
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
+
+        'move_lines_sorted': one2many_sorted.one2many_sorted
+        ('stock.move'
+         , 'picking_id'
+         , 'Moves Sorted'
+         , states={'draft': [('readonly', False)]}
+         , order='product_id.product_brand_id.name, product_id.default_code'
+         )
+
     }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default.update({'move_lines_sorted': []})
+        return super(stock_picking_out, self).copy(cr, uid, id, default, context=context)
+
+
+class stock_picking_in(osv.osv):
+    _inherit = "stock.picking.in"
+    _columns = {
+
+        'move_lines_sorted': one2many_sorted.one2many_sorted
+        ('stock.move'
+         , 'picking_id'
+         , 'Moves Sorted'
+         , states={'draft': [('readonly', False)]}
+         , order='product_id.product_brand_id.name, product_id.default_code'
+         )
+    }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default.update({'move_lines_sorted': []})
+        return super(stock_picking_in, self).copy(cr, uid, id, default, context=context)
 
 
 class stock_picking(osv.osv):
@@ -28,5 +66,19 @@ class stock_picking(osv.osv):
                                 string='Tienda', readonly=True),
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
+        'move_lines_sorted': one2many_sorted.one2many_sorted
+        ('stock.move'
+         , 'picking_id'
+         , 'Moves Sorted'
+         , states={'draft': [('readonly', False)]}
+         , order='product_id.product_brand_id.name, product_id.default_code'
+         )
 
     }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default.update({'move_lines_sorted': []})
+        return super(stock_picking, self).copy(cr, uid, id, default, context=context)
