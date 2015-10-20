@@ -16,4 +16,21 @@
            <field name="webkit_header" ref="motoscoot_headers.base_reports_motoscoot_pickings"></field>
         </record>
     </data>
+
+  <data>
+
+    <report id="stock.report_picking_list_out"
+            name="webkit.motoscoot_picking"
+            auto="False"
+            model="stock.picking"
+            file="sine_ms_packing_webkit/report/delivery_slip.mako"
+            string="Pickings/Envios"
+            report_type="webkit"
+            header="True"/>
+  </data>
+    <data noupdate="1">
+        <record id="stock.report_picking_list" model="ir.actions.report.xml">
+           <field name="webkit_header" ref="motoscoot_headers.base_reports_motoscoot_pickings"></field>
+        </record>
+    </data>
 </openerp>

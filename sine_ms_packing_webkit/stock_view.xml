@@ -15,4 +15,23 @@
             </field>
         </record>
     </data>
+
+    <data noupdate="0">
+        <record id="view_picking_int_form" model="ir.ui.view">
+            <field name="name">stock.picking.int.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="delivery.view_delivery_order_inherit_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/header//button[@string='Print Delivery Order' and @states='confirmed,assigned']" position="attributes">
+                    <attribute name="name">%(stock.report_picking_list_out)d</attribute>
+                </xpath>
+                <xpath expr="/form/header//button[@string='Print Delivery Order' and @states='done']" position="attributes">
+                    <attribute name="name">%(stock.report_picking_list_out)d</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+
+
 </openerp>

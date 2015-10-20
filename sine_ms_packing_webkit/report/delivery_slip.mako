@@ -31,6 +31,7 @@
 </head>
 
 <body>
+
     <%page expression_filter="entity"/>
     <%
     def carriage_returns(text):
@@ -38,6 +39,8 @@
     %>
     %for picking in objects:
         <% setLang(picking.partner_id.lang) %>
+
+    %if picking.sale_id:
 
     <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
 
@@ -287,7 +290,73 @@
         <br/>
 
 
-    %endfor
+
  ${_debug or ''|n}
-</body>
+    </body>
 </html>
+
+
+    %else:
+
+        <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
+
+    <!--Tabla cabecera-->
+        <table class="basic_table" width="100%">
+             <%
+                prod_qty = total_prod(picking)
+                %>
+              <tr>
+                    <td>${prod_qty} art.</td>
+                    <td>${picking.partner_id.name or ''}</td>
+                    <td>${picking.date_done or ''}
+
+
+            <tr>
+
+        </table>
+
+    <!-- Tabla lineas pedido-->
+        <table class="list_sale_table" width="100%" style="margin-top: 20px;">
+            <thead>
+
+                <tr>
+                    <th style="text-align:left; ">${_("Qt")}</th>
+                    <th style="text-align:left; ">${_("Ref")}</th>
+                    <th style="text-align:left; ">${_("Marca")}</th>
+                    <th style="text-align:left; ">${_("Description")}</th>
+                    <th style="text-align:left; ">${_("GRN")}</th>
+                    <th style="text-align:left; ">${_("BCN")}</th>
+
+                </tr>
+            </thead>
+                <tbody>
+
+                %for line in picking.move_lines_sorted:
+
+                    <tr style="border-top:1px solid grey;border-right:1px solid grey;">            </td>
+
+                        <td style="font-size:18px;height:40px;text-align:left;border-right:1px solid grey; " >${ int(line.product_qty) }</td>
+                        <td style="height:40px;width:60px;font-size:14px;text-align:left;bottom-border:1px solid grey"><b>${( line.product_id.default_code )}</b></td>
+                        <td style="height:40px;text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
+                        <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
+                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_grn) }</td>
+                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_bcn) }</td>
+                    </tr>
+
+                %endfor
+
+
+            </table>
+
+    <br>
+    <br/>
+
+
+        <p style="page-break-after: always"/>
+        <br/>
+
+    %endif
+    %endfor
+    ${_debug or ''|n}
+    </body>
+    </html>
