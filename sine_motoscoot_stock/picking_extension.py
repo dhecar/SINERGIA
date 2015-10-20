@@ -73,7 +73,6 @@ class stock_picking(osv.osv):
          , states={'draft': [('readonly', False)]}
          , order='product_id.product_brand_id.name, product_id.default_code'
          )
-
     }
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -82,3 +81,15 @@ class stock_picking(osv.osv):
         default = default.copy()
         default.update({'move_lines_sorted': []})
         return super(stock_picking, self).copy(cr, uid, id, default, context=context)
+
+
+class stock_move(osv.osv):
+
+    _inherit = 'stock.move'
+    _columns = {
+
+        'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
+        'stock_bcn': fields.related('product_id', 'stock_bcn', type='float',  string='B'),
+        'stock_pt': fields.related('product_id', 'stock_pt', type='float',  string='P'),
+
+    }
