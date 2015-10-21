@@ -24,9 +24,9 @@ from osv import fields, osv
 class sale_order_line(osv.osv):
     _inherit = 'sale.order.line'
     _columns = {
-        'stock_grn': fields.related('product_id','stock_grn', type='float', string='G'),
-        'stock_bcn': fields.related('product_id','stock_bcn', type='float',  string='B'),
-        'stock_pt': fields.related('product_id','stock_pt', type='float',  string='P'),
+        'stock_grn': fields.related('product_id',  'stock_grn', type='float', string='G'),
+        'stock_bcn': fields.related('product_id', 'stock_bcn', type='float',  string='B'),
+        'stock_pt': fields.related('product_id', 'stock_pt', type='float',  string='P'),
         'date_ordered': fields.related('order_id', 'date_order', type='char', relation='sale.order', string='Fecha Orden'),
 
     }
@@ -38,6 +38,10 @@ class sale_order(osv.osv):
     _inherit = 'sale.order'
     _columns = {
         'sale_internal_comment':  fields.text('Internal Comment', help=''),
+        'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),
+        'date_send': fields.related('picking_ids', 'date_done', type='char', string="Fecha Envio"),
+        'invoice_status': fields.related('invoiced', type='boolean', string="Estado Factura"),
+
 
     }
 sale_order()
