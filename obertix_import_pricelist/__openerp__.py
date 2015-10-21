@@ -33,7 +33,8 @@
     "website": "http://obertix.com",
     "category": "Generic Modules / Others",
     "description": """
-        Realiza la importación de tarifas.
+        Realiza la importación de tarifas
+        Se ha añadido la importación del pvp.
     """,
     "depends": [
         'sale',
