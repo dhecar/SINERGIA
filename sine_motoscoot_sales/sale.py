@@ -41,6 +41,7 @@ class sale_order(osv.osv):
         'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),
         'date_send': fields.related('picking_ids', 'date_done', type='char', string="Fecha Envio"),
         'invoice_status': fields.related('invoiced', type='boolean', string="Estado Factura"),
+        'traking': fields.related('picking_ids', 'carrier_tracking_ref', type='char', string="Tracking"),
 
 
     }
