@@ -32,7 +32,7 @@ class UPSLine(BaseLine):
     fields = (('name', 30),
               ('name', 30),
               ('street', 30),
-              ('city', 30),
+              ('city', 120),
               ('country', 2),
               ('zip', 9),
               ('phone', 16),
@@ -82,7 +82,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             else:
                 line.street = address.street
             line.zip = address.zip
-            line.city = (address.city and address.state_id.name)
+            line.city = (address.city + " (" + address.state_id.name + ")")
             line.country = address.country_id.code
             line.phone = address.phone or address.mobile
             line.mail = address.email
