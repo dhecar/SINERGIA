@@ -27,7 +27,10 @@
                     <tree string="Sales Orders"  colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
                         <field name="name"/>
                         <field name="state"/>
-                        <field name="date_order"/>
+                        <field name="partner_id"/>
+                        <field name="payment_typ"/>
+                        <field name="user_id"/>
+                        <field name="amount_total" sum="Total Tax Included"/>
                         <field name="picking_status"/>
                         <field name="date_send"/>
                         <field name="traking"/>

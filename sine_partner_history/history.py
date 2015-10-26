@@ -40,7 +40,7 @@ class res_partner(osv.osv):
             sales = list(set(sales))
             # and store in res to be returned
             res[main_partner.id] = sales
-        print res
+
         return res
 
     _inherit = 'res.partner'
@@ -70,7 +70,10 @@ class sale_order(osv.osv):
         'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),
         'date_send': fields.related('picking_ids', 'date_done', type='char', string="Fecha Envio"),
         'invoice_status': fields.related('invoiced', type='boolean', string="Estado Factura"),
+        'payment_typ': fields.related('payment_type', relation="payment.type", type='many2one', string="Tipo Pago", readonly=True),
         'traking': fields.related('picking_ids', 'carrier_tracking_ref', type='char', string="Tracking"),
+
+
     }
 
 
