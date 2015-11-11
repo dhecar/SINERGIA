@@ -5,6 +5,8 @@ TThis is a small module development for do easily the task of create stock rules
 
 -Allows create stock rules for category products
 
+- Allows create stock rules for  specific product brand
+
 -Allows easily create, update and drop multiple stock rules
 
 -Only for stockable products and procured method is make to Stock
