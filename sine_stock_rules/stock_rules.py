@@ -110,7 +110,9 @@ class stock_rules(osv.osv):
                                                                                  ('categ_id', '=',
                                                                                   stock_rules_obj.category_id.id),
                                                                                  ('product_brand_id', '=',
-                                                                                  stock_rules_obj.brand_id.id)])
+                                                                                  stock_rules_obj.brand_id.id),
+                                                                                 ('active', '=', 1)])
+
 
                 if products_ids:
                     for product_id in products_ids:
@@ -141,7 +143,8 @@ class stock_rules(osv.osv):
 
                 products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'), (
                     'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
-                                                                                          stock_rules_obj.brand_id.id)])
+                                                                                          stock_rules_obj.brand_id.id),
+                                                                                         ('active', '=', 1)])
 
                 if products_ids:
                     for product_id in products_ids:
@@ -167,7 +170,8 @@ class stock_rules(osv.osv):
             products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
                                                                              ('procure_method', '=', 'make_to_stock'),
                                                                              ('product_brand_id', '=',
-                                                                              stock_rules_obj.brand_id.id)])
+                                                                              stock_rules_obj.brand_id.id),
+                                                                             ('active', '=', 1)])
 
             if products_ids:
                 for product_id in products_ids:
