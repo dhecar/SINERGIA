@@ -1,0 +1,87 @@
+<openerp>
+    <data>
+
+
+
+<record id="stock_rules_filter" model="ir.ui.view">
+            <field name="name">stock.rules.search</field>
+            <field name="model">stock.rules</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <field name="name" />
+                    <field name="state"/>
+               </search>
+            </field>
+        </record>
+        
+
+        <record id="stock_rules_form" model="ir.ui.view">
+            <field name="name">stock.rules.form</field>
+            <field name="model">stock.rules</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Stock Rules">
+                    <field name="name" select="1" colspan="4"/>
+                    <field name="category_id" widget="selection" />
+                    <field name="brand_id" required="1" on_change="change_brand(brand_id)"/>
+                    <field name="child_categories"/>
+                    <field name="min_amount"/>
+                    <field name="max_amount"/>
+                    <field name="warehouse_id" required="1" on_change="change_warehouse(warehouse_id)"/>
+                    <field name="location_id" required="1"/>
+                    <notebook colspan="4">
+                    <page string="Created Rules">
+                        <field nolabel="1" name="stock_warehouse_orderpoint_id" widget="one2many_list">
+                        </field>
+                    </page>
+                    </notebook>
+                    <field name="state" widget="statusbar" colspan="2"/>
+                    <button name="generate_rules" states="draft,cancel" string="Generate" type="object" icon="gtk-ok"/>
+                    <button name="update_rules" states="done" string="Update" type="object" icon="gtk-execute" colspan="2"/>
+                    <button name="drop_rules" states="done" string="Drop Rules" type="object" icon="gtk-cancel" colspan="2"/>
+
+                </form>
+            </field>
+        </record>
+
+
+        
+        <record id="stock_rules_tree" model="ir.ui.view">
+            <field name="name">stock.rules.tree</field>
+            <field name="model">stock.rules</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Rules">
+                    <field name="name" />
+                    <field name="category_id" />
+                    <field name="state"/>                    
+                </tree>
+            </field>
+        </record>
+
+        
+
+        <record id="action_stock_rules_form" model="ir.actions.act_window">
+            <field name="name">Stock Rules</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.rules</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="stock_rules_tree"/>
+            <field name="search_view_id" ref="stock_rules_filter"/>
+            
+        </record>
+
+
+        <menuitem id="stock_rules_menu" name="Stock Rule Generator"
+            parent="stock.menu_stock_configuration" sequence="1"
+            action="action_stock_rules_form"
+            />
+
+       
+        
+
+        
+    </data>
+</openerp>

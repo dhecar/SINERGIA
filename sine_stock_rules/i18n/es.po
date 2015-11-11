@@ -1,0 +1,133 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* stock_rules
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130131-000102\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-19 12:16+0000\n"
+"PO-Revision-Date: 2013-02-19 13:25+0100\n"
+"Last-Translator: rafi\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: stock_rules
+#: view:stock.rules:0
+msgid "Drop Rules"
+msgstr "Eliminar Reglas"
+
+#. module: stock_rules
+#: field:stock.rules,child_categories:0
+msgid "Include child categories"
+msgstr "Incluir categorías hijas"
+
+#. module: stock_rules
+#: field:stock.rules,category_id:0
+msgid "Product category"
+msgstr "Categoría de producto"
+
+#. module: stock_rules
+#: field:stock.rules,stock_warehouse_orderpoint_id:0
+msgid "Warehouse orderpoint"
+msgstr "Almacén"
+
+#. module: stock_rules
+#: model:ir.model,name:stock_rules.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Regla de inventario mínimo"
+
+#. module: stock_rules
+#: field:stock.rules,location_id:0
+msgid "Location"
+msgstr "Ubicación"
+
+#. module: stock_rules
+#: model:ir.ui.menu,name:stock_rules.stock_rules_menu
+msgid "Stock Rule Generator"
+msgstr "Generador de reglas de stock"
+
+#. module: stock_rules
+#: field:stock.rules,warehouse_id:0
+msgid "Warehouse"
+msgstr "Almacén"
+
+#. module: stock_rules
+#: field:stock.warehouse.orderpoint,stock_rule_id:0
+msgid "Stock rule"
+msgstr "Regla de stock"
+
+#. module: stock_rules
+#: model:ir.actions.act_window,name:stock_rules.action_stock_rules_form
+#: view:stock.rules:0
+msgid "Stock Rules"
+msgstr "Reglas de Stock"
+
+#. module: stock_rules
+#: help:stock.rules,category_id:0
+msgid "leave blank to apply to all products"
+msgstr "Dejar en blanco para aplicar a todos los productos"
+
+#. module: stock_rules
+#: view:stock.rules:0
+msgid "Update"
+msgstr "Actualizar"
+
+#. module: stock_rules
+#: field:stock.rules,min_amount:0
+msgid "Min.Amount"
+msgstr "Cantidad mínima"
+
+#. module: stock_rules
+#: view:stock.rules:0
+msgid "Generate"
+msgstr "Generar"
+
+#. module: stock_rules
+#: selection:stock.rules,state:0
+msgid "Quotation"
+msgstr "Borrador"
+
+#. module: stock_rules
+#: view:stock.rules:0
+msgid "Created Rules"
+msgstr "Reglas Creadas"
+
+#. module: stock_rules
+#: field:stock.rules,name:0
+msgid "Name"
+msgstr "Nombre"
+
+#. module: stock_rules
+#: model:ir.model,name:stock_rules.model_stock_rules
+msgid "stock.rules"
+msgstr "stock.rules"
+
+#. module: stock_rules
+#: selection:stock.rules,state:0
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: stock_rules
+#: view:stock.rules:0
+msgid "Search Sales Order"
+msgstr "Buscar pedidos de venta"
+
+#. module: stock_rules
+#: field:stock.rules,state:0
+msgid "Rules State"
+msgstr "Estado"
+
+#. module: stock_rules
+#: field:stock.rules,max_amount:0
+msgid "Max.Amount"
+msgstr "Cantidad máxima"
+
+#. module: stock_rules
+#: selection:stock.rules,state:0
+msgid "Done"
+msgstr "Completado"
+
