@@ -6,7 +6,7 @@
  'author': 'Sinergiainformatica.net. David Hernández',
  'license': 'AGPL-3',
  'description': """Magento Connector Customization:
-  * Added mapping for msrp
+  * Added direct mapping for msrp
   * Added mapping for manufacturer in product view""",
  'data': [],
  'update_xml': ["magento_model_view.xml"],

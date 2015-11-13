@@ -27,6 +27,10 @@ from openerp.addons.magentoerpconnect.unit.backend_adapter import (GenericAdapte
 from openerp.addons.connector.unit.mapper import (mapping,
                                                   ImportMapper, )
 from .backend import magento_myversion
+from openerp.addons.connector.exception import (MappingError,
+                                                InvalidDataError,
+                                                IDMissingInBackend
+                                                )
 
 _logger = logging.getLogger(__name__)
 
@@ -43,10 +47,7 @@ class magento_product_manufacturer(orm.Model):
                                       required=True,
                                       ondelete='cascade'),
         'description': fields.text('Description', translate=True),
-        'magento_brand_id': fields.many2one(
-            'magento.product.manufacturer',
-            string='Magento Manufacturer',
-            ondelete='cascade'),
+
     }
 
     _sql_constraints = [
@@ -76,7 +77,7 @@ class product_brand(orm.Model):
 
 @magento_myversion
 class ProductBrandAdapter(GenericAdapter):
-    _model_name = 'magento.product.product'
+    _model_name = 'magento.product.manufacturer'
     _magento_model = 'catalog_product'
     _admin_path = '/{model}/edit/id/{id}'
 
@@ -101,18 +102,22 @@ class ManufacturerProductImportMapper(ImportMapper):
 
     @mapping
     def manufacturer(self, record):
-        {'name': record.get('manufacturer')}
-
+        {'description': record.get('manufacturer')}
 
 
 
 @magento_myversion
 class ProductImportMapper(ImportMapper):
-    _model_name = 'magento.product.manufacturer'
+    _model_name = 'magento.product.product'
 
     @mapping
     def prod_manufacturer(self, record):
         """Manufacturer linked to the product"""
         mapper = self.get_connector_unit_for_model(ManufacturerProductImportMapper)
         return mapper.map_record(record).values()
+
+
+
+
+
 
