@@ -9,7 +9,7 @@
   * Added direct mapping for msrp
   * Added mapping for manufacturer in product view""",
  'data': [],
- 'update_xml': ["magento_model_view.xml"],
+ 'update_xml': [],
  'installable': True,
  'application': True,
 }
