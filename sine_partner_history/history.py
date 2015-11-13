@@ -48,16 +48,6 @@ class res_partner(osv.osv):
 
         'sale_history': fields.function(query_sales, type='one2many', obj='sale.order', method=True,
                                         string='Sales', ),
-
-        'nam': fields.related('sale_history', 'name', type='char', string='Orden', readonly=True),
-        'stus': fields.related('sale_history', 'state', type='char', string='Estado', readonly=True),
-        'dat': fields.related('sale_history', 'date_order', type='char', string='Fecha', readonly=True),
-        'pik': fields.related('sale_history', 'picking_status', type='char', string='Estado', readonly=True),
-        'pik_date': fields.related('sale_history', 'date_send', type='char', string='F.Envío', readonly=True),
-        'trans': fields.related('sale_history', 'carrier_id', relation='delivery.carrier', type='one2many',
-                                string='Trans', readonly=True),
-
-
     }
 
 res_partner()
@@ -67,6 +57,8 @@ class sale_order(osv.osv):
     _inherit = 'sale.order'
     _columns = {
         'partner_history_ids': fields.many2one('res.partner', 'Historic', select=True, readonly=True,),
+
+        'date_order': fields.date('Date', required=True, readonly=True, select=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),
         'date_send': fields.related('picking_ids', 'date_done', type='char', string="Fecha Envio"),
         'invoice_status': fields.related('invoiced', type='boolean', string="Estado Factura"),

@@ -151,14 +151,11 @@ class TarifasImporter(osv.osv_memory):
                     default_code = default_code.strip()
                     name_template = name_template.strip()
                     try:
-                        list_price = float(list_price.replace(
-                            ',', '.').replace('€', ''))
+                        list_price = float(list_price.replace(',', '.').replace('€', ''))
 
-                        cost_price = float(cost_price.replace(
-                            ',', '.').replace('€', ''))
+                        cost_price = float(cost_price.replace(',', '.').replace('€', ''))
 
-                        supplier_price = float(supplier_price.replace(
-                            ',', '.').replace('€', ''))
+                        supplier_price = float(supplier_price.replace(',', '.').replace('€', ''))
                     except:
                         raise osv.except_osv(
                             "Error!",
