@@ -194,7 +194,6 @@ class stock_rules(osv.osv):
 
         return True
 
-
     def update_rules(self, cr, uid, ids, context=None):
 
         stock_rules_obj = self.pool.get('stock.rules').browse(cr, uid, ids[0])
