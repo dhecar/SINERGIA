@@ -171,6 +171,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <tr>
             <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
             </tr>
+
+             %if order.client_order_ref:
+               <tr><td>${_("Ref. Cliente")}:&nbsp;:${order.client_order_ref}</td></tr>
+             %endif
         </table>
 
     %if order.comment_id.comment:
@@ -328,6 +332,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <tr>
             <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
             </tr>
+
+             %if order.client_order_ref:
+               <tr><td>${_("Ref. Cliente")}:&nbsp;:${order.client_order_ref}</td></tr>
+             %endif
         </table>
 
     %if order.comment_id.comment:
@@ -485,6 +493,11 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
             <tr>
             <td>${_("Tarifa")}:&nbsp;:${order.pricelist_id.name}</td>
             </tr>
+
+             %if order.client_order_ref:
+               <tr><td>${_("Ref. Cliente")}:&nbsp;:${order.client_order_ref}</td></tr>
+             %endif
+
         </table>
 
     %if order.comment_id.comment:

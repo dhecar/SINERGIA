@@ -34,13 +34,31 @@
 
 
         .ref {
-        font-size:11px;
-        text-align:center;
+        font-size:10px;
+        text-align:right;
+        }
+
+
+        .desc {
+        font-size:10px;
+        text-align:right;
+
+        padding-left:5px;
+        }
+
+        .code {
+        font-size:10px;
+        font-style:bold;
+        text-align:left;
+        white-space: nowrap;
+        color:#585858;
+
         }
 
         .ref2 {
-        font-size:12px;
+        font-size:9px;
         font-style:bold;
+        text-align:center;
         }
 
         .totals {
@@ -69,7 +87,7 @@
       <thead>
           <tr>
             <th class="ref">${_("Ref. Art")}</th>
-	        <th class="ref ">${_("Description")}</th>
+	        <th class="desc">${_("Description")}</th>
 	        <th class=" ref ">${_("Quantity")}</th>
             <th class="ref ">${_("Precio")}</th>
             <th class=" ref ">${_("Dto%")}</th>
@@ -80,18 +98,14 @@
         %for line in order.order_line:
 	   <div style="page-break-inside: avoid">
            <tr>
-	    <td class="ref">${line.product_id.default_code}</td>
-	    <td class="ref align_top">
-               <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
-
-               </div>
+	    <td class="code">${line.product_id.default_code}</td>
+	    <td class="desc align_top">
+               <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}</div>
         </td>
-	    <td class="ref">${ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
-
-
-	   <td class="ref">${formatLang(line.price_unit)}</td>
-       <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
-       <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
+	    <td class="ref">${ int(line.product_uos and line.product_uos_qty or line.product_uom_qty) }</td>
+        <td class="ref">${formatLang(line.price_unit)}</td>
+        <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
+        <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}&nbsp;${order.pricelist_id.currency_id.symbol}</td>
        </tr>
         %endfor
        </div>
@@ -99,7 +113,7 @@
 
       <tfoot>
           <td colspan="4" class="ref2"/>
-          <td >
+          <td class ="ref">
             ${_("Net Total:")}
           </td>
           <td class="ref2">
@@ -108,7 +122,7 @@
         </tr>
         <tr>
           <td colspan="4" class="ref2"/>
-          <td >
+          <td class="ref">
             ${_("Taxes:")}
           </td>
           <td class="ref2">

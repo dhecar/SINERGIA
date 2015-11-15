@@ -20,8 +20,8 @@
     "update_xml" : ["product_motoscoot_view.xml", "partner_motoscoot_view.xml",
                     "scooter_models_view.xml", "marcas_scooter_view.xml", "asociaciones_view.xml",
                     "sale_view.xml"],
-
-    "data": ['security/security.xml', 'security/ir.model.access.csv'],
+    "data": [],
+    #"data": ['security/security.xml', 'security/ir.model.access.csv'],
     "active": True,
     "installable": True
 }

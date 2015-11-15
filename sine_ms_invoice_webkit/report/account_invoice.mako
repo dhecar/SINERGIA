@@ -181,8 +181,7 @@ td.vat {
  }
 
         .ref {
-        font-size:11px;
-        text-align:center;
+        width:30px;
         }
 
         .ref2 {
@@ -225,14 +224,25 @@ td.vat {
       <tbody>
         %for line in inv.invoice_line:
 	   <tr>
-	    <td class="ref">${line.product_id.default_code}</td>
+	    <td class="ref">${line.product_id.default_code or '' | n}</td>
 	    <td class="ref align_top">
-               <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
-                 %if line.formatted_note:
-                 <br/>
-                 <div class="formatted_note">${line.formatted_note| n}</div>
-                 %endif
+
+                %if line.product_id:
+                <div class="nobreak">${line.product_id.name.replace('\n','<br/>') or '' | n}
+                    %if line.formatted_note:
+                    <br/>
+                    <div class="formatted_note">${line.formatted_note| n}</div>
+                    %endif
                </div>
+                %else:
+                <div class="nobreak">${line.name.replace('\n','<br/>') or '' | n}
+                    %if line.formatted_note:
+                    <br/>
+                    <div class="formatted_note">${line.formatted_note| n}</div>
+                    %endif
+               </div>
+
+                %endif
         </td>
 	    <td class="ref">${ formatLang(line.quantity) }</td>
 	   <td class="ref">${formatLang(line.price_unit)}</td>
