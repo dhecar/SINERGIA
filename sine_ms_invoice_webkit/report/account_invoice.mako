@@ -181,7 +181,7 @@ td.vat {
  }
 
         .ref {
-        width:30px;
+        text-align:center;
         }
 
         .code {
