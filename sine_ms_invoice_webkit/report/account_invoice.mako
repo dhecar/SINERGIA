@@ -253,10 +253,10 @@ td.vat {
 
                 %endif
         </td>
-	    <td class="ref">${ int(line.quantity) }</td>
-	   <td class="ref">${formatLang(line.price_unit)}</td>
-       <td class="ref">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
-       <td class="ref">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}${inv.currency_id.symbol}</td>
+	    <td class="ref" style="text-align:center">${ int(line.quantity) }</td>
+	   <td class="ref" style="text-align:center">${formatLang(line.price_unit)}</td>
+       <td class="ref" style="text-align:center">${line.discount and formatLang(line.discount, digits=get_digits(dp='Sale Price')) or '    '    } ${line.discount and '%' or ''}</td>
+       <td class="ref" style="text-align:center">${formatLang(line.price_subtotal, digits=get_digits(dp='Sale Price'))}${inv.currency_id.symbol}</td>
        </tr>
         %endfor
         </tbody>
