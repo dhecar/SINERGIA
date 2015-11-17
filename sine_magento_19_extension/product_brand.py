@@ -48,6 +48,11 @@ class magento_product_manufacturer(orm.Model):
                                       ondelete='cascade'),
         'description': fields.text('Description', translate=True),
 
+        'magento_id': fields.many2one(
+            'magento.product.manufacturer',
+            string='Magento Brand',
+            ondelete='cascade'),
+
     }
 
     _sql_constraints = [
