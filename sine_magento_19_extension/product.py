@@ -12,7 +12,9 @@ from .backend import magento_myversion
 class MyProductImportMapper(ProductImportMapper):
     _inherit = 'product.product'
 
-    direct = ProductImportMapper.direct + [('msrp', 'pvp_fabricante')]
+    direct = ProductImportMapper.direct + [
+        ('msrp', 'pvp_fabricante'),
+        ('status', 'internet')]
 
 
 

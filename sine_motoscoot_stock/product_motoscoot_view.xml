@@ -92,6 +92,7 @@
                         <field name="stock_bcn" label="BCN"/>
 				        <field name="stock_pt" label="PT"/>
                         <field name="shared"/>
+                        <field name="internet" readonly="1" label="Internet" icon="ICON_MAGENTO" />
                     </field>
             </field>
         </record>

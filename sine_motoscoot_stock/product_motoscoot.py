@@ -101,6 +101,7 @@ class product_product(osv.osv):
         'shared': fields.boolean('Shared', help='Share this product with SCTV?'),
         'pvp_fabricante': fields.float('Precio Base TT',
                                        digits_compute=dp.get_precision('Precio Base TT (Tarifa Fabricante sin IVA)')),
+        'internet': fields.boolean('Internet?', help='Está activo en Magento?')
 
 
 
