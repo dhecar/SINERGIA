@@ -13,6 +13,8 @@
                     <field name="stock_grn" />
 				    <field name="stock_bcn" />
 				    <field name="stock_pt" />
+                    <field name="incoming" />
+                    <field name="outgoing" />
 		        </xpath>
 
                 <field name="discount" position="before">

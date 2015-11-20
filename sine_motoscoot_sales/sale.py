@@ -27,6 +27,8 @@ class sale_order_line(osv.osv):
         'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
         'stock_bcn': fields.related('product_id', 'stock_bcn', type='float', string='B'),
         'stock_pt': fields.related('product_id', 'stock_pt', type='float', string='P'),
+        'incoming': fields.related('product_id', 'incoming_qty', type='float', string='IN'),
+        'outgoing': fields.related('product_id', 'outgoing_qty', type='float', string='OUT'),
         'date_ordered': fields.related('order_id', 'date_order', type='char', relation='sale.order',
                                        string='Fecha Orden'),
 
