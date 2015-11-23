@@ -39,7 +39,7 @@ class report_dynamic_label(report_sxw.rml_parse):
         fullname = c128.save(temp_path_svg)
         file = open(temp_path_svg+".svg")
         
-        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, 345, 280)
+        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, 450, 330)
         ctx = cairo.Context(img)
         svg_data = file.read()
         rsvg.set_default_dpi(300)
