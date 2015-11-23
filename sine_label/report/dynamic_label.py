@@ -22,16 +22,14 @@
 
 from report import report_sxw
 import barcode
-from barcode.writer import ImageWriter
 import base64
 from osv.orm import browse_record
 #import utils
-import cairosvg
 import cairo
 import rsvg
 import tempfile
 
-class report_dynamic2_label(report_sxw.rml_parse):
+class report_dynamic_label(report_sxw.rml_parse):
 
     def generate_barcode(self, barcode_string, height, width):
         temp_path_svg = tempfile.gettempdir()+"/temp_barcode"
@@ -108,7 +106,7 @@ class report_dynamic2_label(report_sxw.rml_parse):
         return new_list
 
     def __init__(self, cr, uid, name, context):
-        super(report_dynamic2_label,self).__init__(cr, uid, name, context=context)
+        super(report_dynamic_label,self).__init__(cr, uid, name, context=context)
         self.context=context
         self.rec_no = 0
         self.localcontext.update({
@@ -116,5 +114,5 @@ class report_dynamic2_label(report_sxw.rml_parse):
             'generate_barcode': self.generate_barcode
         })
 
-report_sxw.report_sxw('report.dynamic2.label', 'label.config', 'addons/sine_label/report/dynamic_label.mako', parser=report_dynamic2_label, header=False)
+report_sxw.report_sxw('report.dynamic.label', 'label.config', 'addons/sine_label/report/dynamic_label.mako', parser=report_dynamic_label, header=False)
 

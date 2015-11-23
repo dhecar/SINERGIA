@@ -23,7 +23,7 @@ class label_print_wizard(osv.osv_memory):
         return result
 
     _columns = {
-        'name' : fields.many2one('label.config','Label Size', required=True),
+        'name': fields.many2one('label.config', 'Label Size', required=True),
         'number_of_copy': fields.integer('Number Of Copy', required=True),
         'image_width': fields.float('Width'),
         'image_height': fields.float('Height'),
