@@ -4,7 +4,7 @@
     </style>
     <body>
         <% row_no=1 %>
-        <div style="padding-top:5px;display: table;height: 25mm;width: 54mm;position: relative; overflow: hidden;" >
+        <div style="padding-top:5px;width:100%;display:table;position: relative; overflow: hidden;" >
 
         <table cellspacing="${datas.get('cell_spacing')}" align="center" >
         %for row in get_record(datas.get('rows'), datas.get('columns'), datas.get('ids'), datas.get('model'), datas.get('number_of_copy')):

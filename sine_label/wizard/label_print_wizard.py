@@ -50,11 +50,11 @@ class label_print_wizard(osv.osv_memory):
         total_record = len(context.get('active_ids', []))
         datas = {}
         for data in self.browse(cr, uid, ids, context):
-            column = float(80) / float(data.name.width or 1)
+            column = float(90) / float(data.name.width or 1)
             total_record = total_record * data.number_of_copy
             total_row = math.ceil(float(total_record)/(column or 1))
             no_row_per_page = int(110 / data.name.height)
-            height = 80 / (no_row_per_page or 1)
+            height = 90 / (no_row_per_page or 1)
             datas = {
                 'rows': int(total_row),
                 'columns': int(column),

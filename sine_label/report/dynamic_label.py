@@ -24,33 +24,24 @@ from report import report_sxw
 import barcode
 import base64
 from osv.orm import browse_record
-#import utils
+from StringIO import StringIO
 import cairo
 import rsvg
 import tempfile
+from barcode.writer import ImageWriter
+from barcode import generate
+
 
 class report_dynamic_label(report_sxw.rml_parse):
 
-    def generate_barcode(self, barcode_string, height, width):
-        temp_path_svg = tempfile.gettempdir()+"/temp_barcode"
-        temp_path_png = tempfile.gettempdir()+"/temp_barcode.png"
-        code128 = barcode.get_barcode_class('code128')
-        c128 = code128(str(barcode_string))
-        fullname = c128.save(temp_path_svg)
-        file = open(temp_path_svg+".svg")
-        
-        img = cairo.ImageSurface(cairo.FORMAT_ARGB32, 450, 330)
-        ctx = cairo.Context(img)
-        svg_data = file.read()
-        rsvg.set_default_dpi(300)
-        handler = rsvg.Handle(None, str(svg_data))
 
-        handler.render_cairo(ctx)
-        img.write_to_png(temp_path_png)
-        
-        name = open(temp_path_png, "r+")
-        barcode_data = base64.b64encode(name.read())
-        return barcode_data
+    def generate_barcode2(self, barcode_string, height, width):
+
+        fp = StringIO()
+        generate('CODE128', barcode_string, writer=ImageWriter(), output=fp)
+        contents = fp.getvalue()
+        return base64.standard_b64encode(contents)
+
 
     def _get_record(self, rows, columns, ids, model, number_of_copy):
         active_model_obj = self.pool.get(model)
@@ -111,7 +102,7 @@ class report_dynamic_label(report_sxw.rml_parse):
         self.rec_no = 0
         self.localcontext.update({
             'get_record': self._get_record,
-            'generate_barcode': self.generate_barcode
+            'generate_barcode': self.generate_barcode2
         })
 
 report_sxw.report_sxw('report.dynamic.label', 'label.config', 'addons/sine_label/report/dynamic_label.mako', parser=report_dynamic_label, header=False)
