@@ -312,6 +312,7 @@ class LDAPAddress(osv.osv):
             raise e
         conn.connexion.unbind_s()
 
+
     def updateLdapContact(self, id, vals, cursor, uid, context):
         """update an existing contact with the data of OpenERP"""
         conn = self.connectToLdap(cursor, uid, context={})
