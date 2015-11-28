@@ -308,6 +308,7 @@ class LDAPAddress(osv.osv):
             else:
                 conn.connexion.add_s("CN=%s + '_' + %s,OU=%s,%s" % (contact_obj['cn'], [str(id)], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
+
         except Exception, e:
             raise e
         conn.connexion.unbind_s()
