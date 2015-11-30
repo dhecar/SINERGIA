@@ -99,14 +99,14 @@ class LdapConnMApper(object):
         if self.PORT:
             self.connexion = ldap.set_option(ldap.VERSION, ldap.VERSION3)
             self.connexion = ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-            self.connexion = ldap.initialize('ldap://%s:%d' % (self.LDAP_SERVER,
-                                                               self.PORT))
+            self.connexion = ldap.initialize('ldap://%s:%d' % (self.LDAP_SERVER, self.PORT))
             self.connexion.simple_bind(username, password)
 
         else:
             self.connexion = ldap.set_option(ldap.VERSION, ldap.VERSION3)
-            self.connexion = ldap.initialize('ldap://%s:%d' % self.LDAP_SERVER)
-            self.connexion.simple_bind(self.USER_DN, self.CONTACT_DN, self.PASS)
+            self.connexion = ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+            self.connexion = ldap.initialize('ldap://%s' % self.LDAP_SERVER)
+            self.connexion.simple_bind(username, password)
         return self.connexion
 
 
@@ -303,10 +303,10 @@ class LDAPAddress(osv.osv):
         conn = self.connectToLdap(cursor, uid, context=context)
         try:
             if self.getconn(cursor, uid, context).ACTIVDIR:
-                conn.connexion.add_s("CN=%s + '_' + %s,OU=%s,%s" % (contact_obj['cn'][0], [str(id)], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0]+contact_obj['uid'][0], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
             else:
-                conn.connexion.add_s("CN=%s + '_' + %s,OU=%s,%s" % (contact_obj['cn'], [str(id)], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0]+contact_obj['uid'][0], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
 
         except Exception, e:
