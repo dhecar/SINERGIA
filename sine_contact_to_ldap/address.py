@@ -244,7 +244,7 @@ class LDAPAddress(osv.osv):
         contact_obj = {'objectclass': ['inetOrgPerson'],
                        'uid': [str(id)],
                        'ou': [conn.OU],
-                       'cn': [part_name],
+                       'cn': [part_name+str(id)],
                        'sn': [part_name],
                        }
         if not vals.get('street'):
@@ -303,10 +303,10 @@ class LDAPAddress(osv.osv):
         conn = self.connectToLdap(cursor, uid, context=context)
         try:
             if self.getconn(cursor, uid, context).ACTIVDIR:
-                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0]+contact_obj['uid'][0], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
             else:
-                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0]+contact_obj['uid'][0], conn.OU, conn.CONTACT_DN),
+                conn.connexion.add_s("CN=%s,OU=%s,%s" % (contact_obj['cn'][0], conn.OU, conn.CONTACT_DN),
                                      ldap.modlist.addModlist(contact_obj))
 
         except Exception, e:
