@@ -33,7 +33,7 @@ class NacexLine(BaseLine):
     fields = (('empty', 1),
               ('nacex_account', 5),
               ('reference', 20),
-              ('nacex_typo', 1),
+              ('nacex_typo', 2),
               ('tipo_paq', 1),
               ('weight', 6),
               ('num_paq', 2),

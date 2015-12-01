@@ -41,7 +41,7 @@ class carrier_file(osv.osv):
         return (
             ('2', 'Nacex 10H'),
             ('8', 'Nacex 19H'),
-            ('27', 'E-Nacex'))
+            ('27', 'E Nacex'))
 
     def _get_alerta(self, cursor, user_id, context=None):
         return (
