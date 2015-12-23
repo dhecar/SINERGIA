@@ -6,7 +6,7 @@
             <field name="model">sale.order</field>
             <field name="priority" eval="20"/>
             <field name="inherit_id" ref="sale.view_order_form" />
-            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0') ])]" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level00')])]" />
             <field name="arch" type="xml">
 
                 <field name="price_unit" position="attributes" >
@@ -54,4 +54,48 @@
 
         </record>
         </data>
-    </openerp>
+
+
+    <data>
+        <record model="ir.ui.view" id="sale_order_restrict_total_view">
+            <field name="name">sale.order.restrict_total.view</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="20"/>
+            <field name="inherit_id" ref="sale.view_order_tree" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
+                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="arch" type="xml">
+                <field name="amount_total" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+
+            </field>
+        </record>
+    </data>
+
+
+    <data>
+        <record model="ir.ui.view" id="account_total_restrict_view">
+            <field name="name">account.restrict_total.view</field>
+            <field name="model">account.invoice</field>
+            <field name="priority" eval="20"/>
+            <field name="inherit_id" ref="account.invoice_tree" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
+                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="arch" type="xml">
+                <field name="residual" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+                <field name="amount_untaxed" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+                <field name="amount_total" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+
+            </field>
+        </record>
+    </data>
+
+
+</openerp>

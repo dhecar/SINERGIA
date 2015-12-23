@@ -8,6 +8,11 @@
         <field name="name">Barcelona Level0</field>
     </record>
 
+    <!-- Barcelona -->
+    <record id="group_barcelona_level00" model="res.groups">
+        <field name="name">Barcelona Level00</field>
+    </record>
+
 
 <!-- Girona -->
 
