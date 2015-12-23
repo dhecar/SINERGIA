@@ -75,6 +75,24 @@
 
 
     <data>
+        <record model="ir.ui.view" id="sale_quotaion_restrict_total_view">
+            <field name="name">sale.order.quotation_total.view</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="20"/>
+            <field name="inherit_id" ref="sale.view_quotation_tree" />
+            <field name="groups_id" eval="[(6, 0, [ref('ms_groups.group_barcelona_level0')]),
+                            (6, 0, [ref('ms_groups.group_girona_level0')])]" />
+            <field name="arch" type="xml">
+                <field name="amount_total" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
+
+            </field>
+        </record>
+    </data>
+
+
+    <data>
         <record model="ir.ui.view" id="account_total_restrict_view">
             <field name="name">account.restrict_total.view</field>
             <field name="model">account.invoice</field>
