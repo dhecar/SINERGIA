@@ -315,10 +315,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
         <table >
 
             <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-            <tr><td>${order.partner_id.name}</td></tr>
-            <tr><td>${order.partner_id.street}</td></tr>
-            <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-            <tr><td>${order.partner_id.country_id.name}</td></tr>
+            <tr><td>${order.partner_shipping_id.name}</td></tr>
+            <tr><td>${order.partner_shipping_id.street}</td></tr>
+            <tr><td>${order.partner_shipping_id.zip} ${order.partner_shipping_id.city}(${order.partner_shipping_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_shipping_id.country_id.name}</td></tr>
         </table>
 
         <!--Datos Pedidos-->
@@ -474,10 +474,10 @@ Ms Properformance2008, S.L. - Registro Mercantil Girona, Tomo 2664, Libro 0, Fol
         <table >
 
             <tr><td><i><b>Direcci&oacute;n Envio</b></i></td></tr>
-            <tr><td>${order.partner_id.name}</td></tr>
-            <tr><td>${order.partner_id.street}</td></tr>
-            <tr><td>${order.partner_id.zip} ${order.partner_id.city}(${order.partner_id.state_id.name})</td></tr>
-            <tr><td>${order.partner_id.country_id.name}</td></tr>
+            <tr><td>${order.partner_shipping_id.name}</td></tr>
+            <tr><td>${order.partner_shipping_id.street}</td></tr>
+            <tr><td>${order.partner_shipping_id.zip} ${order.partner_shipping_id.city}(${order.partner_shipping_id.state_id.name})</td></tr>
+            <tr><td>${order.partner_shipping_id.country_id.name}</td></tr>
         </table>
 
         <!--Datos Pedidos-->
