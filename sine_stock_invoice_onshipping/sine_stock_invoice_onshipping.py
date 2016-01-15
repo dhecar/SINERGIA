@@ -2,10 +2,10 @@
 ##############################################################################
 #
 # OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+# Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
-#    Add auto validate and print Invoice
-#    David Hernández.
+# Add auto validate and print Invoice
+# David Hernández.
 #    (C) Sinergiainformatica.net (2016)
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,30 @@ class stock_invoice_onshipping(osv.osv_memory):
 
         return res
 
+    def validate_invoice(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        invoice_ids = []
+        res = self.create_invoice(cr, uid, ids, context=context)
+        invoice_ids += res.values()
+        if not invoice_ids:
+            raise osv.except_osv(_('Error!'), _('Please create Invoices.'))
+        if invoice_ids:
+            data = self.pool.get('account.invoice').read(cr, uid, [invoice_ids[0]], [], context=None)
+            datas = {
+                'ids': invoice_ids,
+                'model': 'account.invoice',
+                'form': data
+            }
+
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'motoscoot.account.invoice',
+                'datas': datas,
+                'report_type': 'webkit',
+                'nodestroy': True,
+                'context': context
+                }
 
 
 

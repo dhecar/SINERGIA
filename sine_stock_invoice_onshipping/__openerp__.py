@@ -30,7 +30,7 @@
     "author": "David Hernández",
     "website": "http://sinergiainformatica.net",
     "category": "Invoice",
-    "data": [],
+    "update_xml": ["sine_stock_invoice_onshipping.xml"],
     "css": [],
     "js": [],
     "depends": ['stock', 'account'],
