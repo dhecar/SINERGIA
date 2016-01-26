@@ -74,14 +74,48 @@
         </record>
 
 
+         <record id="ir_cron_stock_rules_action" model="ir.cron">
+            <field name="name">Stock Rule</field>
+            <field name="interval_number">7</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model">stock.rules</field>
+            <field name="function">update_rules</field>
+            <field name="args">()</field>
+        </record>
+
+
+        <record id="stock_conf_form" model="ir.ui.view">
+            <field name="name">stock.conf.form</field>
+            <field name="model">stock.rules.conf</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Stock Rules Conf">
+                    <field name="from_date" />
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_stock_conf_form" model="ir.actions.act_window">
+            <field name="name">Stock Rules Conf</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.rules.conf</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock_conf_form"/>
+        </record>
+
+
         <menuitem id="stock_rules_menu" name="Stock Rule Generator"
             parent="stock.menu_stock_configuration" sequence="1"
             action="action_stock_rules_form"
             />
-
-       
-        
-
-        
+        <menuitem id="stock_conf_menu"
+                  name="Stock Rule Conf"
+                  parent="stock_rules_menu"
+                  sequence="1"
+                  action="action_stock_conf_form" />
     </data>
 </openerp>

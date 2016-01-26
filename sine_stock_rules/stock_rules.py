@@ -41,6 +41,16 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 _logger = logging.getLogger(__name__)
 
 
+class stock_rules_conf(osv.osv):
+    _name = 'stock.rules.conf'
+    _columns = {
+        'from_date': fields.date('From:'),
+    }
+
+    _defaults = {
+        'from_date': (date.today() - timedelta(days=31)).strftime(DEFAULT_SERVER_DATE_FORMAT),
+    }
+
 class stock_rules(osv.osv):
     _name = 'stock.rules'
     _columns = {
@@ -60,15 +70,13 @@ class stock_rules(osv.osv):
             ('cancel', 'Cancelled')
         ], 'Rules State', readonly=True, select=True),
         'brand_id': fields.many2one('product.brand', 'Brand', help="Marca sobre la que aplicar la regla"),
-        'from_date': fields.date('From:'),
-        'to_date': fields.date('To:'),
+
+
     }
 
     _defaults = {
 
         'state': 'draft',
-        'from_date': (date.today() - timedelta(days=31)).strftime(DEFAULT_SERVER_DATE_FORMAT),
-
     }
 
     def change_warehouse(self, cr, uid, ids, warehouse_id):
@@ -102,7 +110,10 @@ class stock_rules(osv.osv):
     def generate_rules(self, cr, uid, ids, context=None):
 
         stock_rules_obj = self.pool.get('stock.rules').browse(cr, uid, ids[0])
-
+        stock_conf_obj = self.pool.get('stock.rules.conf')
+        stock_conf_ids = stock_conf_obj.search(cr, uid,  [], limit=1, order='id desc')
+        for value in stock_conf_obj.browse(cr, uid, stock_conf_ids):
+            from_date = value.from_date
         # if assign category
         if stock_rules_obj.category_id:
 
@@ -125,7 +136,7 @@ class stock_rules(osv.osv):
                         stock_ids = stock_obj.search(cr, uid, [], context={'state': 'done',
                                                                            'type': 'out',
                                                                            'product_id': product_id,
-                                                                           'date': stock_rules_obj.from_date})
+                                                                           'date': from_date})
                         qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
                         suma_min = sum(item['product_qty'] for item in qty)
                         suma_max = 2 * suma_min
@@ -165,8 +176,9 @@ class stock_rules(osv.osv):
                         stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
                                                                ('state', '=', 'done'),
                                                                ('type', '=', 'out'),
-                                                               ('date', '>=', stock_rules_obj.from_date)],
+                                                               ('date', '>=', from_date)],
                                                      context=context)
+                        print from_date
                         qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
                         suma_min = sum(item['product_qty'] for item in qty)
                         suma_max = 2 * suma_min
@@ -201,8 +213,9 @@ class stock_rules(osv.osv):
                     stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
                                                            ('state', '=', 'done'),
                                                            ('type', '=', 'out'),
-                                                           ('date', '>=', stock_rules_obj.from_date)],
+                                                           ('date', '>=', from_date)],
                                                  context=context)
+                    print from_date
                     qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
                     suma_min = sum(item['product_qty'] for item in qty)
                     suma_max = 2 * suma_min
@@ -227,6 +240,10 @@ class stock_rules(osv.osv):
     def update_rules(self, cr, uid, ids, context=None):
 
         stock_rules_obj = self.pool.get('stock.rules').browse(cr, uid, ids[0])
+        stock_conf_obj = self.pool.get('stock.rules.conf')
+        stock_conf_ids = stock_conf_obj.search(cr, uid,  [], limit=1, order='id desc')
+        for value in stock_conf_obj.browse(cr, uid, stock_conf_ids):
+            from_date = value.from_date
 
         for rules_obj in stock_rules_obj.stock_warehouse_orderpoint_id:
             product_obj = self.pool.get('product.product').browse(cr, uid, rules_obj.product_id.id)
@@ -234,7 +251,7 @@ class stock_rules(osv.osv):
             stock_ids = stock_obj.search(cr, uid, [('product_id', '=', rules_obj.product_id.id),
                                                    ('state', '=', 'done'),
                                                    ('type', '=', 'out'),
-                                                   ('date', '>=', stock_rules_obj.from_date)],
+                                                   ('date', '>=', from_date)],
                                          context=context)
             qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
             suma_min = sum(item['product_qty'] for item in qty)
