@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+stock_rules_admin,stock_rules.admin,model_stock_rules_conf,group_stock_rules_admin,1,1,1,1
+

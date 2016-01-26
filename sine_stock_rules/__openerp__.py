@@ -26,8 +26,8 @@
 {
     "name" : "stock_rules",
     "version" : "0.1",
-    "author" : "Rafael Valle",
-    "website": "http://www.rvalle.es",
+    "author" : "Rafael Valle, David Hernández",
+    "website": "http://www.rvalle.es, http://sinergiainformatica.net",
     "description" : 
     """
     This is a small module development for do easily the task of create stock rules for products in openerp.
@@ -60,6 +60,7 @@
     "update_xml": [
         'stock_rules_view.xml'
         ],
+    "data": ['security/security.xml', 'security/ir.model.access.csv'],
     'installable': True,
     'active': False,  
 }
