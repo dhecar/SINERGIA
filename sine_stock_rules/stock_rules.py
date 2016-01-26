@@ -42,13 +42,24 @@ _logger = logging.getLogger(__name__)
 
 
 class stock_rules_conf(osv.osv):
+
+    def set_date(self, cr, uid, ids, days, contex=None):
+        if days:
+            print days
+            f_date = {'from_date': (date.today() - timedelta(days=days)).strftime(DEFAULT_SERVER_DATE_FORMAT)}
+            return {'value': f_date}
+        else:
+            f_date = {'from_date': (date.today() - timedelta(days=31)).strftime(DEFAULT_SERVER_DATE_FORMAT)}
+            return {'value': f_date}
+
     _name = 'stock.rules.conf'
     _columns = {
         'from_date': fields.date('From:'),
+        'days': fields.integer('Ventana de Días', help='Cuantos dias de ventas quieres cotejar?')
     }
 
     _defaults = {
-        'from_date': (date.today() - timedelta(days=31)).strftime(DEFAULT_SERVER_DATE_FORMAT),
+
     }
 
 class stock_rules(osv.osv):

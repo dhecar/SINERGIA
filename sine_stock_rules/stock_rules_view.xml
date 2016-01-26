@@ -92,7 +92,8 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Stock Rules Conf">
-                    <field name="from_date" />
+                    <field name="from_date" invisible="1"/>
+                    <field name="days" on_change="set_date(days)"/>
                 </form>
             </field>
         </record>
