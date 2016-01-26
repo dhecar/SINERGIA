@@ -8,18 +8,18 @@
 # Enhanced by Sinergia Informatica 2015. David Hernández-
 # Add product brand
 #
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
@@ -31,10 +31,12 @@ from dateutil.relativedelta import relativedelta
 import time
 
 from osv import fields, osv
+
 from tools.translate import _
 import decimal_precision as dp
 import netsvc
 import logging
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
 
 _logger = logging.getLogger(__name__)
 
@@ -58,11 +60,14 @@ class stock_rules(osv.osv):
             ('cancel', 'Cancelled')
         ], 'Rules State', readonly=True, select=True),
         'brand_id': fields.many2one('product.brand', 'Brand', help="Marca sobre la que aplicar la regla"),
+        'from_date': fields.date('From:'),
+        'to_date': fields.date('To:'),
     }
 
     _defaults = {
 
         'state': 'draft',
+        'from_date': (date.today() - timedelta(days=31)).strftime(DEFAULT_SERVER_DATE_FORMAT),
 
     }
 
@@ -113,16 +118,23 @@ class stock_rules(osv.osv):
                                                                                   stock_rules_obj.brand_id.id),
                                                                                  ('active', '=', 1)])
 
-
                 if products_ids:
                     for product_id in products_ids:
                         product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                        stock_obj = self.pool.get('stock.move')
+                        stock_ids = stock_obj.search(cr, uid, [], context={'state': 'done',
+                                                                           'type': 'out',
+                                                                           'product_id': product_id,
+                                                                           'date': stock_rules_obj.from_date})
+                        qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                        suma_min = sum(item['product_qty'] for item in qty)
+                        suma_max = 2 * suma_min
 
                         vals = {
                             'name': stock_rules_obj.name,
                             'product_id': product_obj.id,
-                            'product_max_qty': stock_rules_obj.max_amount,
-                            'product_min_qty': stock_rules_obj.min_amount,
+                            'product_max_qty': suma_max,
+                            'product_min_qty': suma_min,
                             'product_uom': product_obj.uom_id.id,
                             'warehouse_id': stock_rules_obj.warehouse_id.id,
                             'location_id': stock_rules_obj.location_id.id,
@@ -144,17 +156,26 @@ class stock_rules(osv.osv):
                 products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'), (
                     'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
                                                                                           stock_rules_obj.brand_id.id),
-                                                                                         ('active', '=', 1)])
+                                                                                 ('active', '=', 1)])
 
                 if products_ids:
                     for product_id in products_ids:
                         product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                        stock_obj = self.pool.get('stock.move')
+                        stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
+                                                               ('state', '=', 'done'),
+                                                               ('type', '=', 'out'),
+                                                               ('date', '>=', stock_rules_obj.from_date)],
+                                                     context=context)
+                        qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                        suma_min = sum(item['product_qty'] for item in qty)
+                        suma_max = 2 * suma_min
 
                         vals = {
                             'name': stock_rules_obj.name,
                             'product_id': product_obj.id,
-                            'product_max_qty': stock_rules_obj.max_amount,
-                            'product_min_qty': stock_rules_obj.min_amount,
+                            'product_max_qty': suma_max,
+                            'product_min_qty': suma_min,
                             'product_uom': product_obj.uom_id.id,
                             'warehouse_id': stock_rules_obj.warehouse_id.id,
                             'location_id': stock_rules_obj.location_id.id,
@@ -176,12 +197,21 @@ class stock_rules(osv.osv):
             if products_ids:
                 for product_id in products_ids:
                     product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                    stock_obj = self.pool.get('stock.move')
+                    stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
+                                                           ('state', '=', 'done'),
+                                                           ('type', '=', 'out'),
+                                                           ('date', '>=', stock_rules_obj.from_date)],
+                                                 context=context)
+                    qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                    suma_min = sum(item['product_qty'] for item in qty)
+                    suma_max = 2 * suma_min
 
                     vals = {
                         'name': stock_rules_obj.name,
                         'product_id': product_obj.id,
-                        'product_max_qty': stock_rules_obj.max_amount,
-                        'product_min_qty': stock_rules_obj.min_amount,
+                        'product_max_qty': suma_max,
+                        'product_min_qty': suma_min,
                         'product_uom': product_obj.uom_id.id,
                         'warehouse_id': stock_rules_obj.warehouse_id.id,
                         'location_id': stock_rules_obj.location_id.id,
@@ -200,11 +230,20 @@ class stock_rules(osv.osv):
 
         for rules_obj in stock_rules_obj.stock_warehouse_orderpoint_id:
             product_obj = self.pool.get('product.product').browse(cr, uid, rules_obj.product_id.id)
+            stock_obj = self.pool.get('stock.move')
+            stock_ids = stock_obj.search(cr, uid, [('product_id', '=', rules_obj.product_id.id),
+                                                   ('state', '=', 'done'),
+                                                   ('type', '=', 'out'),
+                                                   ('date', '>=', stock_rules_obj.from_date)],
+                                         context=context)
+            qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+            suma_min = sum(item['product_qty'] for item in qty)
+            suma_max = 2 * suma_min
 
             vals = {
                 'name': stock_rules_obj.name,
-                'product_max_qty': stock_rules_obj.max_amount,
-                'product_min_qty': stock_rules_obj.min_amount,
+                'product_max_qty': suma_max,
+                'product_min_qty': suma_min,
                 'warehouse_id': stock_rules_obj.warehouse_id.id,
                 'location_id': stock_rules_obj.location_id.id,
                 'stock_rule_id': stock_rules_obj.id

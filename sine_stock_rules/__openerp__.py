@@ -36,6 +36,10 @@
 
     -Allows create stock rules for product brand
 
+    -min_qty = last 31 day sales for product
+
+    -max_qty = 2*min_qty
+
     -Allows easily create, update and drop multiple stock rules
 
     -Only for stockable products and procured method is make to Stock
