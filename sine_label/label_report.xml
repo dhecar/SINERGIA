@@ -3,7 +3,7 @@
     <data>
 
         <record id="dynamic_label" model="ir.actions.report.xml">
-            <field name="report_rml">label/report/dynamic_label.mako</field>
+            <field name="report_rml">sine_label/report/dynamic_label.mako</field>
             <field name="name">Label</field>
             <field name="model">label.config</field>
             <field name="report_name">dynamic.label</field>

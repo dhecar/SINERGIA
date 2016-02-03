@@ -38,8 +38,8 @@ class label_print_wizard(osv.osv_memory):
         'number_of_copy': 1,
         'image_width': 50,
         'image_height': 50,
-        'barcode_width': 180,
-        'barcode_height': 40,
+        'barcode_width': 200,
+        'barcode_height': 50,
     }
     
     def print_report(self, cr, uid, ids, context=None):
@@ -50,11 +50,11 @@ class label_print_wizard(osv.osv_memory):
         total_record = len(context.get('active_ids', []))
         datas = {}
         for data in self.browse(cr, uid, ids, context):
-            column = float(90) / float(data.name.width or 1)
+            column = float(100) / float(data.name.width or 1)
             total_record = total_record * data.number_of_copy
             total_row = math.ceil(float(total_record)/(column or 1))
-            no_row_per_page = int(110 / data.name.height)
-            height = 90 / (no_row_per_page or 1)
+            no_row_per_page = int(75 / data.name.height)
+            height = 75 / (no_row_per_page or 1)
             datas = {
                 'rows': int(total_row),
                 'columns': int(column),

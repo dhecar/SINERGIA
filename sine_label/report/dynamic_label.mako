@@ -4,9 +4,10 @@
     </style>
     <body>
         <% row_no=1 %>
-        <div style="padding-top:5px;width:100%;display:table;position: relative; overflow: hidden;" >
 
-        <table cellspacing="${datas.get('cell_spacing')}" align="center" >
+        <div style="width:100%;display:table;position: relative; overflow: hidden;" >
+
+        <table cellspacing="${datas.get('cell_spacing')}" align="center">
         %for row in get_record(datas.get('rows'), datas.get('columns'), datas.get('ids'), datas.get('model'), datas.get('number_of_copy')):
                <tr height=${datas.get('height')}>
                     %for col in row:
@@ -32,9 +33,13 @@
                </tr>
 
         </table>
+
         </div>
-        <div style="page-break-after: always;"></div>
+
         %endfor
+
+
+
 
     </body>
 </html>
