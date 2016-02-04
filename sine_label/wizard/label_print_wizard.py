@@ -38,8 +38,8 @@ class label_print_wizard(osv.osv_memory):
         'number_of_copy': 1,
         'image_width': 50,
         'image_height': 50,
-        'barcode_width': 185,
-        'barcode_height': 50,
+        'barcode_width': 180,
+        'barcode_height': 60,
     }
     
     def print_report(self, cr, uid, ids, context=None):
