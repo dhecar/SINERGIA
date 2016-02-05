@@ -779,9 +779,14 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
     <table >
          <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
+          %if inv.partner.parent_id.vat:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.vat}</td></tr>
+          %elif  inv.partner_id.parent_id.magento_bind_ids:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.magento_bind_ids[0].taxvat}</td></tr>
 
-          %if inv.partner_id.vat:
+          %elif inv.partner_id.vat:
              <tr><td>DNI/CIF:&nbsp;${inv.partner_id.vat}</td></tr>
+
           %elif inv.partner_id.magento_bind_ids:
 
 <tr><td>DNI/CIF:&nbsp;${inv.partner_id.magento_bind_ids[0].taxvat}</td></tr>
@@ -918,9 +923,14 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
     <table >
          <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
+          %if inv.partner.parent_id.vat:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.vat}</td></tr>
+          %elif  inv.partner_id.parent_id.magento_bind_ids:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.magento_bind_ids[0].taxvat}</td></tr>
 
-          %if inv.partner_id.vat:
+          %elif inv.partner_id.vat:
              <tr><td>DNI/CIF:&nbsp;${inv.partner_id.vat}</td></tr>
+
           %elif inv.partner_id.magento_bind_ids:
 
 <tr><td>DNI/CIF:&nbsp;${inv.partner_id.magento_bind_ids[0].taxvat}</td></tr>
@@ -1060,9 +1070,14 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
     <table >
          <tr><td><i><b>Facturado a:</b></i></td></tr>
          <tr><td>${inv.partner_id.name}</td></tr>
+          %if inv.partner.parent_id.vat:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.vat}</td></tr>
+          %elif  inv.partner_id.parent_id.magento_bind_ids:
+             <tr><td>DNI/CIF:&nbsp;${inv.partner_id.parent_id.magento_bind_ids[0].taxvat}</td></tr>
 
-          %if inv.partner_id.vat:
+          %elif inv.partner_id.vat:
              <tr><td>DNI/CIF:&nbsp;${inv.partner_id.vat}</td></tr>
+
           %elif inv.partner_id.magento_bind_ids:
 
 <tr><td>DNI/CIF:&nbsp;${inv.partner_id.magento_bind_ids[0].taxvat}</td></tr>
