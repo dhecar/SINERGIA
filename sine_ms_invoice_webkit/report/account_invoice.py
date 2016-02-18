@@ -24,6 +24,7 @@ from openerp.report import report_sxw
 from openerp import pooler
 
 
+
 class AccountInvoice_Report(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(AccountInvoice_Report, self
@@ -44,7 +45,10 @@ class AccountInvoice_Report(report_sxw.rml_parse):
         else:
             return False
 
+
+
+
 report_sxw.report_sxw('report.account.invoice.motoscoot.webkit',
                       'account.invoice',
-                      '/opt/odoo/custom/addons/SINERGIA/sine_ms_invoice_webkit/report/account_invoice.mako',
+                      'addons/sine_ms_invoice_webkit/report/account_invoice.mako',
                       parser=AccountInvoice_Report)

@@ -198,6 +198,12 @@ td.vat {
         font-style:bold;
         }
 
+        .ref3{
+        font-size:10px;
+        font-style:bold;
+        text-align:right;
+        }
+
         .totals {
         font-size:12px;
         }
@@ -227,7 +233,7 @@ td.vat {
 	        <th class=" ref ">${_("Quantity")}</th>
             <th class="ref ">${_("Precio")}</th>
             <th class=" ref ">${_("Dto%")}</th>
-	        <th class=" ref ">${_("Importe")}</th>
+            <th class=" ref ">${_("Importe")}</th>
           </tr>
       </thead>
       <tbody>
@@ -277,6 +283,13 @@ td.vat {
           <td class="ref2">
             ${formatLang(inv.amount_tax, get_digits(dp='Sale Price'))}${inv.currency_id.symbol}
           </td>
+            %if inv.tax_line:
+                %for x in inv.tax_line:
+                <tr><td colspan="4" class="ref2"/>
+                    <td class="ref3">${x.name}:  <b>${x.amount}${inv.currency_id.symbol}</b></td>
+                </tr>
+                %endfor
+            %endif
         </tr>
         <tr >
           <td colspan="4" class="ref2" style="border-top:2px solid #000000;border-bottom:2px double #848484;"/>
