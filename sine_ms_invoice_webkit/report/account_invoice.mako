@@ -287,7 +287,7 @@ td.vat {
             %if inv.tax_line:
                 %for x in inv.tax_line:
                 <tr><td colspan="4" class="ref2"/>
-                    <td class="ref3">${x.name}:  <b>${x.amount}${inv.currency_id.symbol}</b></td>
+                    <td colspan="2" class="ref3">${x.name}:  <b>${x.amount}${inv.currency_id.symbol}</b></td>
                 </tr>
                 %endfor
             %endif
