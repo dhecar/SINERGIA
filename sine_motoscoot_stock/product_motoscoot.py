@@ -21,6 +21,7 @@
 
 from osv import fields, osv
 import openerp.addons.decimal_precision as dp
+from openerp import SUPERUSER_ID
 
 class product_product(osv.osv):
     _name = 'product.product'
@@ -104,7 +105,7 @@ class product_product(osv.osv):
                 cr, uid, [
                     ('product_id', '=', prod_id),
                     ('location_id', '=', location_id)], context=context)
-            ads = db_obj.get_stock(cr, uid, ids, prod_id, location_id,
+            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, prod_id, location_id,
                                    context=context)
             for i in stock_prod_obj.browse(
                     cr, uid, stock_prod_ids, context=context):
@@ -131,4 +132,3 @@ class product_product(osv.osv):
 
 
 product_product()
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

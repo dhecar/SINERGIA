@@ -24,7 +24,7 @@ from openerp import netsvc
 from openerp.tools import float_compare, DEFAULT_SERVER_DATETIME_FORMAT
 import logging
 from openerp.tools.translate import _
-from openerp import tools
+from openerp import tools, SUPERUSER_ID
 
 _logger = logging.getLogger(__name__)
 
@@ -118,11 +118,11 @@ class stock_move(osv.osv):
 
             def get_stock(self, cr, uid, ids, context=None):
                 stock_prod_obj = self.pool.get('stock.report.prodlots')
-
+		db_obj = self.pool['base.external.dbsource']
                 '''usage:internal, type :in '''
                 if move.picking_id.type == 'in' and move.location_dest_id.usage == 'internal':
+                    result = {}
                     for prod_id in move_ids:
-                        result = {}
                         stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
                                                                          ('location_id', '=', move.location_dest_id.id)]
                                                                , context=context)
@@ -133,15 +133,17 @@ class stock_move(osv.osv):
                     return result
                 '''usage:internal, type :out '''
                 if move.picking_id.type == 'out' and move.location_id.usage == 'internal':
+                    result = {}
                     for prod_id in move_ids:
-                        result = {}
                         stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', move.product_id.id),
                                                                          ('location_id', '=', move.location_id.id)],
                                                                context=context)
-
+			ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, prod_id,
+                                               move.location_id.id,
+                                               context=context)
                         if stock_prod_ids:
                             for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                                result = i.qty
+                                result = i.qty - ads
 
                     return result
 
@@ -149,8 +151,8 @@ class stock_move(osv.osv):
 
             def get_mag_prod_id(self, cr, uid, ids, context=None):
                 mag_prod_obj = self.pool.get('magento.product.product')
+                result = {}
                 for magento_prod_id in move_ids:
-                    result = {}
                     mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', move.product_id.id)],
                                                        context=context)
 
@@ -289,6 +291,7 @@ class stock_partial_picking(osv.osv_memory):
         assert len(ids) == 1, 'Partial picking processing may only be done one at a time.'
         stock_picking = self.pool.get('stock.picking')
         stock_move = self.pool.get('stock.move')
+	db_obj = self.pool['base.external.dbsource']
         uom_obj = self.pool.get('product.uom')
         partial = self.browse(cr, uid, ids[0], context=context)
         partial_data = {
@@ -362,10 +365,13 @@ class stock_partial_picking(osv.osv_memory):
                     stock_prod_ids = stock_prod_obj.search(cr, uid, [('product_id', '=', wizard_line.product_id.id),
                                                                      ('location_id', '=', wizard_line.location_id.id)],
                                                            context=context)
-
+		    ads = db_obj.get_stock(cr, uid, SUPERUSER_ID,
+                                           wizard_line.product_id.id,
+                                           wizard_line.location_id.id,
+                                           context=context)
                     if stock_prod_ids:
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                            result = i.qty
+                            result = i.qty - ads
 
                         return result
 
@@ -377,10 +383,13 @@ class stock_partial_picking(osv.osv_memory):
                                                                      ('location_id', '=',
                                                                       wizard_line.location_dest_id.id)],
                                                            context=context)
-
+		    ads = db_obj.get_stock(cr, uid, SUPERUSER_ID,
+                                           wizard_line.product_id.id,
+                                           wizard_line.location_dest_id.id,
+                                           context=context)
                     if stock_prod_ids:
                         for i in stock_prod_obj.browse(cr, uid, stock_prod_ids, context=context):
-                            result = i.qty
+                            result = i.qty - ads
 
                         return result
 
