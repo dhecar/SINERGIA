@@ -20,10 +20,31 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-
+from osv import fields, osv
 from report import report_sxw
-
 import time
+
+
+class SetPrinted(osv.osv):
+    _name = 'set.printed'
+
+    def get_set(self, cr, uid, ids, context=None):
+
+        pick_obj = self.pool.get('stock.picking.out')
+        record_ids = context and context.get('active_ids', []) or []
+        for pick in pick_obj.browse(cr, uid, record_ids, context=context):
+            if pick.is_printed is False:
+                pick_obj.write(cr, uid, pick.id, {'is_printed': True})
+
+
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'webkit.motoscoot_picking',
+            'datas': {
+                'model': 'stock.picking.out',
+                'ids': record_ids,
+            }
+        }
 
 
 class DeliverySlip(report_sxw.rml_parse):
@@ -46,11 +67,11 @@ class DeliverySlip(report_sxw.rml_parse):
         )['shipping']
         return partner_obj.browse(
             self.cr, self.uid, shipping_address_id)
+
     def _sum_total_products(self, picking):
         if picking.move_lines:
             total = int(sum(picking.move_lines.product_qty))
             return total
-
 
     def __init__(self, cr, uid, name, context):
         super(DeliverySlip, self).__init__(cr, uid, name, context=context)
@@ -59,14 +80,10 @@ class DeliverySlip(report_sxw.rml_parse):
             'invoice_address': self._get_invoice_address,
             'shipping_address': self._get_shipping_address,
             'total_prod': self._sum_total_products,
-
         })
 
 
 report_sxw.report_sxw('report.webkit.motoscoot_picking',
-                      'stock.picking',
+                      'stock.picking.out',
                       'addons/sine_ms_packing_webkit/report/delivery_slip.mako',
                       parser=DeliverySlip)
-
-
-

@@ -302,6 +302,9 @@
 
     <!--Tabla cabecera-->
         <table class="basic_table" width="100%">
+
+            <% print(picking) %>
+
              <%
                 prod_qty = total_prod(picking)
                 %>
