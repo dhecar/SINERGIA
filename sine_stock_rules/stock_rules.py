@@ -42,7 +42,6 @@ _logger = logging.getLogger(__name__)
 
 
 class stock_rules_conf(osv.osv):
-
     def set_date(self, cr, uid, ids, days, contex=None):
         if days:
             print days
@@ -61,6 +60,7 @@ class stock_rules_conf(osv.osv):
     _defaults = {
 
     }
+
 
 class stock_rules(osv.osv):
     _name = 'stock.rules'
@@ -81,7 +81,6 @@ class stock_rules(osv.osv):
             ('cancel', 'Cancelled')
         ], 'Rules State', readonly=True, select=True),
         'brand_id': fields.many2one('product.brand', 'Brand', help="Marca sobre la que aplicar la regla"),
-
 
     }
 
@@ -122,13 +121,13 @@ class stock_rules(osv.osv):
 
         stock_rules_obj = self.pool.get('stock.rules').browse(cr, uid, ids[0])
         stock_conf_obj = self.pool.get('stock.rules.conf')
-        stock_conf_ids = stock_conf_obj.search(cr, uid,  [], limit=1, order='id desc')
+        stock_conf_ids = stock_conf_obj.search(cr, uid, [], limit=1, order='id desc')
         for value in stock_conf_obj.browse(cr, uid, stock_conf_ids):
             from_date = value.from_date
         # if assign category
         if stock_rules_obj.category_id:
 
-            #not include childs categ
+            # not include childs categ
             if stock_rules_obj.child_categories == False:
 
                 products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
@@ -138,7 +137,8 @@ class stock_rules(osv.osv):
                                                                                   stock_rules_obj.category_id.id),
                                                                                  ('product_brand_id', '=',
                                                                                   stock_rules_obj.brand_id.id),
-                                                                                 ('active', '=', 1)])
+                                                                                 ('active', '=', 1),
+                                                                                 ('purchase_ok', 'is', True)])
 
                 if products_ids:
                     for product_id in products_ids:
@@ -178,7 +178,8 @@ class stock_rules(osv.osv):
                 products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'), (
                     'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
                                                                                           stock_rules_obj.brand_id.id),
-                                                                                 ('active', '=', 1)])
+                                                                                 ('active', '=', 1),
+                                                                                 ('purchase_ok', 'is', True)])
 
                 if products_ids:
                     for product_id in products_ids:
@@ -215,7 +216,8 @@ class stock_rules(osv.osv):
                                                                              ('procure_method', '=', 'make_to_stock'),
                                                                              ('product_brand_id', '=',
                                                                               stock_rules_obj.brand_id.id),
-                                                                             ('active', '=', 1)])
+                                                                             ('active', '=', 1),
+                                                                             ('purchase_ok', 'is', True)])
 
             if products_ids:
                 for product_id in products_ids:
@@ -252,7 +254,7 @@ class stock_rules(osv.osv):
 
         stock_rules_obj = self.pool.get('stock.rules').browse(cr, uid, ids[0])
         stock_conf_obj = self.pool.get('stock.rules.conf')
-        stock_conf_ids = stock_conf_obj.search(cr, uid,  [], limit=1, order='id desc')
+        stock_conf_ids = stock_conf_obj.search(cr, uid, [], limit=1, order='id desc')
         for value in stock_conf_obj.browse(cr, uid, stock_conf_ids):
             from_date = value.from_date
 
@@ -280,7 +282,6 @@ class stock_rules(osv.osv):
             self.pool.get('stock.warehouse.orderpoint').write(cr, uid, rules_obj.id, vals)
 
         return True
-
 
     def drop_rules(self, cr, uid, ids, context=None):
 
@@ -311,5 +312,3 @@ class stock_warehouse_orderpoint(osv.osv):
 
 
 stock_warehouse_orderpoint()
-
-
