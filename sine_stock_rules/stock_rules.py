@@ -138,7 +138,7 @@ class stock_rules(osv.osv):
                                                                                  ('product_brand_id', '=',
                                                                                   stock_rules_obj.brand_id.id),
                                                                                  ('active', '=', 1),
-                                                                                 ('purchase_ok', 'is', True)])
+                                                                                 ('purchase_ok', '=', 1)])
 
                 if products_ids:
                     for product_id in products_ids:
@@ -179,7 +179,7 @@ class stock_rules(osv.osv):
                     'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
                                                                                           stock_rules_obj.brand_id.id),
                                                                                  ('active', '=', 1),
-                                                                                 ('purchase_ok', 'is', True)])
+                                                                                 ('purchase_ok', '=', 1)])
 
                 if products_ids:
                     for product_id in products_ids:
@@ -217,7 +217,7 @@ class stock_rules(osv.osv):
                                                                              ('product_brand_id', '=',
                                                                               stock_rules_obj.brand_id.id),
                                                                              ('active', '=', 1),
-                                                                             ('purchase_ok', 'is', True)])
+                                                                             ('purchase_ok', '=', 1)])
 
             if products_ids:
                 for product_id in products_ids:
@@ -228,7 +228,7 @@ class stock_rules(osv.osv):
                                                            ('type', '=', 'out'),
                                                            ('date', '>=', from_date)],
                                                  context=context)
-                    print from_date
+
                     qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
                     suma_min = sum(item['product_qty'] for item in qty)
                     suma_max = 2 * suma_min
