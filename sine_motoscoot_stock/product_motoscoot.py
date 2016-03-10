@@ -23,6 +23,7 @@ from osv import fields, osv
 import openerp.addons.decimal_precision as dp
 from openerp import SUPERUSER_ID
 
+
 class product_product(osv.osv):
     _name = 'product.product'
     _inherit = 'product.product'
@@ -130,6 +131,4 @@ class product_product(osv.osv):
 
 
     }
-
-
 product_product()

@@ -82,8 +82,6 @@
         </record>
 
 
-
-
 <!-- NOTA INTERNA PARA ALMACEN EN VISTA FORM + Stock Por Ubicacion + Precio Base TT-->
 
         <record id="product_internal_note_form" model="ir.ui.view">
@@ -123,11 +121,6 @@
                     </field>
              </field>
      </record>
-
-
-
-
-
  </data>
 </openerp>
 
