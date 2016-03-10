@@ -2,6 +2,21 @@
 <openerp>
     <data>
 
+
+        <!-- New Button to print labels on INCOMING PRODUCT-->
+
+
+        <record id="stock_partial_picking_form_label_print" model="ir.ui.view">
+            <field name="name">stock.partial.picking.form.label.print</field>
+            <field name="model">stock.partial.picking</field>
+            <field name="inherit_id" ref="stock.stock_partial_picking_form" />
+            <field name="arch" type="xml">
+                    <xpath expr="//button[@string='_Transfer']" position="after">
+                      <button name="do_partial_print" string="Recibir/Imprimir Etiquetas" type="object" class="oe_highlight" />
+                 </xpath>
+            </field>
+        </record>
+
         <!--Form stock_picking View-->
         <record id="view_picking_inherit_form" model="ir.ui.view">
             <field name="name">stock.picking.inh.form</field>
@@ -13,6 +28,7 @@
                         <field name="payment1_id"/>
                         <field name="payment2_id"/>
                         <field name="sh_id"/>
+                        <field name="res_user" />
                     </field>
 
            </field>
@@ -28,6 +44,7 @@
             <field name="arch" type="xml">
                 <field name="state" position="after">
                         <field name="is_printed"/>
+                        <field name="res_user" />
                         <field name="payment1_id" invisible="1"/>
                         <field name="payment2_id" invisible ="1"/>
                         <field name="sh_id" invisible="1" />
@@ -49,10 +66,12 @@
             <field name="inherit_id" ref="stock.view_picking_out_form"/>
             <field name="arch" type="xml">
                     <field name="origin" position="after">
+
                         <field name="is_printed"/>
                         <field name="payment1_id"/>
                         <field name="payment2_id"/>
                         <field name="sh_id" />
+                        <field name="res_user" />
                     </field>
 
            </field>
