@@ -110,7 +110,6 @@
             </field>
         </record>
 
-
      <record id="product_supplierinfo_tree_inh_view" model="ir.ui.view">
             <field name="name">product.supplierinfo.tree.inh.view</field>
             <field name="model">product.supplierinfo</field>

@@ -126,9 +126,5 @@ class product_product(osv.osv):
                                        digits_compute=dp.get_precision('Precio Base TT (Tarifa Fabricante sin IVA)')),
         'internet': fields.boolean('Internet?', help='Está activo en Magento?'),
         'label_print': fields.boolean('Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?'),
-
-
-
-
     }
 product_product()
