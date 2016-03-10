@@ -36,7 +36,7 @@
         </record>
 
 
-<!--BOTON STOCK EN VISTA TREE -->
+<!--BOTON STOCK EN VISTA TREE  + EAN en SEARCH-->
 
  
  <record model="ir.ui.view" id="product_motoscoot_tree_view">
@@ -53,6 +53,19 @@
   </record>
 
 
+      <record id="product_search_form_inh_view" model="ir.ui.view">
+            <field name="name">product.search.inh.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view" />
+	        <field name="arch" type="xml">
+	        <field name="name" position="replace">
+                <field name="name" string="Product" filter_domain="['|',('name','ilike',self),('default_code','ilike',self),('ean13','ilike',self)]"/>
+
+		    </field>
+        </field>
+
+  </record>
+
 
 <!-- VISTA KANBAN -->
 	<record model="ir.ui.view" id="motoscoot_product_kanban_stock_view">
@@ -61,9 +74,9 @@
             <field name="inherit_id" ref="product.product_kanban_view"/>
             <field name="arch" type="xml">
 
-         <xpath expr="//div[@name='tags']" position="before">
-        	<button name="%(act_stock_product_location_open)d" icon="STOCK_INFO" string="stock" type="action"/>
-		 </xpath>
+                <xpath expr="//div[@name='tags']" position="before">
+        	        <button name="%(act_stock_product_location_open)d" icon="STOCK_INFO" string="stock" type="action"/>
+		        </xpath>
 
 		</field>
         </record>
@@ -93,6 +106,8 @@
 				        <field name="stock_pt" label="PT"/>
                         <field name="shared"/>
                         <field name="internet" readonly="1" label="Internet" icon="ICON_MAGENTO" />
+                        <field name="label_print" label="Label print"/>
+
                     </field>
             </field>
         </record>
