@@ -53,20 +53,6 @@
   </record>
 
 
-      <record id="product_search_form_inh_view" model="ir.ui.view">
-            <field name="name">product.search.inh.form</field>
-            <field name="model">product.product</field>
-            <field name="inherit_id" ref="product.product_search_form_view" />
-	        <field name="arch" type="xml">
-	        <field name="name" position="replace">
-                <field name="name" string="Product" filter_domain="['|',('name','ilike',self),('default_code','ilike',self),('ean13','ilike',self)]"/>
-
-		    </field>
-        </field>
-
-  </record>
-
-
 <!-- VISTA KANBAN -->
 	<record model="ir.ui.view" id="motoscoot_product_kanban_stock_view">
 	    <field name="name">Product Kanban Stock</field>
