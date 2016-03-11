@@ -2,6 +2,7 @@ from osv import fields, osv
 import one2many_sorted
 from zebra import zebra
 from time import sleep
+import unicodedata
 
 
 class stock_picking_out(osv.osv):
@@ -129,18 +130,15 @@ class stock_partial_picking(osv.osv):
         partial_pick_obj = self.pool.get('stock.partial.picking.line')
         partial_ids = partial_pick_obj.search(cr, uid, [('wizard_id', '=', ids)])
 
-        # Pool Product
-        product_obj = self.pool.get('product.product')
-
         # For line in partial.picking.line
         # search product code where id =  partial.picking.line.product_id
-        for line in  partial_pick_obj.browse(cr, uid, partial_ids, context=None):
+        for line in partial_pick_obj.browse(cr, uid, partial_ids, context=None):
             # Limit size:
 
-            # if len(product.name_template) > 20:
-            #    product.name_template = product.name_template[:20] + '..'
-            # else:
-            #    product.name_template = product.name_template
+            if len(line.product_id.name_template) > 20:
+                product_name = line.product_id.name_template[:20] + '..'
+            else:
+                product_name = line.product_id.name_template
 
             if pool_ids:
                 for i in pool_obj.browse(cr, uid, pool_ids, context=context):
@@ -173,8 +171,10 @@ class stock_partial_picking(osv.osv):
                                       str(fields.font_p4) + ',' +
                                       str(fields.h_multiplier_p5) + ',' +
                                       str(fields.v_multiplier_p6) + ',' +
-                                      str(fields.n_r_p7) + ',' + '"'}
-                            # str(product.name_template).encode('ascii', 'replace') + '"' + '\n'}
+                                      str(fields.n_r_p7) + ',' +
+                                      unicodedata.normalize('NFKD', product_name).encode('ascii',
+                                                                                         'ignore') + '"' + '\n'}
+
                             # TODO get value to print from qz.config
 
                 """
@@ -187,7 +187,7 @@ class stock_partial_picking(osv.osv):
                     P1
                  """
 
-                result = '"""\n' + 'N\n' + ''.join(data) + '\n' + '\n' + 'P1\n"""'
+                result = '"""\n' + 'N\n' + ''.join(data) + '\n' + ''.join(data2) + '\n' + 'P1\n"""'
 
                 return result
 
