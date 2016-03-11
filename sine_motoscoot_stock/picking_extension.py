@@ -229,4 +229,5 @@ class stock_partial_picking(osv.osv):
             if wizard_line.product_id.label_print is True:
                 self.send_epl_data(cr, uid, ids[0], context)
 
+
         return res
