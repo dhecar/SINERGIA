@@ -128,11 +128,11 @@ class stock_partial_picking(osv.osv):
         pool_ids = pool_obj.search(cr, uid, [('qz_default', '=', 1)])
         # Pickings
         partial_pick_obj = self.pool.get('stock.partial.picking.line')
-        partial_ids = partial_pick_obj.search(cr, uid, [('wizard_id', '=', ids)])
+        line_ids = context.get('line_id', []) or []
+        partial_ids = partial_pick_obj.search(cr, uid, [('wizard_id', '=', ids), ('id', '=', line_ids)])
+        # For
+        for line in partial_pick_obj.browse(cr, uid, partial_ids, context=context):
 
-        # For line in partial.picking.line
-        # search product code where id =  partial.picking.line.product_id
-        for line in partial_pick_obj.browse(cr, uid, partial_ids, context=None):
             # Limit size:
 
             if len(line.product_id.name_template) > 20:
@@ -187,9 +187,9 @@ class stock_partial_picking(osv.osv):
                     P1
                  """
 
-                result = '"""\n' + 'N\n' + ''.join(data) + '\n' + ''.join(data2) + '\n' + 'P1\n"""'
+            result = '"""\n' + 'N\n' + ''.join(data) + '\n' + ''.join(data2) + '\n' + 'P1\n"""'
 
-                return result
+            return result
 
     def send_epl_data(self, cr, uid, ids, context=None):
         z = zebra()
@@ -206,9 +206,12 @@ class stock_partial_picking(osv.osv):
                 width = x.qz_label_width
         z.setup(direct_thermal=thermal, label_height=height, label_width=width)
         epl = self.prepare_epl_data(cr, uid, ids, context=context)
-        partial = self.browse(cr, uid, ids, context=context)
-        for wizard_line in partial.move_ids:
-            num_cop = int(wizard_line.quantity)
+        partial_pick_obj = self.pool.get('stock.partial.picking.line')
+        line_ids = context.get('line_id', []) or []
+        partial_ids = partial_pick_obj.search(cr, uid, [('wizard_id', '=', ids), ('id', '=', line_ids)])
+        partial = partial_pick_obj.browse(cr, uid, partial_ids, context=context)
+        for line in partial:
+            num_cop = int(line.quantity)
             for n in range(0, num_cop):
                 z.output(epl)
                 ## sleep  between labels, if not, printer die ;)
@@ -218,16 +221,18 @@ class stock_partial_picking(osv.osv):
 
     def do_partial_print(self, cr, uid, ids, context=None):
         res = super(stock_partial_picking, self).do_partial(cr, uid, ids, context=context)
-        ## record_ids = context and context.get('active_ids', []) or []
+        # record_ids = context and context.get('active_ids', []) or []
         partial = self.browse(cr, uid, ids[0], context=context)
         # Select Printable Labels  products
         for wizard_line in partial.move_ids:
+            # Update the context with each line value in each cicle.
+            context.update({'line_id': wizard_line.id})
             # Quantity must be Positive
             if wizard_line.quantity < 0:
                 raise osv.except_osv(_('Warning!'), _('Please provide proper Quantity.'))
             # Product to print label
             if wizard_line.product_id.label_print is True:
-                self.send_epl_data(cr, uid, ids[0], context)
 
+                self.send_epl_data(cr, uid, ids[0], context)
 
         return res
