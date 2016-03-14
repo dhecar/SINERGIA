@@ -22,6 +22,16 @@ from osv import fields, osv
 
 
 class sale_order_line(osv.osv):
+    """ if final price is lower that cost price, prints a Warning !!!"""
+
+    def final_price(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            res[line.id] = 0
+            if line.product_id:
+                res[line.id] = round(line.price_subtotal - ((line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
+        return res
+
     _inherit = 'sale.order.line'
     _columns = {
         'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
@@ -31,6 +41,7 @@ class sale_order_line(osv.osv):
         'outgoing': fields.related('product_id', 'outgoing_qty', type='float', string='OUT'),
         'date_ordered': fields.related('order_id', 'date_order', type='char', relation='sale.order',
                                        string='Fecha Orden'),
+        'margin_ok': fields.function(final_price, string='Margin'),
 
     }
 
@@ -52,6 +63,3 @@ class sale_order(osv.osv):
 
 
 sale_order()
-
-
-

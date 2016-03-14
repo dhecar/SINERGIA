@@ -17,6 +17,20 @@
                     <field name="outgoing" />
 		        </xpath>
 
+
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
+                    <field name="margin_ok"/>
+                </xpath>
+
+
+                <xpath expr="//tree[@string='Sales Order Lines']" position="attributes">
+                    <attribute name="colors">red:margin_ok &lt;=0</attribute>
+                </xpath>
+
+
+
+
                 <field name="discount" position="before">
                     <field name="stock_grn" invisible="1"/>
 				    <field name="stock_bcn" invisible="1"/>
@@ -42,7 +56,6 @@
 		            <field name="sale_internal_comment" class="oe_inline" placeholder="Internal Comment..."/>
                 </field>
 
-
         	</field>
         </record>
 
@@ -52,10 +65,15 @@
             <field name="name">sale.order.line.inh.tree</field>
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field eval="12" name="priority"/>
             <field name="arch" type="xml">
                 <xpath expr="//tree[@string='Sales Order Lines']/field[@name='order_id']" position="after">
                     <field name="date_ordered"/>
                 </xpath>
+
+
+
+
             </field>
         </record>
 
@@ -72,6 +90,10 @@
                         <field name="traking" readonly="1" />
                         <field name="invoice_status" readonly="1" />
                     </field>
+                    <xpath expr="//field[@name='order_line']/form//field[@name='purchase_price']" position="after">
+                        <field name="margin_ok" groups="base.group_user"/>
+                     </xpath>
+
             </field>
      </record>
 
