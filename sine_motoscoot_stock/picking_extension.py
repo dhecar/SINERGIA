@@ -18,7 +18,8 @@ class stock_picking_out(osv.osv):
                                 string='Tienda', readonly=True),
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
-        'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
+
+        'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users'),
 
         'move_lines_sorted': one2many_sorted.one2many_sorted
         ('stock.move'
