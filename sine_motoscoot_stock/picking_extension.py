@@ -179,7 +179,6 @@ class stock_partial_picking(osv.osv):
                                                                                          'ignore') + '"' + '\n'}
 
                             # TODO get value to print from qz.config
-
                 """
                     Example of ELP commands to send
                     N
