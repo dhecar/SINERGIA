@@ -212,7 +212,12 @@
                     <tr style="border-top:1px solid grey;border-right:1px solid grey;">            </td>
                         <td style="height:40px;text-align:left;border-right:1px solid grey;border-left:1px solid grey" >                    </td>
                         <td style="font-size:18px;height:40px;text-align:left;border-right:1px solid grey; " >${ int(line.product_qty) }</td>
-                        <td style="height:40px;width:60px;font-size:14px;text-align:left;bottom-border:1px solid grey"><b>${( line.product_id.default_code )}</b></td>
+                        <td style="height:40px;width:60px;font-size:14px;text-align:left;bottom-border:1px solid grey">
+                            <b>${( line.product_id.default_code )}</b>
+                             %if line.product_id.loc_rack:
+                            <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
+                            %endif;
+                        </td>
                         %if line.product_id.internal_note:
                             <td style="height:40px;text-align:center;font-size:20px; " >*</td>
                         %else:
@@ -228,12 +233,12 @@
 
 
                     </tr>
-                %if line.product_id.internal_note:
+                    %if line.product_id.internal_note:
                     <tr>
                         <td style="height:40px;border-left:1px solid grey"></td><td></td><td></td>
                         <td colspan="3" style="font-size:12px;font-weight:bold;">${line.product_id.internal_note}</td>
                     </tr>
-                %endif
+                    %endif
                 %endfor
 
             %elif not picking.origin and not picking.sale_id:
@@ -255,7 +260,11 @@
                     <tr style="border-top:3px solid grey;border-right:1px solid grey;">           </td>
                         <td style="height:40px;text-align:left;border-right:1px solid grey;border-left:1px solid grey" >                    </td>
                         <td style="font-size:18px;height:40px;text-align:left;border-right:1px solid grey; " >${ int(line.product_qty) }</td>
-                        <td style="height:40px;width:60px;font-size:14px;text-align:left"><b>${( line.product_id.default_code )}</b></td>
+                        <td style="height:40px;width:60px;font-size:14px;text-align:left"><b>${( line.product_id.default_code )}</b>
+                         %if line.product_id.loc_rack:
+                            <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
+                            %endif;
+                        </td>
                         %if line.product_id.internal_note:
                             <td style="text-align:center;font-size:20px; " >*</td>
                         %else:
@@ -339,7 +348,11 @@
                     <tr style="border-top:1px solid grey;border-right:1px solid grey;">            </td>
 
                         <td style="font-size:18px;height:40px;text-align:left;border-right:1px solid grey; " >${ int(line.product_qty) }</td>
-                        <td style="height:40px;width:60px;font-size:14px;text-align:left;bottom-border:1px solid grey"><b>${( line.product_id.default_code )}</b></td>
+                        <td style="height:40px;width:60px;font-size:14px;text-align:left;bottom-border:1px solid grey"><b>${( line.product_id.default_code )}</b>
+                            %if line.product_id.loc_rack:
+                            <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
+                            %endif;
+                        </td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
                         <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_grn) }</td>
