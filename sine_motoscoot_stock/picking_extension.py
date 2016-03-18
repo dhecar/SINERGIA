@@ -138,8 +138,8 @@ class stock_partial_picking(osv.osv):
 
             # Limit size:
 
-            if len(line.product_id.name_template) > 20:
-                product_name = line.product_id.name_template[:20] + '..'
+            if len(line.product_id.name_template) > 40:
+                product_name = line.product_id.name_template[:40] + '..'
             else:
                 product_name = line.product_id.name_template
 
@@ -189,7 +189,7 @@ class stock_partial_picking(osv.osv):
                     P1
                  """
 
-            result = '"""\n' + 'N\n' + ''.join(data) + '\n' + ''.join(data2) + '\n' + 'P1\n"""'
+            result = '"""\n' + 'N\n' + ''.join(data) + ''.join(data2) + 'P1\n"""'
 
             return result
 
