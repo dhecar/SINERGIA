@@ -45,14 +45,7 @@
 
 
     <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
-
-
-
-
-
-
-
-        <div style="float:right;margin-top:15px;margin-bottom:15px;">
+    <div style="float:right;margin-top:15px;margin-bottom:15px;">
             <table class="recipient" style="border:1px solid #C0C0C0;">
 
                 <%
@@ -301,7 +294,7 @@
             <p class="std_text">${picking.sale_id.sale_internal_comment | carriage_returns}</p>
         %endif
 
-        <!--<p style="page-break-after: always"/>-->
+        <p style="page-break-after: auto"/>
 ${_debug or ''|n}
     </body>
 </html>
@@ -311,10 +304,11 @@ ${_debug or ''|n}
 
         <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
 
+    ${helper.embed_image('png', generate_barcode(picking.name))| n}
     <!--Tabla cabecera-->
         <table class="basic_table" width="100%">
 
-            <% print(picking) %>
+
 
              <%
                 prod_qty = total_prod(picking)
@@ -370,7 +364,7 @@ ${_debug or ''|n}
     <br/>
 
 
-        <!--<p style="page-break-after: always"/>-->
+        <p style="page-break-after: auto"/>
 
     %endif
     %endfor
