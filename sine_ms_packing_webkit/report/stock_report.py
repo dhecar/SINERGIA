@@ -69,7 +69,7 @@ class DeliverySlip(report_sxw.rml_parse):
     def generate_barcode(self, barcode_string):
 
         fp = StringIO()
-        generate('Code39', barcode_string, writer=BarcodeImageWriter(), output=fp)
+        generate('code128', barcode_string, writer=BarcodeImageWriter(), output=fp)
         contents = fp.getvalue()
         return base64.standard_b64encode(contents)
 
