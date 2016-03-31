@@ -23,7 +23,11 @@
 from osv import fields, osv
 from report import report_sxw
 import time
-
+import base64
+from barcode.writer import ImageWriter
+from barcode import generate
+from StringIO import StringIO
+from barcode.writer import mm2px
 
 class SetPrinted(osv.osv):
     _name = 'set.printed'
@@ -47,7 +51,28 @@ class SetPrinted(osv.osv):
         }
 
 
+
+class BarcodeImageWriter(ImageWriter):
+    def calculate_size(self, modules_per_line, number_of_lines, dpi=100):
+        width = 2 * self.quiet_zone + modules_per_line * self.module_width
+        height = 6
+
+        self.size = int(mm2px(width, dpi)), int(mm2px(height, dpi))
+        return self.size
+
+
+
+
 class DeliverySlip(report_sxw.rml_parse):
+
+
+    def generate_barcode(self, barcode_string):
+
+        fp = StringIO()
+        generate('Code39', barcode_string, writer=BarcodeImageWriter(), output=fp)
+        contents = fp.getvalue()
+        return base64.standard_b64encode(contents)
+
     def _get_invoice_address(self, picking):
         if picking.sale_id:
             return picking.sale_id.partner_invoice_id
@@ -80,6 +105,7 @@ class DeliverySlip(report_sxw.rml_parse):
             'invoice_address': self._get_invoice_address,
             'shipping_address': self._get_shipping_address,
             'total_prod': self._sum_total_products,
+            'generate_barcode': self.generate_barcode
         })
 
 

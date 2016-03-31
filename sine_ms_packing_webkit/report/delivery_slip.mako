@@ -42,7 +42,12 @@
 
     %if picking.sale_id:
 
+
+
     <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
+
+
+
 
 
 
@@ -104,6 +109,7 @@
             </table>
             </div>
 
+    ${helper.embed_image('png', generate_barcode(picking.name))| n}
     <!--Tabla cabecera-->
         <table class="basic_table" width="100%">
 
@@ -295,12 +301,8 @@
             <p class="std_text">${picking.sale_id.sale_internal_comment | carriage_returns}</p>
         %endif
 
-        <p style="page-break-after: always"/>
-        <br/>
-
-
-
- ${_debug or ''|n}
+        <!--<p style="page-break-after: always"/>-->
+${_debug or ''|n}
     </body>
 </html>
 
@@ -368,8 +370,7 @@
     <br/>
 
 
-        <p style="page-break-after: always"/>
-        <br/>
+        <!--<p style="page-break-after: always"/>-->
 
     %endif
     %endfor
