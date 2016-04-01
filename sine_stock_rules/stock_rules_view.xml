@@ -24,7 +24,7 @@
                 <form string="Stock Rules">
                     <field name="name" select="1" colspan="4"/>
                     <field name="category_id" widget="selection" />
-                    <field name="brand_id" required="1" on_change="change_brand(brand_id)"/>
+                    <field name="brand_id"  on_change="change_brand(brand_id)"/>
                     <field name="child_categories"/>
                     <field name="min_amount"/>
                     <field name="max_amount"/>

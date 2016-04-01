@@ -130,13 +130,208 @@ class stock_rules(osv.osv):
             # not include childs categ
             if stock_rules_obj.child_categories == False:
 
+                if stock_rules_obj.brand_id:
+
+                    products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
+                                                                                     ('procure_method', '=',
+                                                                                      'make_to_stock'),
+                                                                                     ('categ_id', '=',
+                                                                                      stock_rules_obj.category_id.id),
+                                                                                     ('product_brand_id', '=',
+                                                                                      stock_rules_obj.brand_id.id),
+                                                                                     ('active', '=', 1),
+                                                                                     ('purchase_ok', '=', 1)])
+
+                    if products_ids:
+                        for product_id in products_ids:
+                            product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                            stock_obj = self.pool.get('stock.move')
+                            stock_ids = stock_obj.search(cr, uid, [], context={'state': 'done',
+                                                                               'type': 'out',
+                                                                               'product_id': product_id,
+                                                                               'date': from_date})
+                            qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                            suma_min = sum(item['product_qty'] for item in qty)
+                            suma_max = 2 * suma_min
+
+                            vals = {
+                                'name': stock_rules_obj.name,
+                                'product_id': product_obj.id,
+                                'product_max_qty': suma_max,
+                                'product_min_qty': suma_min,
+                                'product_uom': product_obj.uom_id.id,
+                                'warehouse_id': stock_rules_obj.warehouse_id.id,
+                                'location_id': stock_rules_obj.location_id.id,
+                                'stock_rule_id': stock_rules_obj.id
+                            }
+
+                            self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
+
+                        stock_rules_obj.write({'state': 'done'})
+
+                else:
+
+                    products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
+                                                                                     ('procure_method', '=',
+                                                                                      'make_to_stock'),
+                                                                                     ('categ_id', '=',
+                                                                                      stock_rules_obj.category_id.id),
+                                                                                     ('active', '=', 1),
+                                                                                     ('purchase_ok', '=', 1)])
+
+                    if products_ids:
+                        for product_id in products_ids:
+                            product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                            stock_obj = self.pool.get('stock.move')
+                            stock_ids = stock_obj.search(cr, uid, [], context={'state': 'done',
+                                                                               'type': 'out',
+                                                                               'product_id': product_id,
+                                                                               'date': from_date})
+                            qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                            suma_min = sum(item['product_qty'] for item in qty)
+                            suma_max = 2 * suma_min
+
+                            vals = {
+                                'name': stock_rules_obj.name,
+                                'product_id': product_obj.id,
+                                'product_max_qty': suma_max,
+                                'product_min_qty': suma_min,
+                                'product_uom': product_obj.uom_id.id,
+                                'warehouse_id': stock_rules_obj.warehouse_id.id,
+                                'location_id': stock_rules_obj.location_id.id,
+                                'stock_rule_id': stock_rules_obj.id
+                            }
+
+                            self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
+
+                        stock_rules_obj.write({'state': 'done'})
+
+            else:
+
+                parent_category_obj = self.pool.get('product.category').browse(cr, uid, stock_rules_obj.category_id.id)
+
+                childs_ids = []
+
+                childs = self.get_childs_categs(cr, uid, ids, parent_category_obj, childs_ids, context)
+
+                if stock_rules_obj.brand_id:
+
+                    products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'), (
+                        'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
+                                                                                              stock_rules_obj.brand_id.id),
+                                                                                     ('active', '=', 1),
+                                                                                     ('purchase_ok', '=', 1)])
+
+                    if products_ids:
+                        for product_id in products_ids:
+                            product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                            stock_obj = self.pool.get('stock.move')
+                            stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
+                                                                   ('state', '=', 'done'),
+                                                                   ('type', '=', 'out'),
+                                                                   ('date', '>=', from_date)],
+                                                         context=context)
+
+                            qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                            suma_min = sum(item['product_qty'] for item in qty)
+                            suma_max = 2 * suma_min
+
+                            vals = {
+                                'name': stock_rules_obj.name,
+                                'product_id': product_obj.id,
+                                'product_max_qty': suma_max,
+                                'product_min_qty': suma_min,
+                                'product_uom': product_obj.uom_id.id,
+                                'warehouse_id': stock_rules_obj.warehouse_id.id,
+                                'location_id': stock_rules_obj.location_id.id,
+                                'stock_rule_id': stock_rules_obj.id
+                            }
+
+                            self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
+                        stock_rules_obj.write({'state': 'done'})
+
+                else:
+
+                    products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
+                                                                                     ('procure_method', '=',
+                                                                                      'make_to_stock'),
+                                                                                     ('categ_id', 'in', childs),
+                                                                                     ('active', '=', 1),
+                                                                                     ('purchase_ok', '=', 1)])
+
+                    if products_ids:
+                        for product_id in products_ids:
+                            product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                            stock_obj = self.pool.get('stock.move')
+                            stock_ids = stock_obj.search(cr, uid, [], context={'state': 'done',
+                                                                               'type': 'out',
+                                                                               'product_id': product_id,
+                                                                               'date': from_date})
+                            qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                            suma_min = sum(item['product_qty'] for item in qty)
+                            suma_max = 2 * suma_min
+
+                            vals = {
+                                'name': stock_rules_obj.name,
+                                'product_id': product_obj.id,
+                                'product_max_qty': suma_max,
+                                'product_min_qty': suma_min,
+                                'product_uom': product_obj.uom_id.id,
+                                'warehouse_id': stock_rules_obj.warehouse_id.id,
+                                'location_id': stock_rules_obj.location_id.id,
+                                'stock_rule_id': stock_rules_obj.id
+                            }
+
+                            self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
+
+                        stock_rules_obj.write({'state': 'done'})
+
+                        # if not category
+        else:
+
+            if stock_rules_obj.brand_id:
+
                 products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
                                                                                  ('procure_method', '=',
                                                                                   'make_to_stock'),
-                                                                                 ('categ_id', '=',
-                                                                                  stock_rules_obj.category_id.id),
                                                                                  ('product_brand_id', '=',
                                                                                   stock_rules_obj.brand_id.id),
+                                                                                 ('active', '=', 1),
+                                                                                 ('purchase_ok', '=', 1)])
+
+                if products_ids:
+                    for product_id in products_ids:
+                        product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
+                        stock_obj = self.pool.get('stock.move')
+                        stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
+                                                               ('state', '=', 'done'),
+                                                               ('type', '=', 'out'),
+                                                               ('date', '>=', from_date)],
+                                                     context=context)
+
+                        qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
+                        suma_min = sum(item['product_qty'] for item in qty)
+                        suma_max = 2 * suma_min
+
+                        vals = {
+                            'name': stock_rules_obj.name,
+                            'product_id': product_obj.id,
+                            'product_max_qty': suma_max,
+                            'product_min_qty': suma_min,
+                            'product_uom': product_obj.uom_id.id,
+                            'warehouse_id': stock_rules_obj.warehouse_id.id,
+                            'location_id': stock_rules_obj.location_id.id,
+                            'stock_rule_id': stock_rules_obj.id
+                        }
+
+                        self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
+
+                    stock_rules_obj.write({'state': 'done'})
+
+            else:
+                products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
+                                                                                 ('procure_method', '=',
+                                                                                  'make_to_stock'),
                                                                                  ('active', '=', 1),
                                                                                  ('purchase_ok', '=', 1)])
 
@@ -166,88 +361,6 @@ class stock_rules(osv.osv):
                         self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
 
                     stock_rules_obj.write({'state': 'done'})
-
-            else:
-
-                parent_category_obj = self.pool.get('product.category').browse(cr, uid, stock_rules_obj.category_id.id)
-
-                childs_ids = []
-
-                childs = self.get_childs_categs(cr, uid, ids, parent_category_obj, childs_ids, context)
-
-                products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'), (
-                    'procure_method', '=', 'make_to_stock'), ('categ_id', 'in', childs), ('product_brand_id', '=',
-                                                                                          stock_rules_obj.brand_id.id),
-                                                                                 ('active', '=', 1),
-                                                                                 ('purchase_ok', '=', 1)])
-
-                if products_ids:
-                    for product_id in products_ids:
-                        product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
-                        stock_obj = self.pool.get('stock.move')
-                        stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
-                                                               ('state', '=', 'done'),
-                                                               ('type', '=', 'out'),
-                                                               ('date', '>=', from_date)],
-                                                     context=context)
-                        print from_date
-                        qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
-                        suma_min = sum(item['product_qty'] for item in qty)
-                        suma_max = 2 * suma_min
-
-                        vals = {
-                            'name': stock_rules_obj.name,
-                            'product_id': product_obj.id,
-                            'product_max_qty': suma_max,
-                            'product_min_qty': suma_min,
-                            'product_uom': product_obj.uom_id.id,
-                            'warehouse_id': stock_rules_obj.warehouse_id.id,
-                            'location_id': stock_rules_obj.location_id.id,
-                            'stock_rule_id': stock_rules_obj.id
-                        }
-
-                        self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
-                    stock_rules_obj.write({'state': 'done'})
-
-                    # if not category
-        else:
-
-            products_ids = self.pool.get('product.product').search(cr, uid, [('type', '=', 'product'),
-                                                                             ('procure_method', '=', 'make_to_stock'),
-                                                                             ('product_brand_id', '=',
-                                                                              stock_rules_obj.brand_id.id),
-                                                                             ('active', '=', 1),
-                                                                             ('purchase_ok', '=', 1)])
-
-            if products_ids:
-                for product_id in products_ids:
-                    product_obj = self.pool.get('product.product').browse(cr, uid, product_id)
-                    stock_obj = self.pool.get('stock.move')
-                    stock_ids = stock_obj.search(cr, uid, [('product_id', '=', product_id),
-                                                           ('state', '=', 'done'),
-                                                           ('type', '=', 'out'),
-                                                           ('date', '>=', from_date)],
-                                                 context=context)
-
-                    qty = stock_obj.read(cr, uid, stock_ids, ['product_qty'], context=context)
-                    suma_min = sum(item['product_qty'] for item in qty)
-                    suma_max = 2 * suma_min
-
-                    vals = {
-                        'name': stock_rules_obj.name,
-                        'product_id': product_obj.id,
-                        'product_max_qty': suma_max,
-                        'product_min_qty': suma_min,
-                        'product_uom': product_obj.uom_id.id,
-                        'warehouse_id': stock_rules_obj.warehouse_id.id,
-                        'location_id': stock_rules_obj.location_id.id,
-                        'stock_rule_id': stock_rules_obj.id
-                    }
-
-                    self.pool.get('stock.warehouse.orderpoint').create(cr, uid, vals)
-
-                    stock_rules_obj.write({'state': 'done'})
-
         return True
 
     def update_rules(self, cr, uid, ids, context=None):
