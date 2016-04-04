@@ -294,7 +294,8 @@
             <p class="std_text">${picking.sale_id.sale_internal_comment | carriage_returns}</p>
         %endif
 
-        <p style="page-break-after: always"/>
+    <p style="page-break-after: always"/>
+
 
     </body>
 </html>
@@ -304,7 +305,7 @@
 
         <h1 style="clear:both;margin-top:30px;">${_(u'Picking List') } ${picking.name}</h1>
 
-    ${helper.embed_image('png', generate_barcode(picking.name))| n}
+
     <!--Tabla cabecera-->
         <table class="basic_table" width="100%">
 
@@ -363,8 +364,8 @@
     <br>
     <br/>
 
+    <p style="page-break-after: always"/>
 
-        <p style="page-break-after: always"/>
 
     %endif
     %endfor

@@ -51,7 +51,6 @@ class SetPrinted(osv.osv):
         }
 
 
-
 class BarcodeImageWriter(ImageWriter):
     def calculate_size(self, modules_per_line, number_of_lines, dpi=100):
         width = 2 * self.quiet_zone + modules_per_line * self.module_width
@@ -59,8 +58,6 @@ class BarcodeImageWriter(ImageWriter):
 
         self.size = int(mm2px(width, dpi)), int(mm2px(height, dpi))
         return self.size
-
-
 
 
 class DeliverySlip(report_sxw.rml_parse):
