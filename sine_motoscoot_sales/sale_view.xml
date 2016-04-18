@@ -89,10 +89,6 @@
                         <field name="invoice_status" readonly="1" />
                     </field>
 
-                    <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
-
-                        <field name="margin_ok" groups="base.group_user"/>
-                     </xpath>
 
             </field>
      </record>
