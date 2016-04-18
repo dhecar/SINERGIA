@@ -29,7 +29,8 @@ class sale_order_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             res[line.id] = 0
             if line.product_id:
-                res[line.id] = round(line.price_subtotal - ((line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
+                res[line.id] = round(line.price_subtotal - (
+                    (line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
         return res
 
     _inherit = 'sale.order.line'
@@ -44,6 +45,10 @@ class sale_order_line(osv.osv):
         'margin_ok': fields.function(final_price, string='Margin'),
 
     }
+
+    _sql_constraints = [
+        ('prod_unique', 'unique(order_id, product_id)', 'Hay lineas de pedido repetidas!'),
+    ]
 
 
 sale_order_line()
