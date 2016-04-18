@@ -25,6 +25,7 @@ class sale_order_line(osv.osv):
 
     """ if final price is lower that cost price, prints a Warning !!!"""
 
+
     def final_price(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids, context=context):
