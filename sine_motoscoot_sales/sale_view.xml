@@ -17,8 +17,6 @@
                     <field name="outgoing" />
 		        </xpath>
 
-
-
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="margin_ok"/>
                 </xpath>
@@ -90,7 +88,7 @@
                         <field name="traking" readonly="1" />
                         <field name="invoice_status" readonly="1" />
                     </field>
-                    <xpath expr="//field[@name='order_line']/form//field[@name='purchase_price']" position="after">
+                    <xpath expr="//field[@name='order_line']/form//field[@name='price_subtotal']" position="before">
                         <field name="margin_ok" groups="base.group_user"/>
                      </xpath>
 
