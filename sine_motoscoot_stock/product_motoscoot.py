@@ -128,10 +128,10 @@ class product_product(osv.osv):
         for i in ids:
             cursor.execute(" SELECT qty AS QTY, CASE "
                            " WHEN location_id='12' THEN 'G'"
-                           " WHEN location_id='13' THEN 'B'"
+                           " WHEN location_id='19' THEN 'B'"
                            " WHEN location_id='15' THEN 'P'"
                            " END AS LOC FROM stock_report_prodlots"
-                           " WHERE (location_id ='12' OR location_id ='13' OR location_id='15')"
+                           " WHERE (location_id ='12' OR location_id ='19' OR location_id='15')"
                            " AND product_id = '%s'" % ids[0])
 
             res[i] = cursor.fetchall()
