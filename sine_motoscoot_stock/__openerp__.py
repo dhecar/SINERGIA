@@ -6,7 +6,7 @@
     "category": "Generic Modules/Others",
     "website": "http://sinergiainformatica.net",
     "description": "Extension.",
-    "depends": ["product", "stock_location", "stock", "sale"],
+    "depends": ["product", "stock_location", "stock", "sale", "sine_qz_print"],
     "update_xml": ["product_motoscoot_view.xml", "picking_extension_view.xml"],
     "active": True,
     "installable": True

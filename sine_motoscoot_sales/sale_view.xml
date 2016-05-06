@@ -10,12 +10,16 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
-                    <field name="stock_grn" />
-				    <field name="stock_bcn" />
-				    <field name="stock_pt" />
+                    <field name="sum_stock" />
                     <field name="incoming" />
                     <field name="outgoing" />
 		        </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='sum_stock']" position="attributes">
+                        <attribute name="style">width: 50%%;</attribute>
+                </xpath>
+
+
 
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
                     <field name="margin_ok"/>
@@ -30,9 +34,10 @@
 
 
                 <field name="discount" position="before">
-                    <field name="stock_grn" invisible="1"/>
+                    <!--<field name="stock_grn" invisible="1"/>
 				    <field name="stock_bcn" invisible="1"/>
-				    <field name="stock_pt" invisible="1"/>
+				    <field name="stock_pt" invisible="1"/>-->
+                    <field name="sum_stock"/>
                 </field>
 
 
@@ -88,7 +93,6 @@
                         <field name="traking" readonly="1" />
                         <field name="invoice_status" readonly="1" />
                     </field>
-
 
             </field>
      </record>

@@ -22,6 +22,8 @@
 from osv import fields, osv
 import openerp.addons.decimal_precision as dp
 from openerp import SUPERUSER_ID
+import psycopg2
+import openerp.tools as tools
 
 
 class product_product(osv.osv):
@@ -30,7 +32,7 @@ class product_product(osv.osv):
 
     def test(self, cr, uid, ids, field_names=None, arg=None, context=None):
         result = {}
-        if not ids:return result
+        if not ids: return result
 
         context['only_with_stock'] = True
 
@@ -113,10 +115,35 @@ class product_product(osv.osv):
                 result[prod_id] = i.qty - ads
         return result
 
+    def StockByLocation(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        host = 'localhost'
+        dbname = 'mage'
+        user = 'odoo'
+        password = 'odoopassword'
+        connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
+        conn_string = connection_parameters
+        conn = psycopg2.connect(conn_string)
+        cursor = conn.cursor()
+        for i in ids:
+            cursor.execute(" SELECT qty AS QTY, CASE "
+                           " WHEN location_id='12' THEN 'G'"
+                           " WHEN location_id='13' THEN 'B'"
+                           " WHEN location_id='15' THEN 'P'"
+                           " END AS LOC FROM stock_report_prodlots"
+                           " WHERE (location_id ='12' OR location_id ='13' OR location_id='15')"
+                           " AND product_id = '%s'" % ids[0])
+
+            res[i] = cursor.fetchall()
+
+        return res
+
     _columns = {
+
+        'test': fields.function(StockByLocation, type='char', string='Stocks'),
         'locations': fields.function(test, type='one2many', relation='stock.location', string='Stock by Location'),
-        'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
-                                         'scooter_id', 'scooter models'),
+        # 'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
+        #                                  'scooter_id', 'scooter models'),
         'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
         'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
         'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
@@ -127,4 +154,10 @@ class product_product(osv.osv):
         'internet': fields.boolean('Internet?', help='Está activo en Magento?'),
         'label_print': fields.boolean('Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?'),
     }
+
+    _defaults = {
+        'label_print': True
+    }
+
+
 product_product()

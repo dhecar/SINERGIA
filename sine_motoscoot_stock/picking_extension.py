@@ -19,8 +19,9 @@ class stock_picking_out(osv.osv):
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
 
-        'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
-                                   string='Comercial', readonly=True),
+        # 'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
+        #                           string='Comercial', readonly=True),
+        #'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
 
         'move_lines_sorted': one2many_sorted.one2many_sorted
         ('stock.move'
@@ -52,7 +53,7 @@ class stock_picking_in(osv.osv):
          , order='product_id.product_brand_id.name, product_id.default_code'
          ),
 
-        'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
+        # 'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
     }
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -77,8 +78,8 @@ class stock_picking(osv.osv):
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
 
-        'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
-                                   string='Comercial', readonly=True),
+        # 'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
+        #                            string='Comercial', readonly=True),
         'move_lines_sorted': one2many_sorted.one2many_sorted
         ('stock.move'
          , 'picking_id'
@@ -100,9 +101,7 @@ class stock_move(osv.osv):
     _inherit = 'stock.move'
     _columns = {
 
-        'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
-        'stock_bcn': fields.related('product_id', 'stock_bcn', type='float', string='B'),
-        'stock_pt': fields.related('product_id', 'stock_pt', type='float', string='P'),
+        'prod_stock': fields.related('product_id', 'test', type='char', string='Stocks')
 
     }
 
@@ -206,7 +205,7 @@ class stock_partial_picking(osv.osv):
                 gap = x.qz_label_gap
                 height = [h, gap]
                 width = x.qz_label_width
-        z.setup(direct_thermal=thermal, label_height=height, label_width=width)
+                z.setup(direct_thermal=thermal, label_height=height, label_width=width)
         epl = self.prepare_epl_data(cr, uid, ids, context=context)
         partial_pick_obj = self.pool.get('stock.partial.picking.line')
         line_ids = context.get('line_id', []) or []

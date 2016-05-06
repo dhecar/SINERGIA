@@ -22,10 +22,6 @@ from osv import fields, osv
 
 
 class sale_order_line(osv.osv):
-
-    """ if final price is lower that cost price, prints a Warning !!!"""
-
-
     def final_price(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids, context=context):
@@ -35,11 +31,38 @@ class sale_order_line(osv.osv):
                     (line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
         return res
 
+    #    def product_id_change(self, cr, uid, ids, pricelist, product,  qty=0,
+    #                          uom=False, qty_uos=0, uos=False, name='', partner_id=False,
+    #                          lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False,
+    #                          flag=False, order=False,  context=None):
+    #        res = super(sale_order_line, self).product_id_change(cr, uid, ids, pricelist, product,  qty=qty,
+    #                                                             uom=uom, qty_uos=qty_uos, uos=uos, name=name,
+    #                                                             partner_id=partner_id,
+    #                                                             lang=lang, update_tax=update_tax, date_order=date_order,
+    #                                                             packaging=packaging, fiscal_position=fiscal_position,
+    #                                                             flag=flag, order=order, context=context)
+    #
+    #        sale_line_ids = self.pool.get('sale.order.line').search(cr, uid, [('order_id', '=', order)], context=context)
+    #
+    #        for line in sale_line_ids:
+    #
+    #            if line.product_id == product:
+    #                warning = {
+    #                    'title': 'EH Campeon!!!',
+    #                    'message': 'Este producto ya lo tienes en el pedido, estas seguro de volverlo a meter?'
+    #                    }
+    #                return {'warning': warning}
+
+    #        return res
+
+
+
     _inherit = 'sale.order.line'
     _columns = {
-        'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
-        'stock_bcn': fields.related('product_id', 'stock_bcn', type='float', string='B'),
-        'stock_pt': fields.related('product_id', 'stock_pt', type='float', string='P'),
+        # 'stock_grn': fields.related('product_id', 'stock_grn', type='float', string='G'),
+        # 'stock_bcn': fields.related('product_id', 'stock_bcn', type='float', string='B'),
+        #'stock_pt': fields.related('product_id', 'stock_pt', type='float', string='P'),
+        'sum_stock': fields.related('product_id', 'test', type='char', string='Stocks'),
         'incoming': fields.related('product_id', 'incoming_qty', type='float', string='IN'),
         'outgoing': fields.related('product_id', 'outgoing_qty', type='float', string='OUT'),
         'date_ordered': fields.related('order_id', 'date_order', type='char', relation='sale.order',
@@ -48,16 +71,13 @@ class sale_order_line(osv.osv):
 
     }
 
-    _sql_constraints = [
-        ('prod_unique', 'unique(order_id, product_id)', 'Hay lineas de pedido repetidas!'),
-    ]
-
 
 sale_order_line()
 
 
 class sale_order(osv.osv):
     _inherit = 'sale.order'
+
     _columns = {
         'sale_internal_comment': fields.text('Internal Comment', help=''),
         'picking_status': fields.related('picking_ids', 'state', type='char', string="Estado envio"),

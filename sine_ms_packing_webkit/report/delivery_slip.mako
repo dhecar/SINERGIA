@@ -199,9 +199,8 @@
                     <th style="text-align:left; ">${_("Marca")}</th>
                     <th style="text-align:left; ">${_("Description")}</th>
                     <!--<th style="text-align:left; ">${_("Ubicación")}</th>-->
-                    <th style="text-align:left; ">${_("GRN")}</th>
-                    <th style="text-align:left; ">${_("BCN")}</th>
-                    <th style="text-align:left; ">${_("PT")}</th>
+                    <th style="text-align:left; ">${_("STOCKS")}</th>
+
                 </tr>
             </thead>
                 <tbody>
@@ -226,9 +225,8 @@
                         <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
 
 
-                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_grn) }</td>
-                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_bcn) }</td>
-                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_pt) }</td>
+                        <td style="height:40px;text-align:left;" >${ str(line.product_id.test) }</td>
+
 
 
                     </tr>
@@ -249,9 +247,8 @@
                         <th style="text-align:left; ">${_("Marca")}</th>
                         <th style="text-align:left; ">${_("Description")}</th>
                         <!--<th style="text-align:left; ">${_("Ubicación")}</th>-->
-                        <th style="text-align:left; ">${_("GRN")}</th>
-                        <th style="text-align:left; ">${_("BCN")}</th>
-                        <th style="text-align:left; ">${_("PT")}</th>
+                        <th style="text-align:left; ">${_("Stocks")}</th>
+
                     </tr>
             </thead>
                 <tbody>
@@ -272,9 +269,8 @@
                         <td style="height:40px;text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
                         <!--<td style="text-align:left; ">${( line.product_id.loc_rack )}  ${( line.product_id.loc_row )}  ${( line.product_id.loc_case)}</td>-->
-                        <td style="height:40px;text-align:left;" > ${ int(line.product_id.stock_grn) }</td>
-                        <td style="height:40px;text-align:left;" > ${ int(line.product_id.stock_bcn) }</td>
-                        <td style="height:40px;text-align:left;" > ${ int(line.product_id.stock_pt) }</td>
+                        <td style="height:40px;text-align:left;" > ${ str(line.product_id.test) }</td>
+
 
                     </tr>
                 %if line.product_id.internal_note:
@@ -333,8 +329,8 @@
                     <th style="text-align:left; ">${_("Ref")}</th>
                     <th style="text-align:left; ">${_("Marca")}</th>
                     <th style="text-align:left; ">${_("Description")}</th>
-                    <th style="text-align:left; ">${_("GRN")}</th>
-                    <th style="text-align:left; ">${_("BCN")}</th>
+                    <th style="text-align:left; ">${_("Stocks")}</th>
+
 
                 </tr>
             </thead>
@@ -352,8 +348,8 @@
                         </td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
-                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_grn) }</td>
-                        <td style="height:40px;text-align:left;" >${ int(line.product_id.stock_bcn) }</td>
+                        <td style="height:40px;text-align:left;" >${ str(line.product_id.test) }</td>
+
                     </tr>
 
                 %endfor
