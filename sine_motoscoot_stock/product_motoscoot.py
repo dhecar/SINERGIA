@@ -116,23 +116,25 @@ class product_product(osv.osv):
         return result
 
     def StockByLocation(self, cr, uid, ids, name, args, context=None):
-        res = {}
+
         host = 'localhost'
-        dbname = 'mage'
-        user = 'odoo'
-        password = 'odoopassword'
+        dbname = ''
+        user = ''
+        password = ''
         connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
         conn_string = connection_parameters
         conn = psycopg2.connect(conn_string)
         cursor = conn.cursor()
+        res = {}
+
         for i in ids:
             cursor.execute(" SELECT qty AS QTY, CASE "
                            " WHEN location_id='12' THEN 'G'"
-                           " WHEN location_id='19' THEN 'B'"
+                           " WHEN location_id='13' THEN 'B'"
                            " WHEN location_id='15' THEN 'P'"
                            " END AS LOC FROM stock_report_prodlots"
-                           " WHERE (location_id ='12' OR location_id ='19' OR location_id='15')"
-                           " AND product_id = '%s'" % ids[0])
+                           " WHERE (location_id ='12' OR location_id ='13' OR location_id='15')"
+                           " AND product_id = '%s'" % i)
 
             res[i] = cursor.fetchall()
 
