@@ -19,9 +19,8 @@ class stock_picking_out(osv.osv):
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
 
-        # 'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
-        #                           string='Comercial', readonly=True),
-        #'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
+        'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
+                                   string='Comercial', readonly=True),
 
         'move_lines_sorted': one2many_sorted.one2many_sorted
         ('stock.move'
@@ -53,7 +52,7 @@ class stock_picking_in(osv.osv):
          , order='product_id.product_brand_id.name, product_id.default_code'
          ),
 
-        # 'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
+        'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
     }
 
     def copy(self, cr, uid, id, default=None, context=None):
@@ -78,8 +77,8 @@ class stock_picking(osv.osv):
         'pricelist_type': fields.related('sale_id', 'pricelist_id', type='many2one', relation='product.pricelist',
                                          string='Tarifa', readonly=True),
 
-        # 'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
-        #                            string='Comercial', readonly=True),
+        'res_user': fields.related('sale_id', 'user_id', type='many2one', relation='res.users',
+                                    string='Comercial', readonly=True),
         'move_lines_sorted': one2many_sorted.one2many_sorted
         ('stock.move'
          , 'picking_id'
