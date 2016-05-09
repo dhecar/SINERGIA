@@ -10,7 +10,7 @@
         <form string="Configuration">
             <field name="url" groups="sine_wyomind_stock_update.group_wyomind_config_admin"/>
 		    <field name="apiuser" groups="sine_wyomind_stock_update.group_wyomind_config_admin"/>
-            <field name="apipass" groups="sine_wyomind_stock_update.group_wyomind_config_admin"/>
+            <field name="apipass" groups="sine_wyomind_stock_update.group_wyomind_config_admin" password="True"/>
         </form>
 	    </field>
     </record>
