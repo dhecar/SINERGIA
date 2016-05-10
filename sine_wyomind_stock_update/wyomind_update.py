@@ -213,47 +213,52 @@ class stock_partial_picking(osv.osv_memory):
 
             """ Update dest stock location"""
             if partial.picking_id.type == 'in':
-                # product stock
-                cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+                # If product is linked to magento
+                if wizard_line.product_id.magento_bind_ids:
+                    # product stock
+                    cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                        location_id =%s AND product_id = %s""" %
-                           (wizard_line.location_dest_id.id, wizard_line.product_id.id))
-                q = cr.fetchone()[0]
+                               (wizard_line.location_dest_id.id, wizard_line.product_id.id))
+                    q = cr.fetchone()[0]
 
-                # magento id
-                cr.execute('SELECT magento_id'
-                           ' FROM magento_product_product'
-                           ' WHERE openerp_id =%s' % wizard_line.product_id.id)
-                mag_id = cr.fetchone()[0]
+                    # magento id
+                    cr.execute('SELECT magento_id'
+                               ' FROM magento_product_product'
+                               ' WHERE openerp_id =%s' % wizard_line.product_id.id)
+                    mag_id = cr.fetchone()[0]
 
-                data_basic = {'quantity_in_stock': q,
-                              'manage_stock': 1,
-                              'backorder_allowed': 0,
-                              'use_config_setting_for_backorders': 1}
+                    data_basic = {'quantity_in_stock': q,
+                                  'manage_stock': 1,
+                                  'backorder_allowed': 0,
+                                  'use_config_setting_for_backorders': 1}
 
-                proxy.call(session, 'advancedinventory.setData',
-                           (mag_id, location2, data_basic))
+                    proxy.call(session, 'advancedinventory.setData',
+                               (mag_id, location2, data_basic))
 
             """ Update origin stock location"""
             if partial.picking_id.type == 'out':
-                cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+                # If product is linked to magento
+                if wizard_line.product_id.magento_bind_ids:
+                    cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                location_id =%s AND product_id = %s""" %
-                           (wizard_line.location_id.id, wizard_line.product_id.id))
-                q = cr.fetchone()[0]
+                               (wizard_line.location_id.id, wizard_line.product_id.id))
+                    q = cr.fetchone()[0]
 
-                # magento id
-                cr.execute('SELECT magento_id'
-                           ' FROM magento_product_product'
-                           ' WHERE openerp_id =%s' % wizard_line.product_id.id)
-                mag_id = cr.fetchone()[0]
+                    # magento id
 
-                # Internal and Out movements are computed.
-                data_basic = {'quantity_in_stock': q,
-                              'manage_stock': 1,
-                              'backorder_allowed': 0,
-                              'use_config_setting_for_backorders': 1}
+                    cr.execute('SELECT magento_id'
+                               ' FROM magento_product_product'
+                               ' WHERE openerp_id =%s' % wizard_line.product_id.id)
+                    mag_id = cr.fetchone()[0]
 
-                proxy.call(session, 'advancedinventory.setData',
-                           (mag_id, location, data_basic))
+                    # Internal and Out movements are computed.
+                    data_basic = {'quantity_in_stock': q,
+                                  'manage_stock': 1,
+                                  'backorder_allowed': 0,
+                                  'use_config_setting_for_backorders': 1}
+
+                    proxy.call(session, 'advancedinventory.setData',
+                               (mag_id, location, data_basic))
 
         return res
 
