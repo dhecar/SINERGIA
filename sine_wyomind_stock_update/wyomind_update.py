@@ -122,7 +122,8 @@ class stock_change_product_qty(osv.osv_memory):
             data_basic = {'quantity_in_stock': data.new_quantity,
                           'manage_stock': 1,
                           'backorder_allowed': 0,
-                          'use_config_setting_for_backorders': 1
+                          'use_config_setting_for_backorders': 1,
+                          'manage_local_stock': 1
                           }
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
