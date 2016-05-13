@@ -128,6 +128,8 @@ class stock_change_product_qty(osv.osv_memory):
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
+            proxy.call(session, 'advancedinventory.setMultistock'), (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                     1)
 
         return {}
 
@@ -214,6 +216,7 @@ class stock_partial_picking(osv.osv_memory):
 
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic2))
+                proxy.call(session, 'advancedinventory.setMultistock', (mag_id, 1))
 
             """ Update dest stock location"""
             if partial.picking_id.type == 'in':
@@ -239,6 +242,7 @@ class stock_partial_picking(osv.osv_memory):
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
+                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, 1))
 
             """ Update origin stock location"""
             if partial.picking_id.type == 'out':
@@ -264,6 +268,7 @@ class stock_partial_picking(osv.osv_memory):
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
+                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, 1))
 
         return res
 
