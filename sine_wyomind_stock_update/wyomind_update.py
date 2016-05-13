@@ -120,10 +120,10 @@ class stock_change_product_qty(osv.osv_memory):
                 location = 3
 
             data_basic = {'quantity_in_stock': data.new_quantity,
-                          'manage_stock': 1,
+                          'manage_local_stock': 1,
                           'backorder_allowed': 0,
-                          'use_config_setting_for_backorders': 1,
-                          'status': 1}
+                          'use_config_setting_for_backorders': 1
+                          }
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
@@ -197,19 +197,19 @@ class stock_partial_picking(osv.osv_memory):
 
                 # Only internal movements are computed
                 data_basic = {'quantity_in_stock': q_orig,
-                              'manage_stock': 1,
+                              'manage_local_stock': 1,
                               'backorder_allowed': 0,
-                              'use_config_setting_for_backorders': 1,
-                              'status': 1}
+                              'use_config_setting_for_backorders': 1
+                              }
 
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location, data_basic))
 
                 data_basic2 = {'quantity_in_stock': q_dest,
-                               'manage_stock': 1,
+                               'manage_local_stock': 1,
                                'backorder_allowed': 0,
-                               'use_config_setting_for_backorders': 1,
-                               'status': 1}
+                               'use_config_setting_for_backorders': 1
+                               }
 
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic2))
@@ -231,10 +231,10 @@ class stock_partial_picking(osv.osv_memory):
                     mag_id = cr.fetchone()[0]
 
                     data_basic = {'quantity_in_stock': q,
-                                  'manage_stock': 1,
+                                  'manage_local_stock': 1,
                                   'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 1,
-                                  'status': 1}
+                                  'use_config_setting_for_backorders': 1
+                                  }
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
@@ -257,10 +257,9 @@ class stock_partial_picking(osv.osv_memory):
 
                     # Out movements are computed.
                     data_basic = {'quantity_in_stock': q,
-                                  'manage_stock': 1,
+                                  'manage_local_stock': 1,
                                   'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 1,
-                                  'status': 1}
+                                  'use_config_setting_for_backorders': 1}
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
