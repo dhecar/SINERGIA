@@ -128,7 +128,10 @@ class stock_change_product_qty(osv.osv_memory):
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic))
-            proxy.call(session, 'advancedinventory.setMultistock', (get_mag_prod_id(self, cr, uid, ids, context=context), True))
+            prod_data = {'product_id':get_mag_prod_id(self, cr, uid, ids, context=context),
+                         'status': True}
+
+            proxy.call(session, 'advancedinventory.setMultistock', prod_data)
 
         return {}
 
