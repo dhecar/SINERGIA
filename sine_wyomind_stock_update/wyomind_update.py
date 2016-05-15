@@ -128,8 +128,8 @@ class stock_change_product_qty(osv.osv_memory):
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic)),
-            proxy.call(session, 'advancedinventory.setMultistock',
-                       (get_mag_prod_id(self, cr, uid, ids, context=context), True))
+            #proxy.call(session, 'advancedinventory.setMultistock',
+            #           (get_mag_prod_id(self, cr, uid, ids, context=context), True))
 
         return {}
 
@@ -214,7 +214,7 @@ class stock_partial_picking(osv.osv_memory):
                                'use_config_setting_for_backorders': 0
                                }
 
-                proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
+                #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic2))
 
@@ -240,7 +240,7 @@ class stock_partial_picking(osv.osv_memory):
                                   'use_config_setting_for_backorders': 0
                                   }
 
-                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
+                    #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
 
@@ -266,7 +266,7 @@ class stock_partial_picking(osv.osv_memory):
                                   'backorder_allowed': 0,
                                   'use_config_setting_for_backorders': 0}
 
-                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
+                    #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
 
