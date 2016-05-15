@@ -122,16 +122,14 @@ class stock_change_product_qty(osv.osv_memory):
             data_basic = {'quantity_in_stock': data.new_quantity,
                           'manage_stock': 1,
                           'backorder_allowed': 0,
-                          'use_config_setting_for_backorders': 1,
+                          'use_config_setting_for_backorders': 0,
 
                           }
 
-            proxy.call(session, 'advancedinventory.setMultistock', (get_mag_prod_id(self, cr, uid, ids, context=context) , True))
+            proxy.call(session, 'advancedinventory.setMultistock',
+                       (get_mag_prod_id(self, cr, uid, ids, context=context), True))
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic)),
-
-
-
 
         return {}
 
@@ -204,7 +202,7 @@ class stock_partial_picking(osv.osv_memory):
                 data_basic = {'quantity_in_stock': q_orig,
                               'manage_stock': 1,
                               'backorder_allowed': 0,
-                              'use_config_setting_for_backorders': 1
+                              'use_config_setting_for_backorders': 0
                               }
 
                 proxy.call(session, 'advancedinventory.setData',
@@ -213,12 +211,12 @@ class stock_partial_picking(osv.osv_memory):
                 data_basic2 = {'quantity_in_stock': q_dest,
                                'manage_stock': 1,
                                'backorder_allowed': 0,
-                               'use_config_setting_for_backorders': 1
+                               'use_config_setting_for_backorders': 0
                                }
 
+                proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic2))
-                proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
 
             """ Update dest stock location"""
             if partial.picking_id.type == 'in':
@@ -239,12 +237,12 @@ class stock_partial_picking(osv.osv_memory):
                     data_basic = {'quantity_in_stock': q,
                                   'manage_stock': 1,
                                   'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 1
+                                  'use_config_setting_for_backorders': 0
                                   }
 
+                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
-                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
 
             """ Update origin stock location"""
             if partial.picking_id.type == 'out':
@@ -266,11 +264,11 @@ class stock_partial_picking(osv.osv_memory):
                     data_basic = {'quantity_in_stock': q,
                                   'manage_tock': 1,
                                   'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 1}
+                                  'use_config_setting_for_backorders': 0}
 
+                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
-                    proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
 
         return res
 
