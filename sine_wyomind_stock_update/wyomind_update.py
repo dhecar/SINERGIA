@@ -190,9 +190,7 @@ class stock_partial_picking(osv.osv_memory):
 
                 # CASE GRN
                 if wizard_line.location_id.id == 12:
-                    loc = 12
-                    p_orig = wizard_line.location_id.id, wizard_line.product_id.id
-                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_orig, loc,
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, wizard_line.product_id.id, wizard_line.location_id.id,
                                            context=context)
                     q_orig = cr.fetchone()[0] - ads
 
@@ -208,9 +206,9 @@ class stock_partial_picking(osv.osv_memory):
 
                 # CASE GRN
                 if wizard_line.location_dest_id.id == 12:
-                    p_dest = wizard_line.location_dest_id.id, wizard_line.product_id.id
-                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_dest, loc,
-                                           context=context)
+
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, wizard_line.product_id.id,
+                                           wizard_line.location_dest_id.id, context=context)
                     q_dest = cr.fetchone()[0] - ads
                 else:
                     q_dest = cr.fetchone()[0]
@@ -251,10 +249,8 @@ class stock_partial_picking(osv.osv_memory):
 
                     # CASE GRN
                     if wizard_line.location_dest_id.id == 12:
-                        # REMOTE
-                        p_dest = wizard_line.product_id.id
-                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_dest, loc,
-                                               context=context)
+                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, wizard_line.product_id.id,
+                                               wizard_line.location_dest_id.id, context=context)
                         q = cr.fetchone()[0] - ads
                     else:
                         q = cr.fetchone()[0]
@@ -285,10 +281,8 @@ class stock_partial_picking(osv.osv_memory):
 
                     # CASE GRN
                     if wizard_line.location_id.id == 12:
-                        # REMOTE
-                        p_orig = wizard_line.product_id.id
-                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_orig, loc,
-                                               context=context)
+                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, wizard_line.product_id.id,
+                                               wizard_line.location_id.id, context=context)
                         q = cr.fetchone()[0] - ads
 
                     # ELSE
