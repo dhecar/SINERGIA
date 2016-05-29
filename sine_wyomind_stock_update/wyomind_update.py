@@ -19,6 +19,7 @@
 
 from openerp.osv import fields, osv, orm
 import xmlrpclib
+from openerp import SUPERUSER_ID
 import time
 from openerp import netsvc
 from openerp.tools import float_compare, DEFAULT_SERVER_DATETIME_FORMAT
@@ -128,8 +129,6 @@ class stock_change_product_qty(osv.osv_memory):
 
             proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
                                                               location, data_basic)),
-            #proxy.call(session, 'advancedinventory.setMultistock',
-            #           (get_mag_prod_id(self, cr, uid, ids, context=context), True))
 
         return {}
 
@@ -143,6 +142,10 @@ class stock_partial_picking(osv.osv_memory):
     def do_partial(self, cr, uid, ids, context=None):
         res = super(stock_partial_picking, self).do_partial(cr, uid, ids, context=context)
         partial = self.browse(cr, uid, ids[0], context=context)
+
+        # REMOTE
+        db_obj = self.pool['base.external.dbsource']
+
         # Wyomind Config
         conf_obj = self.pool.get('wyomind.config')
         conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
@@ -154,7 +157,7 @@ class stock_partial_picking(osv.osv_memory):
             # Connection
             proxy = xmlrpclib.ServerProxy(url, allow_none=True)
             session = proxy.login(user, passw)
-            multicall = xmlrpclib.MultiCall(proxy)
+
         # Wyomind stock update
 
         for wizard_line in partial.move_ids:
@@ -184,13 +187,33 @@ class stock_partial_picking(osv.osv_memory):
                 cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                        location_id =%s AND product_id = %s""" %
                            (wizard_line.location_id.id, wizard_line.product_id.id))
-                q_orig = cr.fetchone()[0]
+
+                # CASE GRN
+                if wizard_line.location_id.id == 12:
+                    loc = 12
+                    p_orig = wizard_line.location_id.id, wizard_line.product_id.id
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_orig, loc,
+                                           context=context)
+                    q_orig = cr.fetchone()[0] - ads
+
+                # ELSE
+                else:
+                    q_orig = cr.fetchone()[0]
 
                 # product stock dest
+
                 cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                            location_id =%s AND product_id = %s""" %
                            (wizard_line.location_dest_id.id, wizard_line.product_id.id))
-                q_dest = cr.fetchone()[0]
+
+                # CASE GRN
+                if wizard_line.location_dest_id.id == 12:
+                    p_dest = wizard_line.location_dest_id.id, wizard_line.product_id.id
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_dest, loc,
+                                           context=context)
+                    q_dest = cr.fetchone()[0] - ads
+                else:
+                    q_dest = cr.fetchone()[0]
 
                 # magento id
                 cr.execute('SELECT magento_id'
@@ -213,20 +236,28 @@ class stock_partial_picking(osv.osv_memory):
                                'backorder_allowed': 0,
                                'use_config_setting_for_backorders': 0
                                }
-
-                #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic2))
 
             """ Update dest stock location"""
             if partial.picking_id.type == 'in':
+
                 # If product is linked to magento
                 if wizard_line.product_id.magento_bind_ids:
                     # product stock
                     cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                        location_id =%s AND product_id = %s""" %
                                (wizard_line.location_dest_id.id, wizard_line.product_id.id))
-                    q = cr.fetchone()[0]
+
+                    # CASE GRN
+                    if wizard_line.location_dest_id.id == 12:
+                        # REMOTE
+                        p_dest = wizard_line.product_id.id
+                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_dest, loc,
+                                               context=context)
+                        q = cr.fetchone()[0] - ads
+                    else:
+                        q = cr.fetchone()[0]
 
                     # magento id
                     cr.execute('SELECT magento_id'
@@ -240,18 +271,29 @@ class stock_partial_picking(osv.osv_memory):
                                   'use_config_setting_for_backorders': 0
                                   }
 
-                    #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
 
             """ Update origin stock location"""
             if partial.picking_id.type == 'out':
+
                 # If product is linked to magento
                 if wizard_line.product_id.magento_bind_ids:
                     cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                location_id =%s AND product_id = %s""" %
                                (wizard_line.location_id.id, wizard_line.product_id.id))
-                    q = cr.fetchone()[0]
+
+                    # CASE GRN
+                    if wizard_line.location_id.id == 12:
+                        # REMOTE
+                        p_orig = wizard_line.product_id.id
+                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, p_orig, loc,
+                                               context=context)
+                        q = cr.fetchone()[0] - ads
+
+                    # ELSE
+                    else:
+                        q = cr.fetchone()[0]
 
                     # magento id
 
@@ -262,11 +304,10 @@ class stock_partial_picking(osv.osv_memory):
 
                     # Out movements are computed.
                     data_basic = {'quantity_in_stock': q,
-                                  'manage_tock': 1,
+                                  'manage_stock': 1,
                                   'backorder_allowed': 0,
                                   'use_config_setting_for_backorders': 0}
 
-                    #proxy.call(session, 'advancedinventory.setMultistock', (mag_id, True))
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
 

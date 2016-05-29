@@ -117,19 +117,35 @@ class product_product(osv.osv):
 
     def StockByLocation(self, cr, uid, ids, name, args, context=None):
 
+        db_obj = self.pool['base.external.dbsource']
+        location_id = 12
         res = {}
-
         for i in ids:
+            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
+                                   context=context)
+
             cr.execute(""" SELECT qty AS QTY, CASE
                         WHEN location_id='12' THEN 'G'
                         WHEN location_id='19' THEN 'B'
                         WHEN location_id='15' THEN 'P'
                         END AS LOC FROM stock_report_prodlots
                         WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                        AND product_id = '%s'""" % i)
+                        AND product_id = '%s' ORDER BY location_id""" % i)
+            res[i] = cr.dictfetchall()
 
-            res[i] = cr.fetchall()
+            if not res[i]:
+                res[i] = {}
+            else:
+                # GRN
+                if res[i][0]['loc'] == 'G':
+                    res[i][0]['qty'] = res[i][0]['qty'] - ads
+            counter = 0
+            qty = ""
+            for location in res[i]:
+                counter += 1
+                qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
 
+            res[i] = qty
         return res
 
     _columns = {
@@ -138,9 +154,6 @@ class product_product(osv.osv):
         'locations': fields.function(test, type='one2many', relation='stock.location', string='Stock by Location'),
         # 'scooters_ids': fields.many2many('scooter.asociaciones', 'scooter_compat_with_product_rel', 'product_id',
         #                                  'scooter_id', 'scooter models'),
-        'stock_grn': fields.function(stock_Grn, type='float', string='GRN: '),
-        'stock_bcn': fields.function(stock_Bcn, type='float', string='BCN: '),
-        'stock_pt': fields.function(stock_Pt, type='float', string='PT: '),
         'internal_note': fields.text('Nota Interna', translate=True),
         'shared': fields.boolean('Shared', help='Share this product with SCTV?'),
         'pvp_fabricante': fields.float('Precio Base TT',
