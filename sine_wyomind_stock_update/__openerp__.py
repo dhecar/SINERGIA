@@ -7,7 +7,7 @@
     "website": "http://sinergiainformatica.net",
     "description": "This module update the product stock throught API to Magento websites that have"
                    " Advanced Inventory module from Wyomind.",
-    "depends": ['stock'],
+    "depends": ['stock', 'sale_to_invoice'],
     "update_xml": ["wyomind_update_view.xml"],
     "data": ['security/security.xml', 'security/ir.model.access.csv'],
     "active": True,
