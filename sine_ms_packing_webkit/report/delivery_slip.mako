@@ -290,7 +290,7 @@
             <p class="std_text">${picking.sale_id.sale_internal_comment | carriage_returns}</p>
         %endif
 
-    <p style="page-break-after: always"/>
+    <p style="page-break-before: always"/>
 
 
     </body>
@@ -360,11 +360,10 @@
     <br>
     <br/>
 
-    <p style="page-break-after: always"/>
 
 
     %endif
     %endfor
-
+    <p style="page-break-before: always"/>
     </body>
     </html>
