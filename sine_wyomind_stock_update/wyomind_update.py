@@ -436,6 +436,14 @@ class stock_move(osv.osv):
                 """Locations hardcoded"""
                 # TODO put locations in config file
 
+                location = 0
+                if move.location_id.id == 12:
+                    location = 2
+                if move.location_id.id == 15:
+                    location = 4
+                if move.location_id.id == 19:
+                    location = 3
+
                 location2 = 0
                 if move.location_dest_id.id == 12:
                     location2 = 2
@@ -475,6 +483,38 @@ class stock_move(osv.osv):
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location2, data_basic))
+
+                """ Update origin stock location for partial out movements"""
+                # If product is linked to magento
+                if move.product_id.magento_bind_ids:
+                    # product stock
+                    cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+                                location_id =%s AND product_id = %s""" %
+                               (move.location_id.id, move.product_id.id))
+                    qty = cr.fetchone()[0]
+
+                    # CASE GRN
+                    if move.location_id.id == 12:
+                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
+                                               move.location_id.id, context=context)
+                        q = qty - ads
+                    else:
+                        q = qty
+
+                    # magento id
+                    cr.execute('SELECT magento_id'
+                               ' FROM magento_product_product'
+                               ' WHERE openerp_id =%s' % move.product_id.id)
+                    mag_id = cr.fetchone()[0]
+
+                    data_basic = {'quantity_in_stock': q,
+                                  'manage_stock': 1,
+                                  'backorder_allowed': 0,
+                                  'use_config_setting_for_backorders': 0
+                                  }
+
+                    proxy.call(session, 'advancedinventory.setData',
+                               (mag_id, location, data_basic))
 
         return res
 
