@@ -140,6 +140,7 @@ class stock_partial_picking(osv.osv_memory):
     _inherit = "stock.partial.picking"
 
     def do_partial(self, cr, uid, ids, context=None):
+        tiempo_inicial = time.time()
         res = super(stock_partial_picking, self).do_partial(cr, uid, ids, context=context)
         partial = self.browse(cr, uid, ids[0], context=context)
 
@@ -311,6 +312,9 @@ class stock_partial_picking(osv.osv_memory):
 
                     proxy.call(session, 'advancedinventory.setData',
                                (mag_id, location, data_basic))
+        tiempo_final = time.time()
+        tiempo_ejecucion = tiempo_final - tiempo_inicial
+        print 'Stock_partial_picking:', tiempo_ejecucion
 
         return res
 
@@ -322,6 +326,7 @@ class stock_partial_move(osv.osv_memory):
     _inherit = "stock.partial.move"
 
     def do_partial(self, cr, uid, ids, context=None):
+        tiempo_inicial = time.time()
         res = super(stock_partial_move, self).do_partial(cr, uid, ids, context=context)
         partial = self.browse(cr, uid, ids[0], context=context)
         # REMOTE
@@ -385,6 +390,9 @@ class stock_partial_move(osv.osv_memory):
 
                 proxy.call(session, 'advancedinventory.setData',
                            (mag_id, location2, data_basic))
+        tiempo_final = time.time()
+        tiempo_ejecucion = tiempo_final - tiempo_inicial
+        print ' stock_partial_move', tiempo_ejecucion
 
         return res
 
@@ -393,6 +401,7 @@ class stock_move(osv.osv):
     _inherit = 'stock.move'
 
     def action_done(self, cr, uid, ids, context=None):
+        tiempo_inicial = time.time()
         res = super(stock_move, self).action_done(cr, uid, ids, context=context)
         # REMOTE
         db_obj = self.pool['base.external.dbsource']
@@ -430,93 +439,97 @@ class stock_move(osv.osv):
             if move.picking_id:
                 picking_ids.append(move.picking_id.id)
 
-            # Wyomind stock update
-            for wizard_line in move_ids:
+                # Wyomind stock update
+        for wizard_line in move_ids:
 
-                """Locations hardcoded"""
-                # TODO put locations in config file
+            """Locations hardcoded"""
+            # TODO put locations in config file
 
-                location = 0
-                if move.location_id.id == 12:
-                    location = 2
-                if move.location_id.id == 15:
-                    location = 4
-                if move.location_id.id == 19:
-                    location = 3
+            location = 0
+            if move.location_id.id == 12:
+                location = 2
+            if move.location_id.id == 15:
+                location = 4
+            if move.location_id.id == 19:
+                location = 3
 
-                location2 = 0
-                if move.location_dest_id.id == 12:
-                    location2 = 2
-                if move.location_dest_id.id == 15:
-                    location2 = 4
-                if move.location_dest_id.id == 19:
-                    location2 = 3
+            location2 = 0
+            if move.location_dest_id.id == 12:
+                location2 = 2
+            if move.location_dest_id.id == 15:
+                location2 = 4
+            if move.location_dest_id.id == 19:
+                location2 = 3
 
-                """ Update dest stock location for partial in movements"""
-                # If product is linked to magento
-                if move.product_id.magento_bind_ids:
-                    # product stock
-                    cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+            """ Update dest stock location for partial in movements"""
+            # If product is linked to magento
+            if move.product_id.magento_bind_ids:
+                # product stock
+                cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                     location_id =%s AND product_id = %s""" %
-                               (move.location_dest_id.id, move.product_id.id))
-                    qty = cr.fetchone()[0]
+                           (move.location_dest_id.id, move.product_id.id))
+                qty = cr.fetchone()[0]
 
-                    # CASE GRN
-                    if move.location_dest_id.id == 12:
-                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
-                                               move.location_dest_id.id, context=context)
-                        q = qty - ads
-                    else:
-                        q = qty
+                # CASE GRN
+                if move.location_dest_id.id == 12:
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
+                                           move.location_dest_id.id, context=context)
+                    q = qty - ads
+                else:
+                    q = qty
 
-                    # magento id
-                    cr.execute('SELECT magento_id'
-                               ' FROM magento_product_product'
-                               ' WHERE openerp_id =%s' % move.product_id.id)
-                    mag_id = cr.fetchone()[0]
+                # magento id
+                cr.execute('SELECT magento_id'
+                           ' FROM magento_product_product'
+                           ' WHERE openerp_id =%s' % move.product_id.id)
+                mag_id = cr.fetchone()[0]
 
-                    data_basic = {'quantity_in_stock': q,
-                                  'manage_stock': 1,
-                                  'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 0
-                                  }
+                data_basic = {'quantity_in_stock': q,
+                              'manage_stock': 1,
+                              'backorder_allowed': 0,
+                              'use_config_setting_for_backorders': 0
+                              }
 
-                    proxy.call(session, 'advancedinventory.setData',
-                               (mag_id, location2, data_basic))
+                proxy.call(session, 'advancedinventory.setData',
+                           (mag_id, location2, data_basic))
 
-                """ Update origin stock location for partial out movements"""
-                # If product is linked to magento
-                if move.product_id.magento_bind_ids:
-                    # product stock
-                    cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+            """ Update origin stock location for partial out movements"""
+            # If product is linked to magento
+            if move.product_id.magento_bind_ids:
+                # product stock
+                cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                 location_id =%s AND product_id = %s""" %
-                               (move.location_id.id, move.product_id.id))
-                    qty = cr.fetchone()[0]
+                           (move.location_id.id, move.product_id.id))
+                qty = cr.fetchone()[0]
 
-                    # CASE GRN
-                    if move.location_id.id == 12:
-                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
-                                               move.location_id.id, context=context)
-                        q = qty - ads
-                    else:
-                        q = qty
+                # CASE GRN
+                if move.location_id.id == 12:
+                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
+                                           move.location_id.id, context=context)
+                    q = qty - ads
+                else:
+                    q = qty
 
-                    # magento id
-                    cr.execute('SELECT magento_id'
-                               ' FROM magento_product_product'
-                               ' WHERE openerp_id =%s' % move.product_id.id)
-                    mag_id = cr.fetchone()[0]
+                # magento id
+                cr.execute('SELECT magento_id'
+                           ' FROM magento_product_product'
+                           ' WHERE openerp_id =%s' % move.product_id.id)
+                mag_id = cr.fetchone()[0]
 
-                    data_basic = {'quantity_in_stock': q,
-                                  'manage_stock': 1,
-                                  'backorder_allowed': 0,
-                                  'use_config_setting_for_backorders': 0
-                                  }
+                data_basic = {'quantity_in_stock': q,
+                              'manage_stock': 1,
+                              'backorder_allowed': 0,
+                              'use_config_setting_for_backorders': 0
+                              }
 
-                    proxy.call(session, 'advancedinventory.setData',
-                               (mag_id, location, data_basic))
+                proxy.call(session, 'advancedinventory.setData',
+                           (mag_id, location, data_basic))
 
-        return res
+            tiempo_final = time.time()
+            tiempo_ejecucion = tiempo_final - tiempo_inicial
+            print ' stock_move', tiempo_ejecucion
+
+            return res
 
 
 class InvoiceSaleOrder(osv.TransientModel):
