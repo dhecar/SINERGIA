@@ -48,7 +48,7 @@ class WyomindStockSync(osv.TransientModel):
     _name = 'wyomind.sync'
     _description = 'Syncronize Stock'
 
-    def wyomind_sync(self, cr, ids, uid, context=None):
+    def wyomind_sync(self, cr, uid, ids, context=None):
         # Wyomind Config
 
         db_obj = self.pool['base.external.dbsource']
