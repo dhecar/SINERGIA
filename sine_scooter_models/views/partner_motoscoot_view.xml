@@ -11,8 +11,8 @@
 		
 		<notebook position="inside">
 			<page string="Motos de Cliente ">
-			<separator string="Modelos de Motos" colspan="4" />
-				<field name="scooters_id" colspan="4" nolabel="1"></field>
+				<separator string="Modelos de Motos" colspan="4" />
+				<field name="scooters_id" colspan="4" nolabel="1"/>
 
 			</page>
 			

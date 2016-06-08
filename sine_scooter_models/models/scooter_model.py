@@ -29,7 +29,6 @@ class scooter_model(osv.osv):
             vals['model'] = vals['model'].title()
         return super(scooter_model, self).create(cr, uid, vals, context=context)
 
-
     _name = 'scooter.model'
     _descripcion = 'Listado de modelos de Scooter'
     _table = 'scooter_model'
@@ -49,4 +48,3 @@ class scooter_model(osv.osv):
 scooter_model()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-

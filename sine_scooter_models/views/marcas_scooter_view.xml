@@ -14,9 +14,9 @@
 
  
 <record model="ir.ui.view" id="scooter_marcas_tree_view">
-	<field name="name">marcas.form</field>
+	<field name="name">marcas.tree</field>
 	<field name="model">marcas.scooter</field>
-        <field name="type">form</field>
+        <field name="type">tree</field>
         <field name="arch" type="xml">
                 <tree string="Listado de Marcas">
 			<field name="brand" />
@@ -39,21 +39,19 @@
 <!--Acciones Marcas-->
 
 <record model="ir.actions.act_window" id="action_scooter_marcas_form">
-        <field name="name">Nueva Marca</field>
+        <field name="name">nueva.marca</field>
         <field name="res_model">marcas.scooter</field>
         <field name="view_type">form</field>
 </record>
 
 
 <!--MENUS-->
+     <menuitem name="Scooter" icon="terp-project" id="scooter_menu"/>
 
-        <menuitem name="Scooter" icon="terp-project" id="scooter_menu" groups="sine_scooter_models.group_asociaciones_scooter_admin"/>
-
-        <menuitem name="Menu Creacion" parent="scooter_menu" id="scooter_menu_mainform"/>
+     <menuitem name="Menu Creacion" parent="scooter_menu" id="scooter_menu_mainform"/>
 
 	<menuitem name="Nueva Marca" id="marcas_form" parent="scooter_menu_mainform" action="action_scooter_marcas_form" sequence="3"/>
 
-	<menuitem name="Nuevo modelo" id="form_scooter" parent="scooter_menu_mainform" action="action_scooter_model_form" sequence="3"/>	
 
 
  </data>

@@ -13,9 +13,6 @@
     <field name="name">Modelos User</field>
 </record>
 
-
-
-
 <record id="group_asociaciones_scooter_admin" model="res.groups">
     <field name="name">Asociaciones Manager</field>
 </record>

@@ -31,6 +31,7 @@
 	<field name="view_mode">tree,form</field>
 </record>
 
+<menuitem name="Nuevo modelo" id="form_scooter" parent="scooter_menu_mainform" action="action_scooter_model_form" sequence="4"/>
 
 
  </data>
