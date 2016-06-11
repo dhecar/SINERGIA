@@ -27,10 +27,10 @@ class scooter_asociaciones(osv.osv):
     _rec_name = 'model_id'
     _columns = {
 
-        'type': fields.selection((('SCOOT', 'Scooters 50cc'), ('SCOOT2', 'Scooter 100-600cc'),
+        'type': fields.selection((('QUAD', 'Quad'), ('SCOOT', 'Scooters 50cc'), ('SCOOT2', 'Scooter 100-600cc'),
                                   ('MARCH2', 'Marchas 125cc'), ('PBKE', 'PitBike 4T'), ('MARCH', 'Marchas 50cc-80cc'),
-                                  ('VESP', 'Vespas-Clasicas 50cc-200cc'), ('MXSC', 'Maxiscooter'),
-                                  ('PBIKE', 'PocketBike')), 'Selecciona tipo', required=False, select=True),
+                                  ('VESP', 'Vespas Clásicas 50-200cc'), ('MXSC', 'Maxiscooter')), 'Selecciona tipo',
+                                 required=False, select=True),
         'brand_id': fields.many2one('marcas.scooter', 'Marca', required=False, readonly=False, select=True),
         'model_id': fields.many2one('scooter.model', 'Modelo', required=False, readonly=False, select=True),
         'compatible_with_ids': fields.many2many('product.product', 'scooter_compat_with_product_rel', 'scooter_id',
@@ -39,10 +39,5 @@ class scooter_asociaciones(osv.osv):
 
     _order = "brand_id ASC"
 
+
 scooter_asociaciones()
-
-
-
-
-
-

@@ -24,13 +24,7 @@
         <button name="test_sftp_connection" type="object" string="Test Connection" icon="gtk-network"/>
 
         </group>
-        <group col="2" colspan="2" string="Erp config">
-            <field name="erp_user"/>
-            <field name="erp_db"/>
-            <field name="erp_password" password="True"/>
-            <field name="erp_host" />
-        </group>
-            </form>
+        </form>
 	</field>
    </record>
 <!--Vehicle_Fits Tree  View-->

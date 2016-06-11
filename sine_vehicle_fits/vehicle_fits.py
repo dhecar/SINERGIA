@@ -40,12 +40,13 @@ class vehicle_config(osv.osv):
             transport = False
             server = sftp_server.sftp_host
             port = sftp_server.sftp_port
+            passphrase = sftp_server.sftp_password
 
         try:
             transport = paramiko.Transport((server, port))
             private_key = StringIO(base64.standard_b64decode(sftp_server.sftp_pem))
             if private_key:
-                mykey = paramiko.RSAKey.from_private_key(private_key)
+                mykey = paramiko.RSAKey.from_private_key(private_key, password=passphrase)
                 username = sftp_server.sftp_user
                 transport.connect(username=username, pkey=mykey)
 
@@ -68,7 +69,7 @@ class vehicle_config(osv.osv):
         'name': fields.char('Name', size=20),
         'vf_url': fields.char('Url', size=30, help="Url to Magento Web"),
         'sftp_user': fields.char('Ftp user', size=20, required=True),
-        'sftp_password': fields.char('Ftp password', size=20, required=False),
+        'sftp_password': fields.char('Passprase(encripted Key)', size=20, required=False),
         'sftp_pem': fields.binary('RSA Key', required=True),
         'sftp_host': fields.char('FTP IP host', size=15, required=True),
         'sftp_port': fields.integer('Ftp Port', help='Port of the connection'),
@@ -76,11 +77,6 @@ class vehicle_config(osv.osv):
         'sftp_remote_file': fields.char('Name of remote file', help="Default name for import is"
                                                                     " product-fitments-import.csv"),
         'sftp_remote_dir': fields.char('Full remote path'),
-        'erp_host': fields.char('Erp host', size=20, required=True),
-        'erp_user': fields.char('Erp DB user', size=15, required=True),
-        'erp_password': fields.char('Erp password', size=20, required=True),
-        'erp_db': fields.char('Erp DB', size=20, required=True)
-
     }
 
 
@@ -89,72 +85,55 @@ vehicle_config()
 
 class VehicleExport(osv.osv):
     def export_to_magento(self, cr, uid, ids, context=None):
-        conf_obj = self.pool.get('vehicle.config')
-        conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
-        for sftp_server in conf_obj.browse(cr, uid, conf_ids):
-            host = sftp_server.erp_host
-            dbname = sftp_server.erp_db
-            user = sftp_server.erp_user
-            password = sftp_server.erp_password
-            connection_parameters = "host=%s dbname=%s user=%s password=%s" % (host, dbname, user, password)
 
         for date in self.browse(cr, uid, ids):
             dat_from = date.date_from
             dat_to = date.date_to
 
-        # Define our connection string
-        conn_string = connection_parameters
-        # get a connection, if a connect cannot be made an exception will be raised here
-        conn = psycopg2.connect(conn_string)
-        # conn.cursor will return a cursor object, you can use this cursor to perform queries
-        cursor = conn.cursor()
-
-        # query
-        cursor.execute(" SELECT default_code AS sku,CASE "
-                       " WHEN type='MXSC'  THEN 'Maxiscooter'"
-                       " WHEN type='MARCH' THEN 'Marchas 50-80cc' "
-                       " WHEN type='MARCH2' THEN 'Marchas 125cc' "
-                       " WHEN type='SCOOT' THEN 'Scooters 50cc'"
-                       " WHEN type='SCOOT2' THEN 'Scooter 100-600cc'"
-                       " WHEN type='PBKE' THEN 'Pitbike 4T'"
-                       " WHEN type='PBIKE' THEN 'PocketBike'"
-                       " WHEN type='VESP' THEN 'Vespas Clasicas 50-200cc'"
-                       " END As make, brand AS model, model AS year FROM scooter_asociaciones"
-                       " LEFT JOIN scooter_model ON"
-                       " scooter_asociaciones.model_id = scooter_model.id"
-                       " LEFT JOIN marcas_scooter ON"
-                       " scooter_asociaciones.brand_id = marcas_scooter.id"
-                       " LEFT JOIN scooter_compat_with_product_rel ON"
-                       " scooter_asociaciones.id = scooter_compat_with_product_rel.scooter_id"
-                       " LEFT JOIN product_product ON"
-                       " product_product.id = scooter_compat_with_product_rel.product_id"
-                       " WHERE scooter_asociaciones.write_date BETWEEN '%s' AND '%s'" % (dat_from, dat_to),
-                       " ORDER BY make ")
+        cr.execute(" SELECT default_code AS sku,CASE "
+                   " WHEN type='MXSC'  THEN 'Maxiscooter'"
+                   " WHEN type='MARCH' THEN 'Marchas 50-80cc' "
+                   " WHEN type='MARCH2' THEN 'Marchas 125cc' "
+                   " WHEN type='SCOOT' THEN 'Scooters 50cc'"
+                   " WHEN type='SCOOT2' THEN 'Scooter 100-600cc'"
+                   " WHEN type='PBKE' THEN 'Pitbike 4T'"
+                   " WHEN type='QUAD' THEN 'Quad'"
+                   " WHEN type='VESP' THEN 'Vespas Clásicas 50-200cc'"
+                   " END As make, brand AS model, model AS year FROM scooter_asociaciones"
+                   " LEFT JOIN scooter_model ON"
+                   " scooter_asociaciones.model_id = scooter_model.id"
+                   " LEFT JOIN marcas_scooter ON"
+                   " scooter_asociaciones.brand_id = marcas_scooter.id"
+                   " LEFT JOIN scooter_compat_with_product_rel ON"
+                   " scooter_asociaciones.id = scooter_compat_with_product_rel.scooter_id"
+                   " LEFT JOIN product_product ON"
+                   " product_product.id = scooter_compat_with_product_rel.product_id"
+                   " WHERE scooter_asociaciones.write_date BETWEEN '%s' AND '%s' ORDER BY make" % (dat_from, dat_to))
 
         records = ()
-        records = cursor.fetchall()
+        records = cr.fetchall()
 
         with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
             writer.writerow(('sku', 'make', 'model', 'year'))
             for row in records:
                 writer.writerow([unicode(s).encode("utf-8") for s in row])
-            conn.close()
 
         conf_line_obj = self.pool.get('vehicle.config')
         conf_line_ids = conf_line_obj.search(cr, uid, [('id', '=', 1)])
         for x in conf_line_obj.browse(cr, uid, conf_line_ids):
-                pem = x.sftp_pem
-                host = x.sftp_host
-                user = x.sftp_user
-                port = x.sftp_port
-                rdir = x.sftp_remote_dir
-                rfile = x.sftp_remote_file
-                lfile = x.sftp_local_file
+            pem = x.sftp_pem
+            host = x.sftp_host
+            user = x.sftp_user
+            port = x.sftp_port
+            rdir = x.sftp_remote_dir
+            rfile = x.sftp_remote_file
+            lfile = x.sftp_local_file
+            passphrase = x.sftp_password
 
         # Create the transport with paramiko
         key = StringIO(base64.standard_b64decode(pem))
-        mykey = paramiko.RSAKey.from_private_key(key)
+        mykey = paramiko.RSAKey.from_private_key(key, password=passphrase)
 
         transport = paramiko.Transport((host, port))
         transport.connect(username=user, pkey=mykey)
@@ -166,7 +145,23 @@ class VehicleExport(osv.osv):
         # Push Csv
         sftp.put(localpath, remotepath)
         sftp.close()
+
+
+        ## SSH Commands (Execute php script to update models)
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        print "connecting"
+        client.connect(hostname=host, port=port, username=user, pkey=mykey)
+        print "connected"
+        stdin, stdout, stderr = client.exec_command('ls -l')
+        for line in stdout:
+            print line.strip('\n')
+
+        client.close()
+
         transport.close()
+
+
 
     _name = 'vehicle.export'
     _description = 'Wizard to export fitments to Vehicle fits'
@@ -176,6 +171,5 @@ class VehicleExport(osv.osv):
         'date_to': fields.datetime('Date To')
 
     }
-
 
 VehicleExport()
