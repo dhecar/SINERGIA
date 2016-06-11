@@ -145,23 +145,7 @@ class VehicleExport(osv.osv):
         # Push Csv
         sftp.put(localpath, remotepath)
         sftp.close()
-
-
-        ## SSH Commands (Execute php script to update models)
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        print "connecting"
-        client.connect(hostname=host, port=port, username=user, pkey=mykey)
-        print "connected"
-        stdin, stdout, stderr = client.exec_command('ls -l')
-        for line in stdout:
-            print line.strip('\n')
-
-        client.close()
-
         transport.close()
-
-
 
     _name = 'vehicle.export'
     _description = 'Wizard to export fitments to Vehicle fits'
