@@ -90,7 +90,7 @@ class VehicleExport(osv.osv):
             dat_from = date.date_from
             dat_to = date.date_to
 
-        cr.execute(" SELECT default_code AS sku,CASE "
+        cr.execute(" SELECT default_code AS sku, universal, CASE "
                    " WHEN type='MXSC'  THEN 'Maxiscooter'"
                    " WHEN type='MARCH' THEN 'Marchas 50-80cc' "
                    " WHEN type='MARCH2' THEN 'Marchas 125cc' "
@@ -99,6 +99,7 @@ class VehicleExport(osv.osv):
                    " WHEN type='PBKE' THEN 'Pitbike 4T'"
                    " WHEN type='QUAD' THEN 'Quad'"
                    " WHEN type='VESP' THEN 'Vespas Clásicas 50-200cc'"
+                   " WHEN type='0' THEN ''"
                    " END As make, brand AS model, model AS year FROM scooter_asociaciones"
                    " LEFT JOIN scooter_model ON"
                    " scooter_asociaciones.model_id = scooter_model.id"
@@ -115,7 +116,7 @@ class VehicleExport(osv.osv):
 
         with open('/opt/fitments/models-to-update.csv', 'w') as f:
             writer = csv.writer(f, delimiter=',')
-            writer.writerow(('sku', 'make', 'model', 'year'))
+            writer.writerow(('sku', 'make', 'model', 'year', 'universal'))
             for row in records:
                 writer.writerow([unicode(s).encode("utf-8") for s in row])
 
@@ -157,3 +158,13 @@ class VehicleExport(osv.osv):
     }
 
 VehicleExport()
+
+class product_product(osv.osv):
+    _name = 'product.product'
+    _inherit = 'product.product'
+
+    _columns = {
+        'universal': fields.boolean('Universal', help='Applications for the product'),
+
+    }
+product_product()

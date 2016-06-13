@@ -74,6 +74,21 @@
 </record>
 
 
+     <!-- Product view Universal-->
+
+
+     <record id="product_universal_form" model="ir.ui.view">
+            <field name="name">product.universal.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                    <field name="list_price" position="after">
+                            <field name="universal" label="Universal"/>
+                    </field>
+            </field>
+     </record>
+
+
 <!--MENUS-->
 <menuitem name="Vehicle_Export" id="vf_conf" parent="sine_scooter_models.scooter_menu"  sequence="4" />
 <menuitem name="VF Conf" id="vf_conf_mag" parent="vf_conf" action="vehicle_fits_config_form" sequence="3"/>
