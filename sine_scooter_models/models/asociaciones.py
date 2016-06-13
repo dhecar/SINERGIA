@@ -29,7 +29,8 @@ class scooter_asociaciones(osv.osv):
 
         'type': fields.selection((('QUAD', 'Quad'), ('SCOOT', 'Scooters 50cc'), ('SCOOT2', 'Scooter 100-600cc'),
                                   ('MARCH2', 'Marchas 125cc'), ('PBKE', 'PitBike 4T'), ('MARCH', 'Marchas 50cc-80cc'),
-                                  ('VESP', 'Vespas Clásicas 50-200cc'), ('MXSC', 'Maxiscooter')), 'Selecciona tipo',
+                                  ('VESP', 'Vespas Clásicas 50-200cc'), ('MXSC', 'Maxiscooter'), ('0', 'Universal')),
+                                 'Selecciona tipo',
                                  required=False, select=True),
         'brand_id': fields.many2one('marcas.scooter', 'Marca', required=False, readonly=False, select=True),
         'model_id': fields.many2one('scooter.model', 'Modelo', required=False, readonly=False, select=True),
