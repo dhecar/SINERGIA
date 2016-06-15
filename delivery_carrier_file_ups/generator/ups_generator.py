@@ -85,11 +85,11 @@ class UpsFileGenerator(CarrierFileGenerator):
             line.city = (address.city + " (" + address.state_id.name + ")")
             line.country = address.country_id.code
             line.phone = address.phone or address.mobile
-            if address.mail:
+            if address.email:
                 line.mail = address.email
             else:
-                if address.parent_id and address.parent_id.mail:
-                    line.mail = address.parent_id.mail
+                if address.parent_id and address.parent_id.email:
+                    line.mail = address.parent_id.email
                 else:
                     line.mail = ''
         line.ups_account = configuration.ups_account

@@ -103,19 +103,19 @@ class NacexFileGenerator(CarrierFileGenerator):
 
             line.observaciones = 'Observaciones'
             line.ealerta = configuration.nacex_ealerta
-            if address.mail:
+            if address.email:
                 line.mail = address.email
             else:
-                if address.parent_id and address.parent_id.mail:
-                    line.mail = address.parent_id.mail
+                if address.parent_id and address.parent_id.email:
+                    line.mail = address.parent_id.email
                 else:
                     line.mail = ''
             line.prealerta = configuration.nacex_prealerta
-            if address.mail:
+            if address.email:
                 line.mail = address.email
             else:
-                if address.parent_id and address.parent_id.mail:
-                    line.mail = address.parent_id.mail
+                if address.parent_id and address.parent_id.email:
+                    line.mail = address.parent_id.email
                 else:
                     line.mail = ''
 
