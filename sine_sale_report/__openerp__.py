@@ -28,7 +28,7 @@
     'author': 'David Hernandez',
     'website': 'http://sinergiainformatica.net',
     'images': [],
-    'depends': [],
+    'depends': ['sale'],
     'data': [],
     'demo': [],
     'test': [],
