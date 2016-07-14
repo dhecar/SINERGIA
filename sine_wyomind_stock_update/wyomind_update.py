@@ -176,7 +176,7 @@ class stock_move(osv.osv):
 
             """ Update dest stock location for partial in movements"""
             # If product is linked to magento
-            if move.product_id.magento_bind_ids and location2 != 0:
+            if move.product_id.magento_bind_ids and location2 != 0 and move.picking_id:
                 # product stock
                 cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                     location_id =%s AND product_id = %s""" %
@@ -208,7 +208,7 @@ class stock_move(osv.osv):
 
             """ Update origin stock location for partial out movements"""
             # If product is linked to magento
-            if move.product_id.magento_bind_ids and location != 0:
+            if move.product_id.magento_bind_ids and location != 0 and move.picking_id:
                 # product stock
                 cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                 location_id =%s AND product_id = %s""" %
@@ -257,24 +257,13 @@ class InvoiceSaleOrder(osv.TransientModel):
             ('name', '=', 'Sale_To_Invoice')
         ], context=context)
 
-        # Wyomind Config
-        conf_obj = self.pool.get('wyomind.config')
-        conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
-        for x in conf_obj.browse(cr, uid, conf_ids):
-            url = x.url
-            user = x.apiuser
-            passw = x.apipass
-
-            # Connection
-            proxy = xmlrpclib.ServerProxy(url, allow_none=True)
-            session = proxy.login(user, passw)
-
         location = 12
         if db_id:
             if sale_id:
                 for sale in sale_obj.browse(cr, uid, [sale_id],
                                             context=context):
                     for line in sale.order_line:
+
                         if line.product_id.magento_bind_ids:
                             cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                    location_id =%s AND product_id = %s""" %
@@ -297,9 +286,113 @@ class InvoiceSaleOrder(osv.TransientModel):
                                           'backorder_allowed': 0,
                                           'use_config_setting_for_backorders': 0}
 
-                            proxy.call(session, 'advancedinventory.setData',
-                                       (mag_id, 2, data_basic))
+                            # Wyomind Config
+                            conf_obj = self.pool.get('wyomind.config')
+                            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+                            for x in conf_obj.browse(cr, uid, conf_ids):
+                                url = x.url
+                                user = x.apiuser
+                                passw = x.apipass
+
+                                # Connection
+                                proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+                                session = proxy.login(user, passw)
+
+                                proxy.call(session, 'advancedinventory.setData',
+                                           (mag_id, 2, data_basic))
         return res
 
 
 InvoiceSaleOrder()
+
+
+class stock_change_product_qty(osv.osv_memory):
+    _inherit = "stock.change.product.qty"
+
+    def change_product_qty(self, cr, uid, ids, context=None):
+
+        """ Changes the Product Quantity by making a Physical Inventory.
+        @param self: The object pointer.
+        @param cr: A database cursor
+        @param uid: ID of the user currently logged in
+        @param ids: List of IDs selected
+        @param context: A standard dictionary
+        @return:
+        """
+        if context is None:
+            context = {}
+
+        rec_id = context and context.get('active_id', False)
+        assert rec_id, _('Active ID is not set in Context')
+
+        inventry_obj = self.pool.get('stock.inventory')
+        inventry_line_obj = self.pool.get('stock.inventory.line')
+        prod_obj_pool = self.pool.get('product.product')
+
+        res_original = prod_obj_pool.browse(cr, uid, rec_id, context=context)
+        for data in self.browse(cr, uid, ids, context=context):
+            if data.new_quantity < 0:
+                raise osv.except_osv(_('Warning!'), _('Quantity cannot be negative.'))
+            inventory_id = inventry_obj.create(cr, uid, {'name': _('INV: %s') % tools.ustr(res_original.name)},
+                                               context=context)
+            line_data = {
+                'inventory_id': inventory_id,
+                'product_qty': data.new_quantity,
+                'location_id': data.location_id.id,
+                'product_id': rec_id,
+                'product_uom': res_original.uom_id.id,
+                'prod_lot_id': data.prodlot_id.id
+            }
+
+            inventry_line_obj.create(cr, uid, line_data, context=context)
+
+            inventry_obj.action_confirm(cr, uid, [inventory_id], context=context)
+            inventry_obj.action_done(cr, uid, [inventory_id], context=context)
+
+            def get_mag_prod_id(self, cr, uid, ids, context=None):
+                mag_prod_obj = self.pool.get('magento.product.product')
+                result = {}
+                mag_prod_ids = mag_prod_obj.search(cr, uid, [('openerp_id', '=', rec_id)],
+                                                   context=context)
+
+                if mag_prod_ids:
+                    for prod in mag_prod_obj.browse(cr, uid, mag_prod_ids, context=context):
+                        result = prod.magento_id
+
+                    return result
+
+            # we hardcoded the mapping local-remote warehouse
+
+            location = 0
+            if data.location_id.id == 12:
+                location = 2
+            if data.location_id.id == 15:
+                location = 4
+            if data.location_id.id == 19:
+                location = 3
+
+            data_basic = {'quantity_in_stock': data.new_quantity,
+                          'manage_stock': 1,
+                          'backorder_allowed': 0,
+                          'use_config_setting_for_backorders': 1}
+
+            # Update Stock in Magento
+            conf_obj = self.pool.get('wyomind.config')
+            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+            br = conf_obj.browse(cr, uid, conf_ids)
+            for i in br:
+                url = i.url
+                user = i.apiuser
+                passw = i.apipass
+
+                # Connection
+                proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+                session = proxy.login(user, passw)
+
+                proxy.call(session, 'advancedinventory.setData', (get_mag_prod_id(self, cr, uid, ids, context=context),
+                                                                  location, data_basic))
+
+            return {}
+
+
+stock_change_product_qty()
