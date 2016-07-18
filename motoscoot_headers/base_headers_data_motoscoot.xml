@@ -36,7 +36,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <tr>
   <td>
   %for order in objects:
-  %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name::
+  %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name:
       <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b>  ES52 0081 0135 3500 0109 7315BSABESBB  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
 
   %else:
@@ -683,7 +683,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <tr>
   <td>
   %for order in objects:
-      %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name::
+      %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name:
       <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b>  ES52 0081 0135 3500 0109 7315BSABESBB  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
 
   %else:
