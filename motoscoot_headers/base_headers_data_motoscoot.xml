@@ -745,7 +745,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 
     <%def name="address(partner)">
         <%doc>
-            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+           XXX add a helper for address in report_webkit module as this won't be suported in v8.0
         </%doc>
         %if partner.parent_id:
             <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
