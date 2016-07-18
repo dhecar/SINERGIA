@@ -325,19 +325,28 @@ class stock_change_product_qty(osv.osv_memory):
         rec_id = context and context.get('active_id', False)
         assert rec_id, _('Active ID is not set in Context')
 
+        db_obj = self.pool['base.external.dbsource']  # Remote Warehouse movements
+
         inventry_obj = self.pool.get('stock.inventory')
         inventry_line_obj = self.pool.get('stock.inventory.line')
         prod_obj_pool = self.pool.get('product.product')
 
         res_original = prod_obj_pool.browse(cr, uid, rec_id, context=context)
         for data in self.browse(cr, uid, ids, context=context):
+
+            # remote Wharehouse Quantity
+            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, rec_id, 12,
+                                   context=context)
+
+            update_qty = data.new_quantity + ads
+
             if data.new_quantity < 0:
                 raise osv.except_osv(_('Warning!'), _('Quantity cannot be negative.'))
             inventory_id = inventry_obj.create(cr, uid, {'name': _('INV: %s') % tools.ustr(res_original.name)},
                                                context=context)
             line_data = {
                 'inventory_id': inventory_id,
-                'product_qty': data.new_quantity,
+                'product_qty': update_qty,
                 'location_id': data.location_id.id,
                 'product_id': rec_id,
                 'product_uom': res_original.uom_id.id,
