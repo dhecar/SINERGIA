@@ -683,7 +683,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 <tr>
   <td>
   %for order in objects:
-     %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name:
+      %if 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name:
       <i>Domiciliaci&oacute;n bancaria</i>: <b>Banco Sabadell Atl&aacute;ntico</b>  ES52 0081 0135 3500 0109 7315BSABESBB  &nbsp;&nbsp;&#124;&nbsp;&nbsp;<b>La Caixa</b> ES55 2100 8201 2702 0002 7559CAIXESBBXXX
 
   %else:
@@ -745,7 +745,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 
     <%def name="address(partner)">
         <%doc>
-           XXX add a helper for address in report_webkit module as this won't be suported in v8.0
+            XXX add a helper for address in report_webkit module as this won't be suported in v8.0
         </%doc>
         %if partner.parent_id:
             <tr><td class="name">${partner.parent_id.name or ''}</td></tr>
@@ -854,7 +854,7 @@ ${helper.embed_logo_by_name('Motoscoot_footer')|n}
 </body>
 </html>
 
-%elif 'Taller' in order.partner_id.category_id.name or 'Taller NO VAT' in order.partner_id.category_id.name or 'TTQ' in order.partner_id.category_id.name::
+%elif 'Taller' in inv.partner_id.category_id.name or 'Taller NO VAT' in inv.partner_id.category_id.name or 'TTQ' in inv.partner_id.category_id.name:
 
 
 <html>
