@@ -3,7 +3,7 @@ import one2many_sorted
 from zebra import zebra
 from time import sleep
 import unicodedata
-
+from openerp.tools.translate import _
 
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
@@ -52,7 +52,6 @@ class stock_picking_in(osv.osv):
          , order='product_id.product_brand_id.name, product_id.default_code'
          ),
 
-        'res_user': fields.many2one('res.users', 'Comercial', default=lambda self: self.env.user),
     }
 
     def copy(self, cr, uid, id, default=None, context=None):
