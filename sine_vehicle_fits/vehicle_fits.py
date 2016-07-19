@@ -170,7 +170,9 @@ class VehicleExport(osv.osv):
 
     }
 
+
 VehicleExport()
+
 
 class product_product(osv.osv):
     _name = 'product.product'
@@ -180,4 +182,6 @@ class product_product(osv.osv):
         'universal': fields.boolean('Universal', help='Applications for the product'),
 
     }
+
+
 product_product()
