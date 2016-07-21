@@ -335,10 +335,14 @@ class stock_change_product_qty(osv.osv_memory):
         for data in self.browse(cr, uid, ids, context=context):
 
             # remote Wharehouse Quantity
-            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, rec_id, 12,
-                                   context=context)
+            if data.location_id.id == 12:
+                ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, rec_id, 12,
+                                       context=context)
 
-            update_qty = data.new_quantity + ads
+                update_qty = data.new_quantity + ads
+            else:
+
+                update_qty = data.new_quantity
 
             if data.new_quantity < 0:
                 raise osv.except_osv(_('Warning!'), _('Quantity cannot be negative.'))
