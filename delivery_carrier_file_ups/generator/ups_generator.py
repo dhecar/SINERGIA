@@ -31,7 +31,7 @@ import xml.etree.cElementTree as ET
 class UPSLine(BaseLine):
     fields = (('name', 30),
               ('name', 30),
-              ('street', 30),
+              ('street', 60),
               ('city', 120),
               ('country', 2),
               ('zip', 9),
