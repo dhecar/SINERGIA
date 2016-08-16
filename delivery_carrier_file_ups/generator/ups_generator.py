@@ -31,7 +31,8 @@ import xml.etree.cElementTree as ET
 class UPSLine(BaseLine):
     fields = (('name', 30),
               ('name', 30),
-              ('street', 60),
+              ('street', 35),
+              ('stree2', 35),
               ('city', 120),
               ('country', 2),
               ('zip', 9),
@@ -78,7 +79,8 @@ class UpsFileGenerator(CarrierFileGenerator):
         if address:
             line.name = address.name or (address.partner_id and address.partner_id.name)
             if address.street2:
-                line.street = address.street + "  " + address.street2
+                line.street = address.street
+                line.street2 = address.street2
             else:
                 line.street = address.street
             line.zip = address.zip
@@ -123,6 +125,8 @@ class UpsFileGenerator(CarrierFileGenerator):
             ContactPerson.text = line.name
             AddressLine1 = SubElement(Receiver, 'AddressLine1')
             AddressLine1.text = line.street
+            AddressLine2 = SubElement(Receiver, 'AddressLine2')
+            AddressLine2.text = line.street2
             City = SubElement(Receiver, 'City')
             City.text = line.city
             CountryCode = SubElement(Receiver, 'CountryCode')
