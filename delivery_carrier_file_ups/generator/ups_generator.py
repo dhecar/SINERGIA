@@ -163,6 +163,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             Reference2.text = line.reference2
 
             # CONTRAREEMBOLSOS #
+
             if line.cash:
 
                 BillingOption = SubElement(Shipment, 'BillingOption')
