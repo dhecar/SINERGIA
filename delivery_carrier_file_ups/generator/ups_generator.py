@@ -126,8 +126,11 @@ class UpsFileGenerator(CarrierFileGenerator):
             ContactPerson.text = line.name
             AddressLine1 = SubElement(Receiver, 'AddressLine1')
             AddressLine1.text = line.street
-            AddressLine2 = SubElement(Receiver, 'AddressLine2')
-            AddressLine2.text = line.street2
+
+            if address.street2:
+                AddressLine2 = SubElement(Receiver, 'AddressLine2')
+                AddressLine2.text = line.street2
+
             City = SubElement(Receiver, 'City')
             City.text = line.city
             CountryCode = SubElement(Receiver, 'CountryCode')
