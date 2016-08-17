@@ -81,6 +81,7 @@ class UpsFileGenerator(CarrierFileGenerator):
             if address.street2:
                 line.street = address.street
                 line.street2 = address.street2
+
             else:
                 line.street = address.street
             line.zip = address.zip
