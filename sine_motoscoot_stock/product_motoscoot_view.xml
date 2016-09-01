@@ -85,9 +85,6 @@
 
                     <field name="list_price" position="after">
                         <field name="pvp_fabricante" label="Precio Base TT"/>
-                        <!--<field name="stock_grn" label="GRN"/>
-                        <field name="stock_bcn" label="BCN"/>
-				        <field name="stock_pt" label="PT"/>-->
                         <field name="test" label="Stocks"/>
                         <field name="shared"/>
                         <field name="internet" readonly="1" label="Internet" icon="ICON_MAGENTO" />
@@ -107,6 +104,21 @@
                     </field>
              </field>
      </record>
+
+
+     <record model="ir.ui.view" id="ean_filter">
+        <field name="name">ean.search</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view" />
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search[@string='Product']/field[@name='name']" position="after">
+                <field name="ean13" string="EAN" filter_domain="[('ean13','ilike',self)]" />
+            </xpath>
+
+        </field>
+    </record>
+
  </data>
 </openerp>
 
