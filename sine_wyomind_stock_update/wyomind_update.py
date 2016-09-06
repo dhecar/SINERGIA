@@ -386,7 +386,7 @@ class stock_change_product_qty(osv.osv_memory):
             data_basic = {'quantity_in_stock': data.new_quantity,
                           'manage_stock': 1,
                           'backorder_allowed': 0,
-                          'use_config_setting_for_backorders': 1}
+                          'use_config_setting_for_backorders': 0}
 
             # Update Stock in Magento
             conf_obj = self.pool.get('wyomind.config')
