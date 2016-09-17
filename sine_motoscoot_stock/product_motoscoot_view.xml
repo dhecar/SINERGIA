@@ -112,8 +112,8 @@
         <field name="inherit_id" ref="product.product_search_form_view" />
         <field name="type">search</field>
         <field name="arch" type="xml">
-            <xpath expr="//search[@string='Product']/field[@name='name']" position="after">
-                <field name="ean13" string="EAN" filter_domain="[('ean13','ilike',self)]" />
+            <xpath expr="//search[@string='Product']/field[@name='name']" position="inside">
+                <field name="ean13" string="EAN" filter_domain="['|',('ean13','ilike',self)]" />
             </xpath>
 
         </field>
