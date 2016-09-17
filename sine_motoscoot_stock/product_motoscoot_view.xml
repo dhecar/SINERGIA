@@ -112,7 +112,7 @@
         <field name="inherit_id" ref="product.product_search_form_view" />
         <field name="type">search</field>
         <field name="arch" type="xml">
-            <xpath expr="//search[@string='Product']/field[@name='name']" position="inside">
+            <xpath expr="//search[@string='Product']/field[@name='name']" position="replace">
                 <field name="name" string="Product" filter_domain="['|','|', ('name','ilike',self),('default_code','ilike',self),('ean13','ilike',self)]"/>
             </xpath>
 
