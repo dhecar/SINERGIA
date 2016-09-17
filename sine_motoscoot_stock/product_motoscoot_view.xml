@@ -113,7 +113,7 @@
         <field name="type">search</field>
         <field name="arch" type="xml">
             <xpath expr="//search[@string='Product']/field[@name='name']" position="inside">
-                <field name="ean13" string="EAN" filter_domain="['|',('ean13','ilike',self)]" />
+                <field name="name" string="Product" filter_domain="['|','|', ('name','ilike',self),('default_code','ilike',self),('ean13','ilike',self)]"/>
             </xpath>
 
         </field>
