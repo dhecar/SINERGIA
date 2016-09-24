@@ -51,7 +51,7 @@ class WyomindStockSync(osv.TransientModel):
     def wyomind_sync(self, cr, uid, ids, context=None):
         # Wyomind Config
 
-        db_obj = self.pool['base.external.dbsource']
+        #db_obj = self.pool['base.external.dbsource']
 
         cr.execute(""" SELECT qty , product_id , location_id FROM stock_report_prodlots
                         WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
@@ -78,14 +78,15 @@ class WyomindStockSync(osv.TransientModel):
             # If product is linked to magento
             if mag_id is not None:
 
-                if r['location_id'] == 12:
-                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, r['product_id'], r['location_id'],
-                                           context=context)
+                #if r['location_id'] == 12:
+                #    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, r['product_id'], r['location_id'],
+                #                           context=context)
 
-                    q = r['qty'] - ads
+                 #   q = r['qty'] - ads
 
-                else:
-                    q = r['qty']
+                #else:
+
+                q = r['qty']
 
                 data_basic = {'quantity_in_stock': q,
                               'manage_stock': 1,
@@ -117,7 +118,7 @@ class stock_move(osv.osv):
 
         res = super(stock_move, self).action_done(cr, uid, ids, context=context)
         # REMOTE
-        db_obj = self.pool['base.external.dbsource']
+        # db_obj = self.pool['base.external.dbsource']
 
         picking_ids = []
         move_ids = []
@@ -186,12 +187,12 @@ class stock_move(osv.osv):
                     qty = cr.fetchone()[0]
 
                     # CASE GRN
-                    if move.location_dest_id.id == 12:
-                        ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
-                                               location2, context=context)
-                        q = qty - ads
-                    else:
-                        q = qty
+                    # if move.location_dest_id.id == 12:
+                    #    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
+                    #                           location2, context=context)
+                    #    q = qty - ads
+                    #else:
+                    q = qty
 
                     # magento id
                     cr.execute('SELECT magento_id'
@@ -219,12 +220,12 @@ class stock_move(osv.osv):
                 qty = cr.fetchone()[0]
 
                 # CASE GRN
-                if move.location_id.id == 12:
-                    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
-                                           location, context=context)
-                    q = qty - ads
-                else:
-                    q = qty
+                #if move.location_id.id == 12:
+                #    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, move.product_id.id,
+                #                           location, context=context)
+                #    q = qty - ads
+                #else:
+                q = qty
 
                 # magento id
                 cr.execute('SELECT magento_id'
@@ -244,65 +245,65 @@ class stock_move(osv.osv):
         return res
 
 
-class InvoiceSaleOrder(osv.TransientModel):
-    _inherit = 'sale.order.invoiced'
+# #class InvoiceSaleOrder(osv.TransientModel):
+#     _inherit = 'sale.order.invoiced'
+#
+#     def do_invoice(self, cr, uid, ids, context=None):
+#         res = super(InvoiceSaleOrder, self).do_invoice(cr, uid, ids, context=context)
+#         sale_obj = self.pool['sale.order']
+#         sale_id = context.get('active_id', [])
+#         db_obj = self.pool['base.external.dbsource']
+#         db_id = db_obj.search(cr, uid, [
+#             ('name', '=', 'Sale_To_Invoice')
+#         ], context=context)
+#
+#         location = 12
+#         if db_id:
+#             if sale_id:
+#                 for sale in sale_obj.browse(cr, uid, [sale_id],
+#                                             context=context):
+#                     for line in sale.order_line:
+#
+#                         if line.product_id.magento_bind_ids:
+#                             cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
+#                                    location_id =%s AND product_id = %s""" %
+#                                        (location, line.product_id.id))
+#
+#                             qty = cr.fetchone()[0]
+#                             # CASE GRN
+#                             ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, line.product_id.id,
+#                                                    location, context=context)
+#
+#                             q = qty - ads
+#                             cr.execute('SELECT magento_id'
+#                                        ' FROM magento_product_product'
+#                                        ' WHERE openerp_id =%s' % line.product_id.id)
+#                             mag_id = cr.fetchone()[0]
+#
+#                             # Out movements are computed.
+#                             data_basic = {'quantity_in_stock': q,
+#                                           'manage_stock': 1,
+#                                           'backorder_allowed': 0,
+#                                           'use_config_setting_for_backorders': 0}
+#
+#                             # Wyomind Config
+#                             conf_obj = self.pool.get('wyomind.config')
+#                             conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
+#                             for x in conf_obj.browse(cr, uid, conf_ids):
+#                                 url = x.url
+#                                 user = x.apiuser
+#                                 passw = x.apipass
+#
+#                                 # Connection
+#                                 proxy = xmlrpclib.ServerProxy(url, allow_none=True)
+#                                 session = proxy.login(user, passw)
+#
+#                                 proxy.call(session, 'advancedinventory.setData',
+#                                            (mag_id, 2, data_basic))
+#         return res
 
-    def do_invoice(self, cr, uid, ids, context=None):
-        res = super(InvoiceSaleOrder, self).do_invoice(cr, uid, ids, context=context)
-        sale_obj = self.pool['sale.order']
-        sale_id = context.get('active_id', [])
-        db_obj = self.pool['base.external.dbsource']
-        db_id = db_obj.search(cr, uid, [
-            ('name', '=', 'Sale_To_Invoice')
-        ], context=context)
 
-        location = 12
-        if db_id:
-            if sale_id:
-                for sale in sale_obj.browse(cr, uid, [sale_id],
-                                            context=context):
-                    for line in sale.order_line:
-
-                        if line.product_id.magento_bind_ids:
-                            cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
-                                   location_id =%s AND product_id = %s""" %
-                                       (location, line.product_id.id))
-
-                            qty = cr.fetchone()[0]
-                            # CASE GRN
-                            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, line.product_id.id,
-                                                   location, context=context)
-
-                            q = qty - ads
-                            cr.execute('SELECT magento_id'
-                                       ' FROM magento_product_product'
-                                       ' WHERE openerp_id =%s' % line.product_id.id)
-                            mag_id = cr.fetchone()[0]
-
-                            # Out movements are computed.
-                            data_basic = {'quantity_in_stock': q,
-                                          'manage_stock': 1,
-                                          'backorder_allowed': 0,
-                                          'use_config_setting_for_backorders': 0}
-
-                            # Wyomind Config
-                            conf_obj = self.pool.get('wyomind.config')
-                            conf_ids = conf_obj.search(cr, uid, [('id', '=', 1)])
-                            for x in conf_obj.browse(cr, uid, conf_ids):
-                                url = x.url
-                                user = x.apiuser
-                                passw = x.apipass
-
-                                # Connection
-                                proxy = xmlrpclib.ServerProxy(url, allow_none=True)
-                                session = proxy.login(user, passw)
-
-                                proxy.call(session, 'advancedinventory.setData',
-                                           (mag_id, 2, data_basic))
-        return res
-
-
-InvoiceSaleOrder()
+#InvoiceSaleOrder()
 
 
 class stock_change_product_qty(osv.osv_memory):
@@ -324,7 +325,7 @@ class stock_change_product_qty(osv.osv_memory):
         rec_id = context and context.get('active_id', False)
         assert rec_id, _('Active ID is not set in Context')
 
-        db_obj = self.pool['base.external.dbsource']  # Remote Warehouse movements
+        # db_obj = self.pool['base.external.dbsource']  # Remote Warehouse movements
 
         inventry_obj = self.pool.get('stock.inventory')
         inventry_line_obj = self.pool.get('stock.inventory.line')
@@ -334,14 +335,14 @@ class stock_change_product_qty(osv.osv_memory):
         for data in self.browse(cr, uid, ids, context=context):
 
             # remote Wharehouse Quantity
-            if data.location_id.id == 12:
-                ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, rec_id, 12,
-                                       context=context)
+            #if data.location_id.id == 12:
+            #    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, rec_id, 12,
+            #                           context=context)
 
-                update_qty = data.new_quantity + ads
-            else:
+            #    update_qty = data.new_quantity + ads
+            #else:
 
-                update_qty = data.new_quantity
+            update_qty = data.new_quantity
 
             if data.new_quantity < 0:
                 raise osv.except_osv(_('Warning!'), _('Quantity cannot be negative.'))

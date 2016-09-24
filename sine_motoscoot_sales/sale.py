@@ -67,8 +67,8 @@ class sale_order_line(osv.osv):
             if line.product_id:
                 product = line.product_id.id
                 location_id = 12
-                ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, product, location_id,
-                                       context=context)
+
+                #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, product, location_id,context=context)
 
                 cr.execute(""" SELECT qty AS QTY, CASE
                             WHEN location_id='12' THEN 'G'
@@ -81,10 +81,13 @@ class sale_order_line(osv.osv):
 
                 if not res[line.id]:
                     res[line.id] = []
-                else:
+                #else:
                     # GRN
-                    if res[line.id][0]['loc'] == 'G':
-                        res[line.id][0]['qty'] = res[line.id][0]['qty'] - ads
+                    #if res[line.id][0]['loc'] == 'G':
+                    #    res[line.id][0]['qty'] = res[line.id][0]['qty'] - ads
+
+
+
                 counter = 0
                 qty = ""
                 qty_final = ""

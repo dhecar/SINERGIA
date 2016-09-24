@@ -47,12 +47,13 @@ class product_product(osv.osv):
 
     def StockByLocation(self, cr, uid, ids, name, args, context=None):
 
-        db_obj = self.pool['base.external.dbsource']
+        # db_obj = self.pool['base.external.dbsource']
+
         location_id = 12
         res = {}
         for i in ids:
-            ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
-                                   context=context)
+            #ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, i, location_id,
+            #                       context=context)
 
             cr.execute(""" SELECT qty AS QTY, CASE
                         WHEN location_id='12' THEN 'G'
@@ -65,10 +66,12 @@ class product_product(osv.osv):
 
             if not res[i]:
                 res[i] = {}
-            else:
+
+            #else:
                 # GRN
-                if res[i][0]['loc'] == 'G':
-                    res[i][0]['qty'] = res[i][0]['qty'] - ads
+                # if res[i][0]['loc'] == 'G':
+                #    res[i][0]['qty'] = res[i][0]['qty'] - ads
+
             counter = 0
             qty = ""
             for location in res[i]:
