@@ -61,7 +61,7 @@ class product_product(osv.osv):
                         WHEN location_id='15' THEN 'P'
                         END AS LOC FROM stock_report_prodlots
                         WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                        AND product_id = '%s' ORDER BY location_id""" % i)
+                        AND product_id = '%s' GROUP BY location_id ORDER BY location_id""" % i)
             res[i] = cr.dictfetchall()
 
             if not res[i]:
