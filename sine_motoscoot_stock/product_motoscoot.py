@@ -79,6 +79,7 @@ class product_product(osv.osv):
                 qty += '[' + str(res[i][counter - 1]['loc']) + ":" + str(res[i][counter - 1]['qty']) + ']'
 
             res[i] = qty
+
         return res
 
 
