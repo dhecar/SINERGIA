@@ -88,7 +88,7 @@ class product_product(osv.osv):
         for i in ids:
             cr.execute(""" SELECT sum(qty) FROM stock_report_prodlots
                                 WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                                AND product_id = '%s' ORDER BY location_id""" % i)
+                                AND product_id = '%s' """ % i)
 
             res[i] = cr.dictfetchall()
 
