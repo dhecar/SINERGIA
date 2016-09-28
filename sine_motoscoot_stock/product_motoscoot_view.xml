@@ -86,6 +86,7 @@
                     <field name="list_price" position="after">
                         <field name="pvp_fabricante" label="Precio Base TT"/>
                         <field name="test" label="Stocks"/>
+                        <field name="qty_total" label="Qty TOTAL" />
                         <field name="shared"/>
                         <field name="internet" readonly="1" label="Internet" icon="ICON_MAGENTO" />
                         <field name="label_print" label="Label print"/>
