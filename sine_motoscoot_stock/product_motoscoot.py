@@ -93,7 +93,10 @@ class product_product(osv.osv):
 
             for r in  cr.fetchone():
                 res[i] = r
-            return res
+                if res[i]:
+                    return res
+                else:
+                    return 0.0
 
 
 
