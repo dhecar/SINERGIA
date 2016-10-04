@@ -83,17 +83,19 @@ class product_product(osv.osv):
         return res
 
 
-    def _compute_total_qty(self,cr, uid, ids, name, args, context=None):
+    def compute_total_qty(self,cr, uid, ids, name, args, context=None):
 
         res = {}
         for i in ids:
-            cr.execute(""" SELECT sum(qty) FROM stock_report_prodlots
+            cr.execute(""" SELECT sum(qty) as SUMA FROM stock_report_prodlots
                                 WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
                                 AND product_id = '%s' """ % i)
 
-            res[i] = cr.dictfetchall()
+            for r in  cr.fetchone():
+                res[i] = r
+            return res
 
-        return res
+
 
     _columns = {
 
@@ -107,7 +109,7 @@ class product_product(osv.osv):
                                        digits_compute=dp.get_precision('Precio Base TT (Tarifa Fabricante sin IVA)')),
         'internet': fields.boolean('Internet?', help='Está activo en Magento?'),
         'label_print': fields.boolean('Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?'),
-        'qty_total': fields.function(_compute_total_qty, type='integer', string='Stock Total',store=True),
+        'qty_total': fields.function(compute_total_qty, type='integer', string='Stock Total'),
     }
 
     _defaults = {
