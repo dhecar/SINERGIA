@@ -177,7 +177,7 @@ class stock_move(osv.osv):
 
             """ Update dest stock location for partial in movements"""
             # If product is linked to magento
-            if move.product_id.magento_bind_ids and move.location_dest_id.id not in (0, 22, 24, 25) and move.picking_id:
+            if move.product_id.magento_bind_ids and move.location_dest_id.id not in (0, 22, 24, 25,27) and move.picking_id:
 
                 # product stock
                 if move.location_dest_id.id in (12, 15, 19):
