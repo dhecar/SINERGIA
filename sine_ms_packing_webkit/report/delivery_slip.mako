@@ -195,6 +195,7 @@
                     <th> Hecho?</th>
                     <th style="text-align:left; ">${_("Qt")}</th>
                     <th style="text-align:left; ">${_("Ref")}</th>
+                    <th style="text-align:left; ">${_("Ref2")}</th>
                     <th style="text-align:left; ">${_("Nota")}</th>
                     <th style="text-align:left; ">${_("Marca")}</th>
                     <th style="text-align:left; ">${_("Description")}</th>
@@ -216,6 +217,10 @@
                             <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
                             %endif;
                         </td>
+                        %if line.product_id.selled_ids[0].product_code:
+                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.selled_ids[0].product_code</td>
+                        %else:
+                        <td></td>
                         %if line.product_id.internal_note:
                             <td style="height:40px;text-align:center;font-size:20px; " >*</td>
                         %else:
@@ -243,6 +248,7 @@
                         <th> Hecho?</th>
                         <th style="text-align:left; ">${_("Qt")}</th>
                         <th style="text-align:left; ">${_("Ref")}</th>
+                        <th style="text-align:left; ">${_("Ref2")}</th>
                         <th style="text-align:left; ">${_("Nota")}</th>
                         <th style="text-align:left; ">${_("Marca")}</th>
                         <th style="text-align:left; ">${_("Description")}</th>
@@ -261,6 +267,10 @@
                             <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
                             %endif;
                         </td>
+                        %if line.product_id.selled_ids[0].product_code:
+                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.selled_ids[0].product_code</td>
+                        %else:
+                        <td></td>
                         %if line.product_id.internal_note:
                             <td style="text-align:center;font-size:20px; " >*</td>
                         %else:
