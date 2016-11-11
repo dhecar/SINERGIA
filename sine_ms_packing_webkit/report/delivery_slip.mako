@@ -217,31 +217,27 @@
                             <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
                             %endif;
                         </td>
-                        %if line.product_id.selled_ids[0].product_code:
-                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.selled_ids[0].product_code</td>
+                        %if line.product_id.seller_ids[0].product_code:
+                            <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.seller_ids[0].product_code</td>
                         %else:
-                        <td></td>
+                            <td></td>
                         %endif
                         %if line.product_id.internal_note:
                             <td style="height:40px;text-align:center;font-size:20px; " >*</td>
                         %else:
-                        <td></td>
+                            <td></td>
                         %endif
                         <td style="height:40px;text-align:left; " >${( line.product_id.product_brand_id.name )}</td>
                         <td style="height:40px;text-align:left; " >${( line.product_id.name ) }</td>
-
-
                         <td style="height:40px;text-align:left;" >${ str(line.product_id.test) }</td>
-
-
-
                     </tr>
-                    %if line.product_id.internal_note:
+
+                %if line.product_id.internal_note:
                     <tr>
                         <td style="height:40px;border-left:1px solid grey"></td><td></td><td></td>
                         <td colspan="3" style="font-size:12px;font-weight:bold;">${line.product_id.internal_note}</td>
                     </tr>
-                    %endif
+                %endif
                 %endfor
 
             %elif not picking.origin and not picking.sale_id:
@@ -268,8 +264,8 @@
                             <br>${( line.product_id.loc_rack)} || ${( line.product_id.loc_row)} || ${( line.product_id.loc_case)}
                             %endif;
                         </td>
-                        %if line.product_id.selled_ids[0].product_code:
-                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.selled_ids[0].product_code</td>
+                        %if line.product_id.seller_ids[0].product_code:
+                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.seller_ids[0].product_code</td>
                         %else:
                         <td></td>
                         %endif
