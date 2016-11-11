@@ -218,7 +218,7 @@
                             %endif;
                         </td>
                         %if line.product_id.seller_ids[0].product_code:
-                            <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.seller_ids[0].product_code</td>
+                            <td style="height:40px;text-align:center;font-size:20px; ">"${(line.product_id.seller_ids[0].product_code)}</td>
                         %else:
                             <td></td>
                         %endif
@@ -265,7 +265,7 @@
                             %endif;
                         </td>
                         %if line.product_id.seller_ids[0].product_code:
-                        <td style="height:40px;text-align:center;font-size:20px; ">"line.product_id.seller_ids[0].product_code</td>
+                        <td style="height:40px;text-align:center;font-size:20px; ">"${(line.product_id.seller_ids[0].product_code)}</td>
                         %else:
                         <td></td>
                         %endif
