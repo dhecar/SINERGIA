@@ -74,10 +74,12 @@ class sale_order_line(osv.osv):
                             WHEN location_id='12' THEN 'G'
                             WHEN location_id='19' THEN 'B'
                             WHEN location_id='15' THEN 'P'
+                            WHEN location_id='27' THEN 'T'
                             END AS LOC FROM stock_report_prodlots
-                            WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                            WHERE (location_id ='12' OR location_id ='19' OR location_id='15' OR location_id='27')
                             AND product_id = '%s' ORDER BY location_id""" % product)
                 res[line.id] = cr.dictfetchall()
+
 
                 if not res[line.id]:
                     res[line.id] = []

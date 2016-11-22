@@ -22,7 +22,7 @@
 
 
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position="before">
-                    <field name="margin_ok"/>
+                    <field name="margin_ok" />
                 </xpath>
 
 
@@ -34,10 +34,7 @@
 
 
                 <field name="discount" position="before">
-                    <!--<field name="stock_grn" invisible="1"/>
-				    <field name="stock_bcn" invisible="1"/>
-				    <field name="stock_pt" invisible="1"/>-->
-                    <field name="sum_stock"/>
+                    <field name="sum_stock" />
                 </field>
 
 
