@@ -59,8 +59,9 @@ class product_product(osv.osv):
                         WHEN location_id='12' THEN 'G'
                         WHEN location_id='19' THEN 'B'
                         WHEN location_id='15' THEN 'P'
+                        WHEN location_id='27' THEN 'T'
                         END AS LOC FROM stock_report_prodlots
-                        WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                        WHERE (location_id ='12' OR location_id ='19' OR location_id='15' OR location_id='27')
                         AND product_id = '%s'  ORDER BY location_id""" % i)
             res[i] = cr.dictfetchall()
 
@@ -88,7 +89,7 @@ class product_product(osv.osv):
         res = {}
         for i in ids:
             cr.execute(""" SELECT sum(qty) as SUMA FROM stock_report_prodlots
-                                WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
+                                WHERE (location_id ='12' OR location_id ='19' OR location_id='15' OR location_id='27')
                                 AND product_id = '%s' """ % i)
 
             for r in  cr.fetchone():
@@ -96,8 +97,8 @@ class product_product(osv.osv):
                 if res[i]:
                     return res
                 else:
-                    return 0.0
-
+                    res[i] = 0.0
+                    return res
 
 
     _columns = {

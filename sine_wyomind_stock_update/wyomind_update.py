@@ -49,13 +49,12 @@ class WyomindStockSync(osv.TransientModel):
     _description = 'Syncronize Stock'
 
     def wyomind_sync(self, cr, uid, ids, context=None):
-        # Wyomind Config
-
-        #db_obj = self.pool['base.external.dbsource']
 
         cr.execute(""" SELECT qty , product_id , location_id FROM stock_report_prodlots
                         WHERE (location_id ='12' OR location_id ='19' OR location_id='15')
-                         ORDER BY location_id""")
+                        ORDER BY location_id""")
+                    ## OR location_id='27')-->??
+
         res = cr.dictfetchall()
         result = {}
         conf_obj = self.pool.get('wyomind.config')
@@ -78,12 +77,9 @@ class WyomindStockSync(osv.TransientModel):
             # If product is linked to magento
             if mag_id is not None:
 
-                #if r['location_id'] == 12:
-                #    ads = db_obj.get_stock(cr, SUPERUSER_ID, ids, r['product_id'], r['location_id'],
-                #                           context=context)
-
-                 #   q = r['qty'] - ads
-
+                # Si es ubicacion tienda, sumar stock ubicacion stock Girona + Ubicación stock tienda
+                #if r['location_id'] == 27:
+                #    q = r[12] + r[27]
                 #else:
 
                 q = r['qty']
@@ -95,7 +91,9 @@ class WyomindStockSync(osv.TransientModel):
                               }
 
                 location = 0
+                # Si ubicacion es girona o tienda, location Magento = 2
                 if r['location_id'] == 12:
+                    ##or r['location_id'] == 27:
                     location = 2
                 if r['location_id'] == 15:
                     location = 4
@@ -166,6 +164,8 @@ class stock_move(osv.osv):
                 location = 4
             if move.location_id.id == 19:
                 location = 3
+            #if move.location_id.id == 27:
+            #    location = 2
 
             location2 = 0
             if move.location_dest_id.id == 12:
@@ -174,13 +174,15 @@ class stock_move(osv.osv):
                 location2 = 4
             if move.location_dest_id.id == 19:
                 location2 = 3
+            #if move.location_dest_id.id == 27:
+            #    location2 = 2
 
             """ Update dest stock location for partial in movements"""
             # If product is linked to magento
-            if move.product_id.magento_bind_ids and move.location_dest_id.id not in (0, 22, 24, 25,27) and move.picking_id:
+            if move.product_id.magento_bind_ids and move.location_dest_id.id not in (0, 22, 24, 25) and move.picking_id:
 
                 # product stock
-                if move.location_dest_id.id in (12, 15, 19):
+                if move.location_dest_id.id in (12, 15, 19,27):
                     cr.execute("""SELECT qty FROM stock_report_prodlots WHERE
                                                 location_id =%s AND product_id = %s""" %
                                (move.location_dest_id.id, move.product_id.id))
