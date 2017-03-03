@@ -85,6 +85,7 @@
 
                     <field name="list_price" position="after">
                         <field name="pvp_fabricante" label="Precio Base TT"/>
+                        <field name="special_price" label="Precio Web"/>
                         <field name="test" label="Stocks"/>
                         <field name="qty_total" label="Qty TOTAL" />
                         <field name="shared"/>

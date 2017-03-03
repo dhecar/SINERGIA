@@ -14,7 +14,8 @@ class MyProductImportMapper(ProductImportMapper):
 
     direct = ProductImportMapper.direct + [
         ('msrp', 'pvp_fabricante'),
-        ('status', 'internet')]
+        ('status', 'internet'),
+        ('special_price','special_price')]
 
 
 

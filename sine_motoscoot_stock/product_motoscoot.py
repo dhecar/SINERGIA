@@ -114,6 +114,8 @@ class product_product(osv.osv):
         'internet': fields.boolean('Internet?', help='Está activo en Magento?'),
         'label_print': fields.boolean('Label Print?', help='Se debe imprimir la etiqueta en albaranes de entrada?'),
         'qty_total': fields.function(compute_total_qty, type='float', string='Stock Total'),
+        'special_price': fields.float('Precio Especial WEB',
+                                       digits_compute=dp.get_precision('Precio Especial Web (SIN IVA)')),
     }
 
     _defaults = {
