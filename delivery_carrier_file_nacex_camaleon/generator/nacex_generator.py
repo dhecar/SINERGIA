@@ -90,7 +90,7 @@ class NacexFileGenerator(CarrierFileGenerator):
 
 
             line.country = address.country_id.code
-                #####
+
                 #  Si el pais es portugal, quitamos los guiones del codigo postal##
             if (line.country == 185):
                 line.zip = address.zip.replace('-', '')
