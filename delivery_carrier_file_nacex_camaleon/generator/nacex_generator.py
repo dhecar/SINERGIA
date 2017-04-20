@@ -88,8 +88,16 @@ class NacexFileGenerator(CarrierFileGenerator):
             else:
                 line.street = address.street
 
+
             line.country = address.country_id.code
-            line.zip = address.zip
+                #####
+                #  Si el pais es portugal, quitamos los guiones del codigo postal##
+            if (line.country == 185):
+                line.zip = address.zip.replace('-', '')
+            else:
+                line.zip = address.zip
+                #######
+
             line.city = address.city
             line.phone = address.phone or address.mobile
 
